@@ -1,0 +1,6 @@
+*.pyc
+/*
+!/.gitignore
+!/environment.yml
+!/README.md
+!/src
