@@ -6,4 +6,4 @@ dependencies:
   - pyqt
   - pillow
   - numpy
-  - rawpy
+  - pip
