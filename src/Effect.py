@@ -1,11 +1,11 @@
 from enum import Enum
 
 
-class PaintEffectType(Enum):
+class EffectType(Enum):
     RGB = 0
 
 
-class PaintEffect:
+class Effect:
     def __init__(self):
         self.paint_tool = None
         self.paint_effect_type = int()

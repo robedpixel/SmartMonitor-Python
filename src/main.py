@@ -3,6 +3,7 @@ from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtGui import QImageReader
 
 import sys
+from ImageDisplay import ImageDisplay
 
 
 class Ui(QtWidgets.QMainWindow):
@@ -14,12 +15,14 @@ class Ui(QtWidgets.QMainWindow):
         self.file_open_button = self.findChild(QtWidgets.QPushButton, 'fileopenButton')
         self.scroll_area = self.findChild(QtWidgets.QScrollArea, 'scrollArea')
 
-        self.display = QtWidgets.QLabel()
+        self.display = ImageDisplay()
         self.original_image = QtGui.QImage()
 
         self.scroll_area.setWidget(self.display)
 
         self.file_open_button.clicked.connect(self.on_file_open_button_clicked)
+
+        self.selectedtool = None
 
         self.show()  # Show the GUI
 
@@ -45,7 +48,7 @@ class Ui(QtWidgets.QMainWindow):
     def set_image(self, new_image: QtGui.QImage):
         self.original_image = new_image
         if self.original_image.colorSpace().isValid():
-            self.original_image.convertToColorSpace(QtGui.QColorSpace.SRgb)
+            self.original_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.display.setPixmap(QtGui.QPixmap.fromImage(self.original_image))
         self.scale_factor = 1.0
 
