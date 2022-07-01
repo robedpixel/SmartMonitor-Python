@@ -1,10 +1,15 @@
 from PyQt5 import QtCore
 from collections import deque
+from PyQt5 import QtCore
 
 
 class Tool:
     def __init__(self):
-        self.canvas_size = QtCore.QSize()
+        self.height = 0
+        self.width = 0
+
+    def set_image(self):
+        pass
 
     def on_select_tool(self):
         pass
@@ -12,10 +17,11 @@ class Tool:
     def on_deselect_tool(self):
         pass
 
-    def set_canvas_size(self, size: QtCore.Qsize):
-        self.canvas_size = size
+    def set_canvas_size(self, height: int, width: int):
+        self.height = height
+        self.width = width
 
-    def draw(self, image_location, effects: deque):
+    def draw(self, x_pos: int, y_pos: int, effects: deque):
         raise NotImplementedError()
 
     def apply_effect(self, effects: deque):
