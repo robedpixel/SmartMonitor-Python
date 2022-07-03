@@ -1,7 +1,6 @@
 from PyQt5 import QtCore
 from collections import deque
-from PyQt5 import QtCore
-
+from Effect import EffectType
 
 class Tool:
     def __init__(self):
@@ -17,12 +16,18 @@ class Tool:
     def on_deselect_tool(self):
         pass
 
-    def set_canvas_size(self, height: int, width: int):
-        self.height = height
-        self.width = width
-
-    def draw(self, x_pos: int, y_pos: int, effects: deque):
+    def on_click(self, pos: QtCore.QPoint, effects : deque):
         raise NotImplementedError()
 
-    def apply_effect(self, effects: deque):
+    def on_drag(self, pos: QtCore.QPoint, effects : deque):
         raise NotImplementedError()
+
+    def on_release(self, pos: QtCore.QPoint, effects : deque):
+        raise NotImplementedError()
+
+    def apply_effect(self, effects: deque, effect_type: EffectType):
+        raise NotImplementedError()
+
+    def get_effect_type(self):
+        raise NotImplementedError()
+
