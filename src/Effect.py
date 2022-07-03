@@ -3,7 +3,8 @@ from PyQt5 import QtCore
 
 
 class EffectType(Enum):
-    RGB = 0
+    NONE = 0
+    RGB = 1
 
 
 class Effect:

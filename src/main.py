@@ -4,7 +4,7 @@ from PyQt5.QtGui import QImageReader
 from collections import deque
 import sys
 from ImageDisplay import ImageDisplay
-from PaintTool import PaintTool
+from Tool import PaintTool, MoveTool
 from Action import Action
 
 
@@ -32,8 +32,14 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
         self.brush_button.clicked.connect(self.on_brush_button_clicked)
 
+        self.move_button = self.findChild(QtWidgets.QPushButton, 'moveButton')
+        self.move_button.setStyleSheet(
+            "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
+        self.move_button.clicked.connect(self.on_move_button_clicked)
+
         self.button_list = deque()
         self.button_list.append(self.brush_button)
+        self.button_list.append(self.move_button)
 
         self.selected_tool = None
         self.selected_button = None
@@ -123,6 +129,19 @@ class Ui(QtWidgets.QMainWindow):
                 new_tool.set_image(self.current_image)
                 self.on_tool_select(new_tool)
                 self.selected_button = self.brush_button
+
+    def on_move_button_clicked(self):
+        if self.brush_button.isEnabled():
+            if self.selected_button == self.move_button:
+                self.selected_tool = None
+                self.selected_button = None
+            else:
+                new_tool = MoveTool()
+                new_tool.set_button(self.move_button)
+                new_tool.set_image(self.current_image)
+                new_tool.set_scroll_area(self.scroll_area)
+                self.on_tool_select(new_tool)
+                self.selected_button = self.move_button
 
 
 app = QtWidgets.QApplication(sys.argv)
