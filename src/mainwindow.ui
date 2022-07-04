@@ -113,14 +113,14 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>200</x>
-      <y>30</y>
-      <width>49</width>
-      <height>16</height>
+      <x>190</x>
+      <y>0</y>
+      <width>41</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
-     <string>Color</string>
+     <string>Color:</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -129,10 +129,10 @@
    <widget class="QPushButton" name="brushcolorButton">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>230</x>
       <y>0</y>
-      <width>31</width>
-      <height>31</height>
+      <width>51</width>
+      <height>51</height>
      </rect>
     </property>
     <property name="text">
