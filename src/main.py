@@ -77,10 +77,21 @@ class Ui(QtWidgets.QMainWindow):
             self.load_image_from_file(filename[0])
 
     def load_image_from_file(self, filename: str) -> bool:
-        reader = QImageReader()
-        reader.setFileName(filename)
-        reader.setAutoTransform(True)
-        new_image = reader.read()
+        fileinfo = QtCore.QFileInfo(filename[0])
+        new_image = QtGui.QImage()
+        if fileinfo.suffix() == "nef":
+            # Sse rawpy to read nef file then load as QImage
+            with rawpy.imread(path) as raw:
+                src = raw.postprocess()
+                h, w, ch = src.shape
+                bytesPerLine = ch * w
+                buf = src.data.tobytes()  # or bytes(src.data)
+                new_image = QtGui.QImage(buf, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
+        else:
+            reader = QImageReader()
+            reader.setFileName(filename)
+            reader.setAutoTransform(True)
+            new_image = reader.read()
         if new_image.isNull():
             msg_box = QtWidgets.QMessageBox()
             msg_box.setWindowTitle(QtGui.QGuiApplication.applicationDisplayName())
