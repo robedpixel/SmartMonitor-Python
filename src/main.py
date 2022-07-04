@@ -6,6 +6,7 @@ import sys
 from ImageDisplay import ImageDisplay
 from Tool import PaintTool, MoveTool
 from Action import Action
+from NoteReader import ExifNoteReader
 
 
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
@@ -20,6 +21,8 @@ class Ui(QtWidgets.QMainWindow):
         uic.loadUi('mainwindow.ui', self)  # Load the .ui file
 
         self.scale_factor = float(1.0)
+        self.file_notes = list()
+        self.note_reader = ExifNoteReader()
 
         self.file_open_button = self.findChild(QtWidgets.QPushButton, 'fileopenButton')
         self.file_open_button.clicked.connect(self.on_file_open_button_clicked)
@@ -50,9 +53,13 @@ class Ui(QtWidgets.QMainWindow):
         set_button_color(self.current_brush_color[0], self.brush_color_button)
         self.brush_color_button.update()
 
+        self.file_save_button = self.findChild(QtWidgets.QWidget, 'filesaveButton')
+        self.file_save_button.clicked.connect(self.on_file_save_button_clicked)
+
         self.button_list = deque()
         self.button_list.append(self.brush_button)
         self.button_list.append(self.move_button)
+        self.button_list.append(self.file_save_button)
 
         self.selected_tool = None
         self.selected_button = None
@@ -85,6 +92,7 @@ class Ui(QtWidgets.QMainWindow):
             self.original_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.set_image(new_image)
         QtWidgets.QWidget.setWindowFilePath(self, filename)
+        self.note_reader.read_notes_from_file(filename)
         return True
 
     def set_image(self, new_image: QtGui.QImage):
@@ -124,6 +132,13 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_file_open_button_clicked(self):
         self.load_image()
+
+    def save_image(self):
+        filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Image', '/', "JPG Image (*.jpg)")
+        success = self.current_image.save(filename[0])
+
+    def on_file_save_button_clicked(self):
+        self.save_image()
 
     def on_tool_select(self, new_tool):
         if self.selected_tool:

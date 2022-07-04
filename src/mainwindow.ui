@@ -65,9 +65,9 @@
    <widget class="QPushButton" name="fileopenButton">
     <property name="geometry">
      <rect>
-      <x>670</x>
+      <x>700</x>
       <y>0</y>
-      <width>101</width>
+      <width>81</width>
       <height>51</height>
      </rect>
     </property>
@@ -137,6 +137,35 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="noteButton">
+    <property name="geometry">
+     <rect>
+      <x>500</x>
+      <y>0</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Notes</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="filesaveButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>0</y>
+      <width>81</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save File</string>
     </property>
    </widget>
   </widget>
