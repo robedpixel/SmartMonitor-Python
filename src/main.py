@@ -8,6 +8,12 @@ from Tool import PaintTool, MoveTool
 from Action import Action
 
 
+def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
+    if color.isValid():
+        qss = "background-color: " + (color.name())
+        button.setStyleSheet(qss)
+
+
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
@@ -35,7 +41,14 @@ class Ui(QtWidgets.QMainWindow):
         self.move_button = self.findChild(QtWidgets.QPushButton, 'moveButton')
         self.move_button.setStyleSheet(
             "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
+
         self.move_button.clicked.connect(self.on_move_button_clicked)
+
+        self.brush_color_button = self.findChild(QtWidgets.QWidget, 'brushcolorButton')
+        self.brush_color_button.clicked.connect(self.on_brush_color_button_clicked)
+        self.current_brush_color = [QtGui.QColor(QtCore.Qt.black)]
+        set_button_color(self.current_brush_color[0], self.brush_color_button)
+        self.brush_color_button.update()
 
         self.button_list = deque()
         self.button_list.append(self.brush_button)
@@ -127,6 +140,7 @@ class Ui(QtWidgets.QMainWindow):
                 new_tool = PaintTool()
                 new_tool.set_button(self.brush_button)
                 new_tool.set_image(self.current_image)
+                new_tool.set_color(self.current_brush_color)
                 self.on_tool_select(new_tool)
                 self.selected_button = self.brush_button
 
@@ -142,6 +156,11 @@ class Ui(QtWidgets.QMainWindow):
                 new_tool.set_scroll_area(self.scroll_area)
                 self.on_tool_select(new_tool)
                 self.selected_button = self.move_button
+
+    def on_brush_color_button_clicked(self):
+        self.current_brush_color[0] = QtWidgets.QColorDialog.getColor()
+        set_button_color(self.current_brush_color[0], self.brush_color_button)
+        self.brush_color_button.update()
 
 
 app = QtWidgets.QApplication(sys.argv)
