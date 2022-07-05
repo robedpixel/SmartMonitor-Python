@@ -4,7 +4,7 @@ from PyQt5.QtGui import QImageReader
 from collections import deque
 import sys
 from ImageDisplay import ImageDisplay
-from Tool import PaintTool, MoveTool
+from Tool import *
 from Action import Action
 from NoteReader import ExifNoteReader
 
@@ -20,7 +20,7 @@ class Ui(QtWidgets.QMainWindow):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('mainwindow.ui', self)  # Load the .ui file
 
-        self.scale_factor = float(1.0)
+        self.scale_factor = [float(1)]
         self.file_notes = list()
         self.note_reader = ExifNoteReader()
 
@@ -47,6 +47,11 @@ class Ui(QtWidgets.QMainWindow):
 
         self.move_button.clicked.connect(self.on_move_button_clicked)
 
+        self.zoom_button = self.findChild(QtWidgets.QWidget, 'zoomButton')
+        self.zoom_button.setStyleSheet(
+            "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
+        self.zoom_button.clicked.connect(self.on_zoom_button_clicked)
+
         self.brush_color_button = self.findChild(QtWidgets.QWidget, 'brushcolorButton')
         self.brush_color_button.clicked.connect(self.on_brush_color_button_clicked)
         self.current_brush_color = [QtGui.QColor(QtCore.Qt.black)]
@@ -60,6 +65,7 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.brush_button)
         self.button_list.append(self.move_button)
         self.button_list.append(self.file_save_button)
+        self.button_list.append(self.zoom_button)
 
         self.selected_tool = None
         self.selected_button = None
@@ -111,7 +117,7 @@ class Ui(QtWidgets.QMainWindow):
         if self.current_image.colorSpace().isValid():
             self.current_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.display.setPixmap(QtGui.QPixmap.fromImage(self.current_image))
-        self.scale_factor = 1.0
+        self.scale_factor[0] = 1.0
 
         self.scroll_area.setVisible(True)
         self.display.adjustSize()
@@ -119,9 +125,10 @@ class Ui(QtWidgets.QMainWindow):
             button.setEnabled(True)
 
     def update_image(self):
-
+        print(int(self.current_image.width()*self.scale_factor[0]))
+        self.current_image = self.current_image.scaledToWidth(int(self.current_image.width()*self.scale_factor[0]))
+        print(self.current_image.width())
         self.display.setPixmap(QtGui.QPixmap.fromImage(self.current_image))
-        self.scale_factor = 1.0
 
         self.scroll_area.setVisible(True)
         self.display.adjustSize()
@@ -167,6 +174,7 @@ class Ui(QtWidgets.QMainWindow):
                 new_tool.set_button(self.brush_button)
                 new_tool.set_image(self.current_image)
                 new_tool.set_color(self.current_brush_color)
+                new_tool.set_scale(self.scale_factor)
                 self.on_tool_select(new_tool)
                 self.selected_button = self.brush_button
 
@@ -187,6 +195,18 @@ class Ui(QtWidgets.QMainWindow):
         self.current_brush_color[0] = QtWidgets.QColorDialog.getColor()
         set_button_color(self.current_brush_color[0], self.brush_color_button)
         self.brush_color_button.update()
+
+    def on_zoom_button_clicked(self):
+        if self.brush_button.isEnabled():
+            if self.selected_button == self.zoom_button:
+                self.selected_tool = None
+                self.selected_button = None
+            else:
+                new_tool = ScaleTool(self.scale_factor)
+                new_tool.set_button(self.zoom_button)
+                new_tool.set_image(self.current_image)
+                self.on_tool_select(new_tool)
+                self.selected_button = self.move_button
 
 
 app = QtWidgets.QApplication(sys.argv)

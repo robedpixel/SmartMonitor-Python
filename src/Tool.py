@@ -43,12 +43,16 @@ class PaintTool(Tool):
         self.drawing = False
         self.lastPoint = QtCore.QPoint()
         self.color = QtGui.QColor(QtCore.Qt.black)
+        self.scale = float(1)
 
     def set_image(self, image: QtGui.QImage):
         self.image = image
 
     def set_color(self, color: list[QtGui.QColor]):
         self.color = color
+
+    def set_scale(self, scale: list[float]):
+        self.scale = scale
 
     def set_button(self, QPushButton):
         self.push_button = QPushButton
@@ -58,7 +62,8 @@ class PaintTool(Tool):
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = True
-        self.lastPoint = pos
+        new_pos = QtCore.QPoint(int(pos.x() / self.scale), int(pos.y() / self.scale))
+        self.lastPoint = new_pos
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
@@ -66,7 +71,8 @@ class PaintTool(Tool):
             painter.setPen(QtGui.QPen(self.color[0], 20,
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
             painter.drawLine(self.lastPoint, pos)
-            self.lastPoint = pos
+            new_pos = QtCore.Qpoint(int(pos.x() / self.scale), int(pos.y() / self.scale))
+            self.lastPoint = new_pos
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = False
@@ -110,8 +116,63 @@ class MoveTool(Tool):
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.activated:
-            self.horizontal_scroll_bar.setValue(self.horizontal_scroll_bar.value()+(self.lastPoint.x() - pos.x()))
-            self.vertical_scroll_bar.setValue(self.vertical_scroll_bar.value()+(self.lastPoint.y() - pos.y()))
+            self.horizontal_scroll_bar.setValue(self.horizontal_scroll_bar.value() + (self.lastPoint.x() - pos.x()))
+            self.vertical_scroll_bar.setValue(self.vertical_scroll_bar.value() + (self.lastPoint.y() - pos.y()))
+
+    def on_release(self, pos: QtCore.QPoint, effects: deque):
+        self.activated = False
+
+    def apply_effect(self, effects: deque, effect_type: EffectType):
+        pass
+
+    def get_effect_type(self):
+        return EffectType.NONE
+
+
+class ScaleTool(Tool):
+
+    def __init__(self):
+        Tool.__init__(self)
+        self.push_button = None
+        self.image = None
+        self.activated = False
+        self.lastPoint = QtCore.QPoint()
+        self.scaling = [float(1)]
+        self.lastScale = self.scaling[0]
+
+    def __init__(self, scale : list[float] ):
+        Tool.__init__(self)
+        self.push_button = None
+        self.image = None
+        self.activated = False
+        self.lastPoint = QtCore.QPoint()
+        self.scaling = scale
+        self.lastScale = self.scaling[0]
+
+    def set_image(self, image: QtGui.QImage):
+        self.image = image
+
+    def set_scale_control(self, scale : list[float]):
+        self.scaling = scale
+
+    def set_button(self, QPushButton):
+        self.push_button = QPushButton
+
+    def on_deselect_tool(self):
+        self.push_button.setChecked(False)
+
+    def on_click(self, pos: QtCore.QPoint, effects: deque):
+        self.activated = True
+        self.lastPoint = pos
+        self.lastScale = self.scaling[0]
+
+    def on_drag(self, pos: QtCore.QPoint, effects: deque):
+        if self.activated:
+            self.scaling[0] = self.lastScale + (float(pos.x() - self.lastPoint.x())/100.0)
+            if self.scaling[0] > 4.0:
+                self.scaling[0] = 4.0
+            if self.scaling[0] < 0.25:
+                self.scaling[0] = 0.25
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.activated = False

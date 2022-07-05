@@ -90,6 +90,9 @@
     <property name="text">
      <string>Zoom</string>
     </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="moveButton">
     <property name="enabled">
@@ -113,7 +116,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>190</x>
+      <x>370</x>
       <y>0</y>
       <width>41</width>
       <height>20</height>
@@ -129,7 +132,7 @@
    <widget class="QPushButton" name="brushcolorButton">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>420</x>
       <y>0</y>
       <width>51</width>
       <height>51</height>
@@ -166,6 +169,22 @@
     </property>
     <property name="text">
      <string>Save File</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="resetZoomButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>0</y>
+      <width>71</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reset zoom</string>
     </property>
    </widget>
   </widget>
