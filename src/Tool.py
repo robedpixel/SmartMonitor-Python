@@ -43,7 +43,7 @@ class PaintTool(Tool):
         self.drawing = False
         self.lastPoint = QtCore.QPoint()
         self.color = QtGui.QColor(QtCore.Qt.black)
-        self.scale = float(1)
+        self.scale = [float(1)]
 
     def set_image(self, image: QtGui.QImage):
         self.image = image
@@ -62,7 +62,7 @@ class PaintTool(Tool):
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = True
-        new_pos = QtCore.QPoint(int(pos.x() / self.scale), int(pos.y() / self.scale))
+        new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
         self.lastPoint = new_pos
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
@@ -71,7 +71,7 @@ class PaintTool(Tool):
             painter.setPen(QtGui.QPen(self.color[0], 20,
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
             painter.drawLine(self.lastPoint, pos)
-            new_pos = QtCore.Qpoint(int(pos.x() / self.scale), int(pos.y() / self.scale))
+            new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
             self.lastPoint = new_pos
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):

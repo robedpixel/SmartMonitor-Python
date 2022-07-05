@@ -1,3 +1,4 @@
+# TODO: fix paint tool so that it is not affected by zoom
 # Import required packages
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtGui import QImageReader
@@ -26,6 +27,9 @@ class Ui(QtWidgets.QMainWindow):
 
         self.file_open_button = self.findChild(QtWidgets.QPushButton, 'fileopenButton')
         self.file_open_button.clicked.connect(self.on_file_open_button_clicked)
+
+        self.reset_zoom_button = self.findChild(QtWidgets.QPushButton, 'resetZoomButton')
+        self.reset_zoom_button.clicked.connect(self.on_reset_zoom_button_clicked)
 
         self.scroll_area = self.findChild(QtWidgets.QScrollArea, 'scrollArea')
         self.display = ImageDisplay(self.on_image_display_clicked, self.on_image_display_move,
@@ -118,6 +122,7 @@ class Ui(QtWidgets.QMainWindow):
             self.current_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.display.setPixmap(QtGui.QPixmap.fromImage(self.current_image))
         self.scale_factor[0] = 1.0
+        self.reset_zoom_button.setEnabled(True)
 
         self.scroll_area.setVisible(True)
         self.display.adjustSize()
@@ -178,7 +183,7 @@ class Ui(QtWidgets.QMainWindow):
                 self.selected_button = self.brush_button
 
     def on_move_button_clicked(self):
-        if self.brush_button.isEnabled():
+        if self.move_button.isEnabled():
             if self.selected_button == self.move_button:
                 self.selected_tool = None
                 self.selected_button = None
@@ -196,7 +201,7 @@ class Ui(QtWidgets.QMainWindow):
         self.brush_color_button.update()
 
     def on_zoom_button_clicked(self):
-        if self.brush_button.isEnabled():
+        if self.zoom_button.isEnabled():
             if self.selected_button == self.zoom_button:
                 self.selected_tool = None
                 self.selected_button = None
@@ -205,7 +210,11 @@ class Ui(QtWidgets.QMainWindow):
                 new_tool.set_button(self.zoom_button)
                 new_tool.set_image(self.current_image)
                 self.on_tool_select(new_tool)
-                self.selected_button = self.move_button
+                self.selected_button = self.zoom_button
+
+    def on_reset_zoom_button_clicked(self):
+        self.scale_factor[0] = 1.0
+        self.update_image()
 
 
 app = QtWidgets.QApplication(sys.argv)
