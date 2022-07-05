@@ -126,9 +126,8 @@ class Ui(QtWidgets.QMainWindow):
 
     def update_image(self):
         print(int(self.current_image.width()*self.scale_factor[0]))
-        self.current_image = self.current_image.scaledToWidth(int(self.current_image.width()*self.scale_factor[0]))
-        print(self.current_image.width())
-        self.display.setPixmap(QtGui.QPixmap.fromImage(self.current_image))
+        display_image = self.current_image.scaledToWidth(int(self.current_image.width()*self.scale_factor[0]))
+        self.display.setPixmap(QtGui.QPixmap.fromImage(display_image))
 
         self.scroll_area.setVisible(True)
         self.display.adjustSize()
