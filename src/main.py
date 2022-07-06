@@ -1,5 +1,5 @@
 # TODO: run program in raspberry pi and see if image loading completes or freezes
-# TODO: implement note reading and saving code
+# TODO: implement note window
 # TODO: implement airnef file listener code
 # TODO: implement eraser
 # TODO: implement
@@ -11,7 +11,7 @@ import sys
 from ImageDisplay import ImageDisplay
 from Tool import *
 from Action import Action
-from NoteReader import ExifNoteReader
+from NoteModule import ExifNoteModule
 
 
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
@@ -118,6 +118,7 @@ class Ui(QtWidgets.QMainWindow):
         self.set_image(new_image)
         QtWidgets.QWidget.setWindowFilePath(self, filename)
         self.note_module.read_notes_from_file(filename)
+        self.note_module.save_notes_to_file(filename)
         return True
 
     def set_image(self, new_image: QtGui.QImage):
