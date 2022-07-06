@@ -70,8 +70,8 @@ class PaintTool(Tool):
             painter = QtGui.QPainter(self.image)
             painter.setPen(QtGui.QPen(self.color[0], 20,
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
-            painter.drawLine(self.lastPoint, pos)
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+            painter.drawLine(self.lastPoint, new_pos)
             self.lastPoint = new_pos
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):

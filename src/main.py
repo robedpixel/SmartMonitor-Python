@@ -1,4 +1,4 @@
-# TODO: fix paint tool so that it is not affected by zoom
+# TODO: run program in raspberry pi and see if image loading completes or freezes
 # Import required packages
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtGui import QImageReader
@@ -113,7 +113,7 @@ class Ui(QtWidgets.QMainWindow):
             self.original_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.set_image(new_image)
         QtWidgets.QWidget.setWindowFilePath(self, filename)
-        self.note_reader.read_notes_from_file(filename)
+        #self.note_reader.read_notes_from_file(filename)
         return True
 
     def set_image(self, new_image: QtGui.QImage):
@@ -156,6 +156,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_file_open_button_clicked(self):
         self.load_image()
+        print("image loading complete!")
 
     def save_image(self):
         filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Image', '/', "JPG Image (*.jpg)")
