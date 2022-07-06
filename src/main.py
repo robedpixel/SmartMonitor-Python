@@ -130,7 +130,6 @@ class Ui(QtWidgets.QMainWindow):
             button.setEnabled(True)
 
     def update_image(self):
-        print(int(self.current_image.width()*self.scale_factor[0]))
         display_image = self.current_image.scaledToWidth(int(self.current_image.width()*self.scale_factor[0]))
         self.display.setPixmap(QtGui.QPixmap.fromImage(display_image))
 
@@ -138,16 +137,19 @@ class Ui(QtWidgets.QMainWindow):
         self.display.adjustSize()
 
     def on_image_display_clicked(self, QMouseEvent):
+        pass
         if self.selected_tool:
             self.selected_tool.on_click(QMouseEvent.pos(), None)
             self.update_image()
 
     def on_image_display_move(self, QMouseEvent):
+        pass
         if self.selected_tool:
             self.selected_tool.on_drag(QMouseEvent.pos(), None)
             self.update_image()
 
     def on_image_display_release(self, QMouseEvent):
+        pass
         if self.selected_tool:
             self.selected_tool.on_release(QMouseEvent.pos(), None)
             self.update_image()
