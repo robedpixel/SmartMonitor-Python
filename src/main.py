@@ -1,4 +1,8 @@
 # TODO: run program in raspberry pi and see if image loading completes or freezes
+# TODO: implement note reading and saving code
+# TODO: implement airnef file listener code
+# TODO: implement eraser
+# TODO: implement
 # Import required packages
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from PyQt5.QtGui import QImageReader
@@ -23,7 +27,7 @@ class Ui(QtWidgets.QMainWindow):
 
         self.scale_factor = [float(1)]
         self.file_notes = list()
-        self.note_reader = ExifNoteReader()
+        self.note_module = ExifNoteModule()
 
         self.file_open_button = self.findChild(QtWidgets.QPushButton, 'fileopenButton')
         self.file_open_button.clicked.connect(self.on_file_open_button_clicked)
@@ -113,7 +117,7 @@ class Ui(QtWidgets.QMainWindow):
             self.original_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.set_image(new_image)
         QtWidgets.QWidget.setWindowFilePath(self, filename)
-        #self.note_reader.read_notes_from_file(filename)
+        self.note_module.read_notes_from_file(filename)
         return True
 
     def set_image(self, new_image: QtGui.QImage):

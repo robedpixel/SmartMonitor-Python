@@ -1,6 +1,6 @@
 import PIL.Image
 
-class NoteReader:
+class NoteModule:
     def __init__(self):
         pass
 
@@ -8,14 +8,15 @@ class NoteReader:
         raise NotImplementedError()
 
 
-class ExifNoteReader(NoteReader):
+class ExifNoteModule(NoteModule):
     def read_notes_from_file(self, url: str) -> [str]:
         img = PIL.Image.open(url)
         exif_data = img.getexif()
-        print(str(exif_data))
+        if exif_data:
+            print(str(exif_data))
         pass
 
 
-class AppendedDataNoteReader(NoteReader):
+class AppendedDataNoteModule(NoteModule):
     def read_notes_from_file(self, url: str) -> [str]:
         pass
