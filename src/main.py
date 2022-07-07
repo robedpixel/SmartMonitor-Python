@@ -1,4 +1,3 @@
-# TODO: run program in raspberry pi and see if image loading completes or freezes
 # TODO: implement note window
 # TODO: implement airnef file listener code
 # TODO: implement eraser
@@ -24,7 +23,7 @@ class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         uic.loadUi('mainwindow.ui', self)  # Load the .ui file
-
+        self.setAttribute(Qt.WA_AcceptTouchEvents, False)
         self.scale_factor = [float(1)]
         self.file_notes = list()
         self.note_module = ExifNoteModule()
