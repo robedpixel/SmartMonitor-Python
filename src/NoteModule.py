@@ -1,12 +1,14 @@
 import PIL.Image
+import json
 from PIL.ExifTags import TAGS
+from collections import deque
 
 IMAGE_DESC_TAG_ID = 270
 
 
 class NoteModule:
     def __init__(self):
-        self.notes = list()
+        self.notes = deque()
 
     def read_notes_from_file(self, url: str) -> [str]:
         raise NotImplementedError()
@@ -29,7 +31,14 @@ class ExifNoteModule(NoteModule):
                 if decoded == "ImageDescription":
                     # Load notes in
                     raw_value = value
-                    self.notes = value
+                    try:
+                        raw_json = json.loads(raw_value)
+                        if isinstance(raw_json, list):
+                            self.notes = raw_json
+                        else:
+                            print("no notes found for jpg")
+                    except ValueError:
+                        print("no notes found for jpg")
         pass
 
     def save_notes_to_file(self, url: str) -> bool:
@@ -37,7 +46,7 @@ class ExifNoteModule(NoteModule):
             img = PIL.Image.open(url)
             exif_data = img.getexif()
             print("saving notes to exif")
-            exif_data[IMAGE_DESC_TAG_ID] = self.notes
+            exif_data[IMAGE_DESC_TAG_ID] = json.dumps(self.notes, indent=0)
             img.save(url, exif=exif_data)
         else:
             print("no notes to save")
