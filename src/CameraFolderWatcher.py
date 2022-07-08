@@ -1,4 +1,4 @@
-from PyQt5 import QtCore
+from PySide2 import QtCore
 
 
 # This object monitors the airnef directory to automatically load images taken by nikon camera

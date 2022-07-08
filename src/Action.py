@@ -1,6 +1,5 @@
-from PyQt5 import QtCore
+from PySide2 import QtCore
 from collections import deque
-from PyQt5 import QtCore
 from Tool import Tool
 from Effect import Effect, EffectType
 

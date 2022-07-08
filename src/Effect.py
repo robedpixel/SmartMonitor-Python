@@ -1,5 +1,5 @@
 from enum import Enum
-from PyQt5 import QtCore
+from PySide2 import QtCore
 
 
 class EffectType(Enum):

@@ -3,14 +3,17 @@
 # TODO: implement eraser
 # TODO: implement
 # Import required packages
-from PyQt5 import QtWidgets, uic, QtGui, QtCore
-from PyQt5.QtGui import QImageReader
+from PySide2 import QtWidgets, QtGui, QtCore
+from PySide2.QtWidgets import QWidget
+from PySide2.QtGui import QImageReader
+from PySide2.QtCore import Qt
 from collections import deque
 import sys
 from ImageDisplay import ImageDisplay
 from Tool import *
 from Action import Action
 from NoteModule import ExifNoteModule
+from ui_mainwindow import Ui_MainWindow
 
 
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
@@ -22,7 +25,8 @@ def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
-        uic.loadUi('mainwindow.ui', self)  # Load the .ui file
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
         self.setAttribute(Qt.WA_AcceptTouchEvents, False)
         self.scale_factor = [float(1)]
         self.file_notes = list()
@@ -73,13 +77,21 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.move_button)
         self.button_list.append(self.file_save_button)
         self.button_list.append(self.zoom_button)
+        self.tool_list = deque()
+        self.tool_list.append(self.zoom_button)
+        self.tool_list.append(self.move_button)
+        self.tool_list.append(self.brush_button)
 
         self.selected_tool = None
         self.selected_button = None
 
-        # This is a deque of Actions
         self.actions = deque()
         self.current_action = None
+
+        # Click all the buttons for the tools so that they work when an image is loaded
+        # Do not ask me why, I don't know why either
+        for button in self.tool_list:
+            button.animateClick()
 
         self.show()  # Show the GUI
 
@@ -222,7 +234,6 @@ class Ui(QtWidgets.QMainWindow):
     def on_reset_zoom_button_clicked(self):
         self.scale_factor[0] = 1.0
         self.update_image()
-
 
 app = QtWidgets.QApplication(sys.argv)
 window = Ui()
