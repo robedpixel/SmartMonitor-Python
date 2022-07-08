@@ -1,14 +1,13 @@
 import PIL.Image
 import json
 from PIL.ExifTags import TAGS
-from collections import deque
 
 IMAGE_DESC_TAG_ID = 270
 
 
 class NoteModule:
     def __init__(self):
-        self.notes = deque()
+        self.notes = []
 
     def read_notes_from_file(self, url: str) -> [str]:
         raise NotImplementedError()
@@ -22,7 +21,7 @@ class ExifNoteModule(NoteModule):
         NoteModule.__init__(self)
 
     # read ImageDescription exif tag
-    def read_notes_from_file(self, url: str) -> [str]:
+    def read_notes_from_file(self, url: str):
         img = PIL.Image.open(url)
         exif_data = img.getexif()
         if exif_data:

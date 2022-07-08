@@ -1,7 +1,6 @@
 # TODO: implement note window
+# TODO: add way to remove notes in notewindow
 # TODO: implement airnef file listener code
-# TODO: implement eraser
-# TODO: implement
 # Import required packages
 from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtWidgets import QWidget
@@ -15,6 +14,7 @@ from Action import Action
 from NoteModule import ExifNoteModule
 from ui_mainwindow import Ui_MainWindow
 from NoteWindow import NoteWindow
+import subprocess
 
 
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
@@ -22,7 +22,8 @@ def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
         qss = "background-color: " + (color.name())
         button.setStyleSheet(qss)
 
-
+# TODO: init airnef connection window first
+# TODO: start airnef by commandline
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
@@ -98,6 +99,11 @@ class Ui(QtWidgets.QMainWindow):
             button.animateClick()
 
         self.note_window = None
+
+        # TODO:Start airnef
+        # subprocess.run(["python", "airnef/airnefcmd.py",])
+
+        # TODO: Start filewatcher
         self.show()  # Show the GUI
 
     def load_image(self):
