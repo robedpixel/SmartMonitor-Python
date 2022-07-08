@@ -11,6 +11,9 @@ class NoteModule:
     def read_notes_from_file(self, url: str) -> [str]:
         raise NotImplementedError()
 
+    def save_notes_to_file(self, url: str) -> bool:
+        raise NotImplementedError()
+
 
 class ExifNoteModule(NoteModule):
     def __init__(self):
@@ -25,6 +28,7 @@ class ExifNoteModule(NoteModule):
                 decoded = TAGS.get(tag, tag)
                 if decoded == "ImageDescription":
                     # Load notes in
+                    raw_value = value
                     self.notes = value
         pass
 

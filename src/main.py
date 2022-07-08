@@ -14,6 +14,7 @@ from Tool import *
 from Action import Action
 from NoteModule import ExifNoteModule
 from ui_mainwindow import Ui_MainWindow
+from NoteWindow import NoteWindow
 
 
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
@@ -72,6 +73,9 @@ class Ui(QtWidgets.QMainWindow):
         self.file_save_button = self.findChild(QtWidgets.QWidget, 'filesaveButton')
         self.file_save_button.clicked.connect(self.on_file_save_button_clicked)
 
+        self.note_button = self.findChild(QtWidgets.QWidget, 'noteButton')
+        self.note_button.clicked.connect(self.on_note_button_clicked)
+
         self.button_list = deque()
         self.button_list.append(self.brush_button)
         self.button_list.append(self.move_button)
@@ -93,6 +97,7 @@ class Ui(QtWidgets.QMainWindow):
         for button in self.tool_list:
             button.animateClick()
 
+        self.note_window = None
         self.show()  # Show the GUI
 
     def load_image(self):
@@ -146,7 +151,7 @@ class Ui(QtWidgets.QMainWindow):
             button.setEnabled(True)
 
     def update_image(self):
-        display_image = self.current_image.scaledToWidth(int(self.current_image.width()*self.scale_factor[0]))
+        display_image = self.current_image.scaledToWidth(int(self.current_image.width() * self.scale_factor[0]))
         self.display.setPixmap(QtGui.QPixmap.fromImage(display_image))
 
         self.scroll_area.setVisible(True)
@@ -234,6 +239,11 @@ class Ui(QtWidgets.QMainWindow):
     def on_reset_zoom_button_clicked(self):
         self.scale_factor[0] = 1.0
         self.update_image()
+
+    def on_note_button_clicked(self):
+        self.note_window = NoteWindow(self.note_module.notes)
+        self.note_window.show()
+
 
 app = QtWidgets.QApplication(sys.argv)
 window = Ui()
