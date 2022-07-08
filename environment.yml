@@ -7,3 +7,4 @@ dependencies:
   - pillow
   - numpy
   - pip
+  - pyside2

@@ -177,11 +177,16 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_file_open_button_clicked(self):
         self.load_image()
-        print("image loading complete!")
 
     def save_image(self):
         filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Image', '/', "JPG Image (*.jpg)")
-        success = self.current_image.save(filename[0])
+        # add extension if none is found.
+        if filename[0]:
+            if not filename[0].endswith(".jpg"):
+                temp_filename = list(filename)
+                temp_filename[0] += ".jpg"
+                filename = tuple(temp_filename)
+            success = self.current_image.save(filename[0])
 
     def on_file_save_button_clicked(self):
         self.save_image()
