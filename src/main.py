@@ -1,5 +1,3 @@
-# TODO: implement note window
-# TODO: add way to remove notes in notewindow
 # TODO: implement airnef file listener code
 # Import required packages
 from PySide2 import QtWidgets, QtGui, QtCore
