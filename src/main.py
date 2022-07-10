@@ -1,18 +1,21 @@
 # TODO: implement airnef file listener code
 # Import required packages
-from PySide2 import QtWidgets, QtGui, QtCore
-from PySide2.QtWidgets import QWidget
-from PySide2.QtGui import QImageReader
-from PySide2.QtCore import Qt
-from collections import deque
-import sys
-from ImageDisplay import ImageDisplay
-from Tool import *
-from Action import Action
-from NoteModule import ExifNoteModule
-from ui_mainwindow import Ui_MainWindow
-from NoteWindow import NoteWindow
+import os
 import subprocess
+import sys
+from PySide2 import QtWidgets, QtGui, QtCore
+from PySide2.QtCore import Qt
+from PySide2.QtGui import QImageReader
+from PySide2.QtWidgets import QWidget
+from collections import deque
+
+from Action import Action
+from CameraFolderWatcher import CameraFolderWatcher
+from ImageDisplay import ImageDisplay
+from NoteModule import ExifNoteModule
+from NoteWindow import NoteWindow
+from Tool import *
+from ui_mainwindow import Ui_MainWindow
 
 
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
@@ -20,18 +23,30 @@ def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
         qss = "background-color: " + (color.name())
         button.setStyleSheet(qss)
 
+
 # TODO: init airnef connection window first
 # TODO: start airnef by commandline
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
+        # Initialise window contents form ui python script
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setAttribute(Qt.WA_AcceptTouchEvents, False)
+
+        # Initialise variables
         self.scale_factor = [float(1)]
         self.file_notes = list()
         self.note_module = ExifNoteModule()
+        self.selected_tool = None
+        self.selected_button = None
 
+        self.actions = deque()
+        self.current_action = None
+
+        self.note_window = None
+
+        # Initialise buttons
         self.file_open_button = self.findChild(QtWidgets.QPushButton, 'fileopenButton')
         self.file_open_button.clicked.connect(self.on_file_open_button_clicked)
 
@@ -46,7 +61,6 @@ class Ui(QtWidgets.QMainWindow):
         self.current_image = QtGui.QImage()
         self.scroll_area.setWidget(self.display)
 
-        # Initialise buttons
         self.brush_button = self.findChild(QtWidgets.QPushButton, 'brushButton')
         self.brush_button.setStyleSheet(
             "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
@@ -85,23 +99,18 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.move_button)
         self.tool_list.append(self.brush_button)
 
-        self.selected_tool = None
-        self.selected_button = None
-
-        self.actions = deque()
-        self.current_action = None
-
-        # Click all the buttons for the tools so that they work when an image is loaded
-        # Do not ask me why, I don't know why either
+        # Click all the buttons for the tools so that they work with touch when an image is loaded
+        # Don't ask me why, I don't know why either
         for button in self.tool_list:
             button.animateClick()
 
-        self.note_window = None
-
         # TODO:Start airnef
+        # Make sure airnef picture folder exists
+        os.makedirs("airnefpictures", exist_ok=True)
         # subprocess.run(["python", "airnef/airnefcmd.py",])
 
-        # TODO: Start filewatcher
+        # TODO: Setup filewatcher
+        self.file_watcher = CameraFolderWatcher()
         self.show()  # Show the GUI
 
     def load_image(self):
