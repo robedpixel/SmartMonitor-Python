@@ -16,6 +16,7 @@ class NoteModule:
         raise NotImplementedError()
 
 
+# Stores picture notes in the exif "ImageDescription" tag
 class ExifNoteModule(NoteModule):
     def __init__(self):
         NoteModule.__init__(self)
@@ -52,6 +53,35 @@ class ExifNoteModule(NoteModule):
         return True
 
 
+# TODO:Stores picture notes by appending it after the jpg or png image data
 class AppendedDataNoteModule(NoteModule):
+    NOTE_IDENTIFIER = "@@SmartMonitor@@"
+
     def read_notes_from_file(self, url: str) -> [str]:
+        # 1. read data from image
+        with open(url, 'rb') as f:
+            img_data = f.read()
+            # 2. get end of image
+            result = img_data.split(AppendedDataNoteModule.NOTE_IDENTIFIER.encode())
+            # 3. read data after image
+            if len(result) > 1:
+            # 4. check if valid json
+            # 5. if valid, load in
+                try:
+                    raw_json = json.loads(result[1])
+                    if isinstance(raw_json, list):
+                        self.notes = raw_json
+                    else:
+                        print("no notes found for jpg")
+                except ValueError:
+                    print("no notes found for jpg")
         pass
+
+    def save_notes_to_file(self, url: str) -> bool:
+        if self.notes:
+            with open(url, "a+") as f:
+                f.write(AppendedDataNoteModule.NOTE_IDENTIFIER)
+                f.write(json.dumps(self.notes, indent=0))
+        else:
+            print("no notes to save")
+        return True

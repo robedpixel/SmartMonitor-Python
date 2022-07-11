@@ -12,7 +12,7 @@ from collections import deque
 from Action import Action
 from CameraFolderWatcher import CameraFolderWatcher
 from ImageDisplay import ImageDisplay
-from NoteModule import ExifNoteModule
+from NoteModule import ExifNoteModule, AppendedDataNoteModule
 from NoteWindow import NoteWindow
 from Tool import *
 from ui_mainwindow import Ui_MainWindow
@@ -147,7 +147,6 @@ class Ui(QtWidgets.QMainWindow):
         self.set_image(new_image)
         QtWidgets.QWidget.setWindowFilePath(self, filename)
         self.note_module.read_notes_from_file(filename)
-        self.note_module.save_notes_to_file(filename)
         return True
 
     def set_image(self, new_image: QtGui.QImage):
@@ -200,6 +199,7 @@ class Ui(QtWidgets.QMainWindow):
                 temp_filename[0] += ".jpg"
                 filename = tuple(temp_filename)
             success = self.current_image.save(filename[0])
+            self.note_module.save_notes_to_file(filename[0])
 
     def on_file_save_button_clicked(self):
         self.save_image()
