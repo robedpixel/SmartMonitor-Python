@@ -40,6 +40,9 @@ class Ui(QtWidgets.QMainWindow):
         self.note_module = ExifNoteModule()
         self.selected_tool = None
         self.selected_button = None
+        self.brush_sizes = {1: '1', 2: '3', 3: '5', 4: '10'}
+        self.brush_sizes_labels = {1: 'thin', 2: 'thick', 3: 'thicker', 4: 'thickest'}
+        self.current_brush_size = 1
 
         self.actions = deque()
         self.current_action = None
@@ -88,6 +91,9 @@ class Ui(QtWidgets.QMainWindow):
 
         self.note_button = self.findChild(QtWidgets.QWidget, 'noteButton')
         self.note_button.clicked.connect(self.on_note_button_clicked)
+
+        self.brush_size_button = self.findChild(QtWidgets.QWidget, 'brushSizeButton')
+        self.brush_size_button.clicked.connect(self.on_brush_size_button_clicked)
 
         self.button_list = deque()
         self.button_list.append(self.brush_button)
@@ -261,6 +267,10 @@ class Ui(QtWidgets.QMainWindow):
     def on_note_button_clicked(self):
         self.note_window = NoteWindow(self.note_module.notes)
         self.note_window.show()
+
+    def on_brush_size_button_clicked(self):
+        self.current_brush_size = (self.current_brush_size % 4) + 1
+        print(self.current_brush_size)
 
 
 app = QtWidgets.QApplication(sys.argv)
