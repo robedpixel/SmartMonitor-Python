@@ -113,10 +113,12 @@ class Ui(QtWidgets.QMainWindow):
         # TODO:Start airnef
         # Make sure airnef picture folder exists
         os.makedirs("airnefpictures", exist_ok=True)
-        # subprocess.run(["python", "airnef/airnefcmd.py",])
+        # subprocess.run(["python", "airnef/airnefcmd.py","--outputdir", "airnefpictures" , "--realtimedownload",
+        # "only"])
 
         # TODO: Setup filewatcher
         self.file_watcher = CameraFolderWatcher()
+        self.file_watcher.register_callback(self.on_file_changed_event)
         self.show()  # Show the GUI
 
     def load_image(self):
@@ -271,6 +273,9 @@ class Ui(QtWidgets.QMainWindow):
     def on_brush_size_button_clicked(self):
         self.current_brush_size = (self.current_brush_size % 4) + 1
         print(self.current_brush_size)
+
+    def on_file_changed_event(self, file_changed_url: str):
+        self.load_image_from_file(file_changed_url)
 
 
 app = QtWidgets.QApplication(sys.argv)
