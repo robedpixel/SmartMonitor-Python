@@ -1,4 +1,5 @@
-# TODO: implement airnef file listener code
+# TODO: add displaying virtual keyboard support
+# TODO: test airnef
 # Import required packages
 import os
 import subprocess
@@ -20,14 +21,16 @@ from os import listdir
 from os.path import isfile, join
 
 
+# TODO: init airnef connection window first
+# TODO: start airnef by commandline
+
+os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
+
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
     if color.isValid():
         qss = "background-color: " + (color.name())
         button.setStyleSheet(qss)
 
-
-# TODO: init airnef connection window first
-# TODO: start airnef by commandline
 class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
 
@@ -46,6 +49,7 @@ class Ui(QtWidgets.QMainWindow):
         self.selected_button = None
         self.brush_sizes = {1: '1', 2: '3', 3: '5', 4: '7'}
         self.current_brush_size = [1]
+        self.file_dialog = None
 
         self.actions = deque()
         self.current_action = None
@@ -121,7 +125,7 @@ class Ui(QtWidgets.QMainWindow):
         # Make sure airnef picture folder exists
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         self.image_file_list = [join(Ui.AIRNEF_PICTURE_DIRECTORY, f) for f in listdir(Ui.AIRNEF_PICTURE_DIRECTORY) if
-                         isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
+                                isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
         # subprocess.run(["python", "airnef/airnefcmd.py","--outputdir", Ui.AIRNEF_PICTURE_DIRECTORY , "--realtimedownload",
         # "only"])
 
@@ -138,7 +142,6 @@ class Ui(QtWidgets.QMainWindow):
             self.load_image_from_file(filename[0])
 
     def load_image_from_file(self, filename: str) -> bool:
-        print(filename)
         fileinfo = QtCore.QFileInfo(filename)
         new_image = QtGui.QImage()
         if fileinfo.suffix() == "nef":
@@ -209,19 +212,27 @@ class Ui(QtWidgets.QMainWindow):
     def on_file_open_button_clicked(self):
         self.load_image()
 
-    def save_image(self):
-        filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Image', '/', "JPG Image (*.jpg)")
+    def show_save_dialog(self):
+        self.file_dialog = QtWidgets.QFileDialog(self, 'Save Image', '/')
+        self.file_dialog .setFileMode(QtWidgets.QFileDialog.AnyFile)
+        self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
+        self.file_dialog.setNameFilter("JPG Image (*.jpg)")
+        self.file_dialog.fileSelected.connect(self.save_image)
+        self.file_dialog.show()
+
+    def save_image(self, filename:str):
+
+        #filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Image', '/', "JPG Image (*.jpg)",options=QtWidgets.QFileDialog.DontUseNativeDialog)
         # add extension if none is found.
-        if filename[0]:
-            if not filename[0].endswith(".jpg"):
-                temp_filename = list(filename)
-                temp_filename[0] += ".jpg"
-                filename = tuple(temp_filename)
-            success = self.current_image.save(filename[0])
-            self.note_module.save_notes_to_file(filename[0])
+        if filename:
+            if not filename.endswith(".jpg"):
+                filename += ".jpg"
+            success = self.current_image.save(filename)
+            self.note_module.save_notes_to_file(filename)
 
     def on_file_save_button_clicked(self):
-        self.save_image()
+        self.show_save_dialog()
+        #self.save_image()
 
     def on_tool_select(self, new_tool):
         if self.selected_tool:
@@ -240,7 +251,7 @@ class Ui(QtWidgets.QMainWindow):
                 new_tool.set_image(self.current_image)
                 new_tool.set_color(self.current_brush_color)
                 new_tool.set_scale(self.scale_factor)
-                new_tool.set_paint_radius(self.brush_sizes,self.current_brush_size)
+                new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
                 self.on_tool_select(new_tool)
                 self.selected_button = self.brush_button
 
