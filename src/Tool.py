@@ -39,7 +39,8 @@ class PaintTool(Tool):
         Tool.__init__(self)
         self.push_button = None
         self.image = None
-        self.paint_radius = 5
+        self.paint_radius = list()
+        self.paint_sizes = dict()
         self.drawing = False
         self.lastPoint = QtCore.QPoint()
         self.color = QtGui.QColor(QtCore.Qt.black)
@@ -57,6 +58,10 @@ class PaintTool(Tool):
     def set_button(self, QPushButton):
         self.push_button = QPushButton
 
+    def set_paint_radius(self,paint_sizes: dict, paint_brush_size: list):
+        self.paint_sizes = paint_sizes
+        self.paint_radius = paint_brush_size
+
     def on_deselect_tool(self):
         self.push_button.setChecked(False)
 
@@ -68,7 +73,7 @@ class PaintTool(Tool):
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
             painter = QtGui.QPainter(self.image)
-            painter.setPen(QtGui.QPen(self.color[0], 20,
+            painter.setPen(QtGui.QPen(self.color[0], self.paint_radius[0],
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
             painter.drawLine(self.lastPoint, new_pos)

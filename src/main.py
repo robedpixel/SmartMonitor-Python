@@ -43,9 +43,8 @@ class Ui(QtWidgets.QMainWindow):
         self.note_module = ExifNoteModule()
         self.selected_tool = None
         self.selected_button = None
-        self.brush_sizes = {1: '1', 2: '3', 3: '5', 4: '10'}
-        self.brush_sizes_labels = {1: 'thin', 2: 'thick', 3: 'thicker', 4: 'thickest'}
-        self.current_brush_size = 1
+        self.brush_sizes = {1: '1', 2: '3', 3: '5', 4: '7'}
+        self.current_brush_size = [1]
 
         self.actions = deque()
         self.current_action = None
@@ -97,6 +96,10 @@ class Ui(QtWidgets.QMainWindow):
 
         self.brush_size_button = self.findChild(QtWidgets.QWidget, 'brushSizeButton')
         self.brush_size_button.clicked.connect(self.on_brush_size_button_clicked)
+        self.brush_size_pixmap = QtGui.QPixmap("resources/brush thickness " + str(self.current_brush_size[0]))
+        self.brush_size_icon = QtGui.QIcon(self.brush_size_pixmap)
+        self.brush_size_button.setIcon(self.brush_size_icon)
+        self.brush_size_button.setIconSize(self.brush_size_pixmap.rect().size())
 
         self.button_list = deque()
         self.button_list.append(self.brush_button)
@@ -118,8 +121,7 @@ class Ui(QtWidgets.QMainWindow):
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         self.image_file_list = [join(Ui.AIRNEF_PICTURE_DIRECTORY, f) for f in listdir(Ui.AIRNEF_PICTURE_DIRECTORY) if
                          isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
-        print(self.image_file_list)
-        # subprocess.run(["python", "airnef/airnefcmd.py","--outputdir", "airnefpictures" , "--realtimedownload",
+        # subprocess.run(["python", "airnef/airnefcmd.py","--outputdir", Ui.AIRNEF_PICTURE_DIRECTORY , "--realtimedownload",
         # "only"])
 
         # Setup filewatcher
@@ -236,6 +238,7 @@ class Ui(QtWidgets.QMainWindow):
                 new_tool.set_image(self.current_image)
                 new_tool.set_color(self.current_brush_color)
                 new_tool.set_scale(self.scale_factor)
+                new_tool.set_paint_radius(self.brush_sizes,self.current_brush_size)
                 self.on_tool_select(new_tool)
                 self.selected_button = self.brush_button
 
@@ -278,8 +281,11 @@ class Ui(QtWidgets.QMainWindow):
         self.note_window.show()
 
     def on_brush_size_button_clicked(self):
-        self.current_brush_size = (self.current_brush_size % 4) + 1
-        print(self.current_brush_size)
+        self.current_brush_size[0] = (self.current_brush_size[0] % 4) + 1
+        self.brush_size_pixmap = QtGui.QPixmap("resources/brush thickness " + str(self.current_brush_size[0]))
+        self.brush_size_icon = QtGui.QIcon(self.brush_size_pixmap)
+        self.brush_size_button.setIcon(self.brush_size_icon)
+        self.brush_size_button.setIconSize(self.brush_size_pixmap.rect().size())
 
     def on_folder_changed_event(self, folder_changed_url: str):
         changed_files = [join(folder_changed_url, f) for f in listdir(folder_changed_url) if
