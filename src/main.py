@@ -216,6 +216,7 @@ class Ui(QtWidgets.QMainWindow):
         self.file_dialog = QtWidgets.QFileDialog(self, 'Save Image', '/')
         self.file_dialog .setFileMode(QtWidgets.QFileDialog.AnyFile)
         self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
+        self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
         self.file_dialog.setNameFilter("JPG Image (*.jpg)")
         self.file_dialog.fileSelected.connect(self.save_image)
         self.file_dialog.show()
