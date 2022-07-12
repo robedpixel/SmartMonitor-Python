@@ -11,7 +11,7 @@ class CameraFolderWatcher:
     def monitor_directory(self, folder_url: str):
         self.folder_watcher.addPath(folder_url)
         if not self.activated:
-            self.folder_watcher.fileChanged.connect(self._on_file_changed_event)
+            self.folder_watcher.directoryChanged.connect(self._on_folder_changed_event)
             self.activated = True
 
     # Callback function takes in 1 argument, which is the file url of the new camera picture
@@ -26,6 +26,6 @@ class CameraFolderWatcher:
         except:
             print("error deregistering callback")
 
-    def _on_file_changed_event(self, file_changed_url: str):
+    def _on_folder_changed_event(self, folder_changed_url: str):
         for object in self.callback_list:
-            object(file_changed_url)
+            object(folder_changed_url)

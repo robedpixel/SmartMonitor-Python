@@ -8,7 +8,6 @@ from PySide2.QtCore import Qt
 from PySide2.QtGui import QImageReader
 from PySide2.QtWidgets import QWidget
 from collections import deque
-
 from Action import Action
 from CameraFolderWatcher import CameraFolderWatcher
 from ImageDisplay import ImageDisplay
@@ -16,6 +15,8 @@ from NoteModule import ExifNoteModule, AppendedDataNoteModule
 from NoteWindow import NoteWindow
 from Tool import *
 from ui_mainwindow import Ui_MainWindow
+from os import listdir
+from os.path import isfile, join
 
 
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
@@ -27,6 +28,8 @@ def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
 # TODO: init airnef connection window first
 # TODO: start airnef by commandline
 class Ui(QtWidgets.QMainWindow):
+    AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
+
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         # Initialise window contents form ui python script
@@ -112,13 +115,17 @@ class Ui(QtWidgets.QMainWindow):
 
         # TODO:Start airnef
         # Make sure airnef picture folder exists
-        os.makedirs("airnefpictures", exist_ok=True)
+        os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
+        self.image_file_list = [join(Ui.AIRNEF_PICTURE_DIRECTORY, f) for f in listdir(Ui.AIRNEF_PICTURE_DIRECTORY) if
+                         isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
+        print(self.image_file_list)
         # subprocess.run(["python", "airnef/airnefcmd.py","--outputdir", "airnefpictures" , "--realtimedownload",
         # "only"])
 
-        # TODO: Setup filewatcher
+        # Setup filewatcher
         self.file_watcher = CameraFolderWatcher()
-        self.file_watcher.register_callback(self.on_file_changed_event)
+        self.file_watcher.monitor_directory(Ui.AIRNEF_PICTURE_DIRECTORY)
+        self.file_watcher.register_callback(self.on_folder_changed_event)
         self.show()  # Show the GUI
 
     def load_image(self):
@@ -274,8 +281,14 @@ class Ui(QtWidgets.QMainWindow):
         self.current_brush_size = (self.current_brush_size % 4) + 1
         print(self.current_brush_size)
 
-    def on_file_changed_event(self, file_changed_url: str):
-        self.load_image_from_file(file_changed_url)
+    def on_folder_changed_event(self, folder_changed_url: str):
+        changed_files = [join(folder_changed_url, f) for f in listdir(folder_changed_url) if
+                         isfile(join(folder_changed_url, f))]
+        if len(changed_files) > len(self.image_file_list):
+            self.image_file_list = changed_files
+            # Iterate through list to find latest file
+            latest_file = max(self.image_file_list, key=os.path.getctime)
+            self.load_image_from_file(latest_file)
 
 
 app = QtWidgets.QApplication(sys.argv)
