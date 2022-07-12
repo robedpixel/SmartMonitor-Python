@@ -3,6 +3,7 @@
 import os
 import subprocess
 import sys
+import time
 from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QImageReader
@@ -137,7 +138,8 @@ class Ui(QtWidgets.QMainWindow):
             self.load_image_from_file(filename[0])
 
     def load_image_from_file(self, filename: str) -> bool:
-        fileinfo = QtCore.QFileInfo(filename[0])
+        print(filename)
+        fileinfo = QtCore.QFileInfo(filename)
         new_image = QtGui.QImage()
         if fileinfo.suffix() == "nef":
             # Sse rawpy to read nef file then load as QImage
@@ -294,6 +296,9 @@ class Ui(QtWidgets.QMainWindow):
             self.image_file_list = changed_files
             # Iterate through list to find latest file
             latest_file = max(self.image_file_list, key=os.path.getctime)
+            # Sleep command to wait for image to finish loading in the raspberry pi before displaying it in
+            # SmartMonitor, adjust time or find more reliable workaround
+            time.sleep(1)
             self.load_image_from_file(latest_file)
 
 
