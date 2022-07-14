@@ -91,6 +91,11 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
         self.brush_button.clicked.connect(self.on_brush_button_clicked)
 
+        self.color_picker_button = self.findChild(QtWidgets.QPushButton, 'pickerButton')
+        self.color_picker_button.setStyleSheet(
+            "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
+        self.color_picker_button.clicked.connect(self.on_color_picker_button_clicked)
+
         self.move_button = self.findChild(QtWidgets.QPushButton, 'moveButton')
         self.move_button.setStyleSheet(
             "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
@@ -124,12 +129,14 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list = deque()
         self.button_list.append(self.brush_button)
         self.button_list.append(self.move_button)
-        self.button_list.append(self.file_save_button)
         self.button_list.append(self.zoom_button)
+        self.button_list.append(self.color_picker_button)
+        self.button_list.append(self.file_save_button)
         self.tool_list = deque()
         self.tool_list.append(self.zoom_button)
         self.tool_list.append(self.move_button)
         self.tool_list.append(self.brush_button)
+        self.tool_list.append(self.color_picker_button)
 
         # Click all the buttons for the tools so that they work with touch when an image is loaded
         # Don't ask me why, I don't know why either
@@ -260,39 +267,24 @@ class Ui(QtWidgets.QMainWindow):
         self.show_save_dialog()
         # self.save_image()
 
-    def on_tool_select(self, new_tool):
-        if self.selected_tool:
-            self.selected_tool.on_deselect_tool()
-        self.selected_tool = new_tool
-        self.selected_tool.on_select_tool()
+    def select_tool(self, tool_button:QtWidgets.QPushButton, new_tool_setup_func):
+        if tool_button.isEnabled():
+            if self.selected_button == tool_button:
+                self.selected_tool = None
+                self.selected_button = None
+            else:
+                new_tool = new_tool_setup_func()
+                if self.selected_tool:
+                    self.selected_tool.on_deselect_tool()
+                self.selected_tool = new_tool
+                self.selected_tool.on_select_tool()
+                self.selected_button = tool_button
 
     def on_brush_button_clicked(self):
-        if self.brush_button.isEnabled():
-            if self.selected_button == self.brush_button:
-                self.selected_tool = None
-                self.selected_button = None
-            else:
-                new_tool = PaintTool()
-                new_tool.set_button(self.brush_button)
-                new_tool.set_image(self.current_image)
-                new_tool.set_color(self.current_brush_color)
-                new_tool.set_scale(self.scale_factor)
-                new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
-                self.on_tool_select(new_tool)
-                self.selected_button = self.brush_button
+        self.select_tool(self.brush_button,self.brush_tool_setup)
 
     def on_move_button_clicked(self):
-        if self.move_button.isEnabled():
-            if self.selected_button == self.move_button:
-                self.selected_tool = None
-                self.selected_button = None
-            else:
-                new_tool = MoveTool()
-                new_tool.set_button(self.move_button)
-                new_tool.set_image(self.current_image)
-                new_tool.set_scroll_area(self.scroll_area)
-                self.on_tool_select(new_tool)
-                self.selected_button = self.move_button
+        self.select_tool(self.move_button, self.move_tool_setup)
 
     def on_brush_color_button_clicked(self):
         self.current_brush_color[0] = QtWidgets.QColorDialog.getColor()
@@ -300,16 +292,7 @@ class Ui(QtWidgets.QMainWindow):
         self.brush_color_button.update()
 
     def on_zoom_button_clicked(self):
-        if self.zoom_button.isEnabled():
-            if self.selected_button == self.zoom_button:
-                self.selected_tool = None
-                self.selected_button = None
-            else:
-                new_tool = ScaleTool(self.scale_factor)
-                new_tool.set_button(self.zoom_button)
-                new_tool.set_image(self.current_image)
-                self.on_tool_select(new_tool)
-                self.selected_button = self.zoom_button
+        self.select_tool(self.zoom_button, self.zoom_tool_setup)
 
     def on_reset_zoom_button_clicked(self):
         self.scale_factor[0] = 1.0
@@ -325,6 +308,39 @@ class Ui(QtWidgets.QMainWindow):
         self.brush_size_icon = QtGui.QIcon(self.brush_size_pixmap)
         self.brush_size_button.setIcon(self.brush_size_icon)
         self.brush_size_button.setIconSize(self.brush_size_pixmap.rect().size())
+
+    def on_color_picker_button_clicked(self):
+        self.select_tool(self.color_picker_button, self.color_picker_tool_setup)
+
+    def brush_tool_setup(self) -> PaintTool:
+        new_tool = PaintTool()
+        new_tool.set_button(self.brush_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_color(self.current_brush_color)
+        new_tool.set_scale(self.scale_factor)
+        new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
+        return new_tool
+
+    def move_tool_setup(self) -> MoveTool:
+        new_tool = MoveTool()
+        new_tool.set_button(self.move_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_scroll_area(self.scroll_area)
+        return new_tool
+
+    def zoom_tool_setup(self) -> ScaleTool:
+        new_tool = ScaleTool(self.scale_factor)
+        new_tool.set_button(self.zoom_button)
+        new_tool.set_image(self.current_image)
+        return new_tool
+
+    def color_picker_tool_setup(self):
+        new_tool = ColourPickerTool()
+        new_tool.set_button(self.color_picker_button)
+        new_tool.set_color_button(self.brush_color_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_color_variable(self.current_brush_color)
+        return new_tool
 
     def on_folder_changed_event(self, folder_changed_url: str):
         changed_files = [join(folder_changed_url, f) for f in listdir(folder_changed_url) if

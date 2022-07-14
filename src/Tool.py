@@ -58,7 +58,7 @@ class PaintTool(Tool):
     def set_button(self, QPushButton):
         self.push_button = QPushButton
 
-    def set_paint_radius(self,paint_sizes: dict, paint_brush_size: list):
+    def set_paint_radius(self, paint_sizes: dict, paint_brush_size: list):
         self.paint_sizes = paint_sizes
         self.paint_radius = paint_brush_size
 
@@ -145,7 +145,7 @@ class ScaleTool(Tool):
         self.scaling = [float(1)]
         self.lastScale = self.scaling[0]
 
-    def __init__(self, scale : list[float] ):
+    def __init__(self, scale: list[float]):
         Tool.__init__(self)
         self.push_button = None
         self.image = None
@@ -157,7 +157,7 @@ class ScaleTool(Tool):
     def set_image(self, image: QtGui.QImage):
         self.image = image
 
-    def set_scale_control(self, scale : list[float]):
+    def set_scale_control(self, scale: list[float]):
         self.scaling = scale
 
     def set_button(self, QPushButton):
@@ -173,7 +173,7 @@ class ScaleTool(Tool):
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.activated:
-            self.scaling[0] = self.lastScale + (float(pos.x() - self.lastPoint.x())/100.0)
+            self.scaling[0] = self.lastScale + (float(pos.x() - self.lastPoint.x()) / 100.0)
             if self.scaling[0] > 4.0:
                 self.scaling[0] = 4.0
             if self.scaling[0] < 0.25:
@@ -181,6 +181,51 @@ class ScaleTool(Tool):
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.activated = False
+
+    def apply_effect(self, effects: deque, effect_type: EffectType):
+        pass
+
+    def get_effect_type(self):
+        return EffectType.NONE
+
+
+class ColourPickerTool(Tool):
+
+    def __init__(self):
+        Tool.__init__(self)
+        self.push_button = None
+        self.image = None
+        self.activated = False
+        self.color = None
+        self.lastPoint = QtCore.QPoint()
+        self.color_button = None
+
+    def set_color_button(self,color_button : QtWidgets.QPushButton ):
+        self.color_button = color_button
+
+    def set_color_variable(self, color: list[QtGui.QColor]):
+        self.color = color
+
+    def set_image(self, image: QtGui.QImage):
+        self.image = image
+
+    def set_button(self, push_button : QtWidgets.QPushButton):
+        self.push_button = push_button
+
+    def on_deselect_tool(self):
+        self.push_button.setChecked(False)
+
+    def on_click(self, pos: QtCore.QPoint, effects: deque):
+        self.color[0] = self.image.pixelColor(pos)
+        if self.color[0].isValid():
+            qss = "background-color: " + (self.color[0].name())
+            self.color_button.setStyleSheet(qss)
+
+    def on_drag(self, pos: QtCore.QPoint, effects: deque):
+        pass
+
+    def on_release(self, pos: QtCore.QPoint, effects: deque):
+        pass
 
     def apply_effect(self, effects: deque, effect_type: EffectType):
         pass
