@@ -88,23 +88,28 @@ class Ui(QtWidgets.QMainWindow):
 
         self.brush_button = self.findChild(QtWidgets.QPushButton, 'brushButton')
         self.brush_button.setStyleSheet(
-            "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.brush_button.clicked.connect(self.on_brush_button_clicked)
 
         self.color_picker_button = self.findChild(QtWidgets.QPushButton, 'pickerButton')
         self.color_picker_button.setStyleSheet(
-            "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.color_picker_button.clicked.connect(self.on_color_picker_button_clicked)
+
+        self.eraser_button = self.findChild(QtWidgets.QPushButton, 'eraserButton')
+        self.eraser_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        #self.color_picker_button.clicked.connect(self.on_color_picker_button_clicked)
 
         self.move_button = self.findChild(QtWidgets.QPushButton, 'moveButton')
         self.move_button.setStyleSheet(
-            "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
 
         self.move_button.clicked.connect(self.on_move_button_clicked)
 
         self.zoom_button = self.findChild(QtWidgets.QWidget, 'zoomButton')
         self.zoom_button.setStyleSheet(
-            "QPushButton{background-color:grey;}QPushButton:checked{background-color:cyan;}")
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.zoom_button.clicked.connect(self.on_zoom_button_clicked)
 
         self.brush_color_button = self.findChild(QtWidgets.QWidget, 'brushcolorButton')
@@ -131,12 +136,14 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.move_button)
         self.button_list.append(self.zoom_button)
         self.button_list.append(self.color_picker_button)
+        self.button_list.append(self.eraser_button)
         self.button_list.append(self.file_save_button)
         self.tool_list = deque()
         self.tool_list.append(self.zoom_button)
         self.tool_list.append(self.move_button)
         self.tool_list.append(self.brush_button)
         self.tool_list.append(self.color_picker_button)
+        self.tool_list.append(self.eraser_button)
 
         # Click all the buttons for the tools so that they work with touch when an image is loaded
         # Don't ask me why, I don't know why either

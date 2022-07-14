@@ -50,6 +50,19 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QPushButton" name="eraserButton">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="text">
+        <string>Eraser</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QScrollArea" name="scrollArea">
