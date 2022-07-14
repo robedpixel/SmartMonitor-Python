@@ -20,16 +20,31 @@ from ui_mainwindow import Ui_MainWindow
 from os import listdir
 from os.path import isfile, join
 
-
 # TODO: init airnef connection window first
 # TODO: start airnef by commandline
 
 os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
 
+
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
     if color.isValid():
         qss = "background-color: " + (color.name())
         button.setStyleSheet(qss)
+
+
+# Workaround function to make qtvirtualkeyboard not black in the top portion
+def handleVisibleChanged():
+    if not QtGui.QGuiApplication.inputMethod().isVisible():
+        return
+    for w in QtGui.QGuiApplication.allWindows():
+        if w.metaObject().className() == "QtVirtualKeyboard::InputView":
+            keyboard = w.findChild(QtCore.QObject, "keyboard")
+            if keyboard is not None:
+                r = w.geometry()
+                r.moveTop(keyboard.property("y"))
+                w.setMask(QtGui.QRegion(r))
+                return
+
 
 class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
@@ -135,11 +150,20 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher.register_callback(self.on_folder_changed_event)
         self.show()  # Show the GUI
 
-    def load_image(self):
-        filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open Image', '/', "Image Files (*.png *.jpg *.bmp "
-                                                                                  "*.nef)")
-        if filename[0]:
-            self.load_image_from_file(filename[0])
+    def show_open_dialog(self):
+        self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', '/')
+        self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
+        self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
+        self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
+        self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.bmp *.nef)")
+        self.file_dialog.fileSelected.connect(self.load_image)
+        self.file_dialog.show()
+
+    def load_image(self, filename: str):
+        # filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open Image', '/', "Image Files (*.png *.jpg *.bmp "
+        #                                                                          "*.nef)")
+        if filename:
+            self.load_image_from_file(filename)
 
     def load_image_from_file(self, filename: str) -> bool:
         fileinfo = QtCore.QFileInfo(filename)
@@ -210,20 +234,21 @@ class Ui(QtWidgets.QMainWindow):
             self.update_image()
 
     def on_file_open_button_clicked(self):
-        self.load_image()
+        self.show_open_dialog()
+        # self.load_image()
 
     def show_save_dialog(self):
         self.file_dialog = QtWidgets.QFileDialog(self, 'Save Image', '/')
-        self.file_dialog .setFileMode(QtWidgets.QFileDialog.AnyFile)
+        self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
         self.file_dialog.setNameFilter("JPG Image (*.jpg)")
         self.file_dialog.fileSelected.connect(self.save_image)
         self.file_dialog.show()
 
-    def save_image(self, filename:str):
+    def save_image(self, filename: str):
 
-        #filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Image', '/', "JPG Image (*.jpg)",options=QtWidgets.QFileDialog.DontUseNativeDialog)
+        # filename = QtWidgets.QFileDialog.getSaveFileName(self, 'Save Image', '/', "JPG Image (*.jpg)",options=QtWidgets.QFileDialog.DontUseNativeDialog)
         # add extension if none is found.
         if filename:
             if not filename.endswith(".jpg"):
@@ -233,7 +258,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_file_save_button_clicked(self):
         self.show_save_dialog()
-        #self.save_image()
+        # self.save_image()
 
     def on_tool_select(self, new_tool):
         if self.selected_tool:
@@ -315,5 +340,9 @@ class Ui(QtWidgets.QMainWindow):
 
 
 app = QtWidgets.QApplication(sys.argv)
+
+# Make sure virtual keyboard window isn't opaque when it is triggered
+QtGui.QGuiApplication.inputMethod().visibleChanged.connect(handleVisibleChanged)
+
 window = Ui()
 app.exec_()
