@@ -1,4 +1,3 @@
-# TODO: add button to display matchbox virtual keyboard
 # TODO: test airnef
 # Import required packages
 import os
@@ -20,10 +19,11 @@ from ui_mainwindow import Ui_MainWindow
 from os import listdir
 from os.path import isfile, join
 
+
 # TODO: init airnef connection window first
 # TODO: start airnef by commandline
 
-#os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
+# os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
 
 
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
@@ -45,6 +45,14 @@ def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
                 w.setMask(QtGui.QRegion(r))
                 return
 """
+
+
+def show_virtual_keyboard():
+    try:
+        subprocess.run(["matchbox-keyboard"])
+    except FileNotFoundError:
+        print("no virtual keyboard found")
+
 
 class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
@@ -99,7 +107,7 @@ class Ui(QtWidgets.QMainWindow):
         self.eraser_button = self.findChild(QtWidgets.QPushButton, 'eraserButton')
         self.eraser_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        #self.color_picker_button.clicked.connect(self.on_color_picker_button_clicked)
+        # self.color_picker_button.clicked.connect(self.on_color_picker_button_clicked)
 
         self.move_button = self.findChild(QtWidgets.QPushButton, 'moveButton')
         self.move_button.setStyleSheet(
@@ -252,6 +260,7 @@ class Ui(QtWidgets.QMainWindow):
         # self.load_image()
 
     def show_save_dialog(self):
+        show_virtual_keyboard()
         self.file_dialog = QtWidgets.QFileDialog(self, 'Save Image', '/')
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
@@ -274,7 +283,7 @@ class Ui(QtWidgets.QMainWindow):
         self.show_save_dialog()
         # self.save_image()
 
-    def select_tool(self, tool_button:QtWidgets.QPushButton, new_tool_setup_func):
+    def select_tool(self, tool_button: QtWidgets.QPushButton, new_tool_setup_func):
         if tool_button.isEnabled():
             if self.selected_button == tool_button:
                 self.selected_tool = None
@@ -288,7 +297,7 @@ class Ui(QtWidgets.QMainWindow):
                 self.selected_button = tool_button
 
     def on_brush_button_clicked(self):
-        self.select_tool(self.brush_button,self.brush_tool_setup)
+        self.select_tool(self.brush_button, self.brush_tool_setup)
 
     def on_move_button_clicked(self):
         self.select_tool(self.move_button, self.move_tool_setup)

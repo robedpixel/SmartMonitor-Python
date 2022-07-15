@@ -2,6 +2,14 @@ from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtCore import Qt
 from ui_notewindow import Ui_MainWindow
 from NoteButton import NoteButton
+import subprocess
+
+
+def show_virtual_keyboard():
+    try:
+        subprocess.run(["matchbox-keyboard"])
+    except FileNotFoundError:
+        print("no virtual keyboard found")
 
 
 class NoteWindow(QtWidgets.QMainWindow):
@@ -17,6 +25,8 @@ class NoteWindow(QtWidgets.QMainWindow):
         self.add_button.clicked.connect(self.on_add_note_button_clicked)
         self.remove_button = self.findChild(QtWidgets.QPushButton, 'removeNoteButton')
         self.remove_button.clicked.connect(self.on_remove_note_button_clicked)
+        self.keyboard_button = self.findChild(QtWidgets.QPushButton, 'keyboardButton')
+        self.keyboard_button.clicked.connect(self.on_keyboard_button_clicked)
         self.text_edit = self.findChild(QtWidgets.QPlainTextEdit, 'plainTextEdit')
         self.note_layout = self.findChild(QtWidgets.QVBoxLayout, 'noteLayout')
         self.note_layout.setAlignment(Qt.AlignTop)
@@ -51,5 +61,8 @@ class NoteWindow(QtWidgets.QMainWindow):
             self.selected_button[0].deleteLater()
             self.selected_note = None
             self.selected_button = None
+
+    def on_keyboard_button_clicked(self):
+        show_virtual_keyboard()
 
 

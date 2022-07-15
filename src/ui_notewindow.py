@@ -43,6 +43,9 @@ class Ui_MainWindow(object):
         self.plainTextEdit = QPlainTextEdit(self.centralwidget)
         self.plainTextEdit.setObjectName(u"plainTextEdit")
         self.plainTextEdit.setGeometry(QRect(40, 110, 741, 71))
+        self.keyboardButton = QPushButton(self.centralwidget)
+        self.keyboardButton.setObjectName(u"keyboardButton")
+        self.keyboardButton.setGeometry(QRect(40, 50, 101, 41))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -61,5 +64,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.addNoteButton.setText(QCoreApplication.translate("MainWindow", u"Add", None))
         self.removeNoteButton.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
+        self.keyboardButton.setText(QCoreApplication.translate("MainWindow", u"Keyboard", None))
     # retranslateUi
 
