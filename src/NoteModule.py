@@ -2,7 +2,7 @@ import PIL.Image
 import json
 from PIL.ExifTags import TAGS
 
-IMAGE_DESC_TAG_ID = 270
+USR_CMT_TAG_ID = 37510
 
 
 class NoteModule:
@@ -28,7 +28,7 @@ class ExifNoteModule(NoteModule):
         if exif_data:
             for tag, value in exif_data.items():
                 decoded = TAGS.get(tag, tag)
-                if decoded == "ImageDescription":
+                if decoded == "UserComment":
                     # Load notes in
                     raw_value = value
                     try:
@@ -46,7 +46,7 @@ class ExifNoteModule(NoteModule):
             img = PIL.Image.open(url)
             exif_data = img.getexif()
             print("saving notes to exif")
-            exif_data[IMAGE_DESC_TAG_ID] = json.dumps(self.notes, indent=0)
+            exif_data[USR_CMT_TAG_ID] = json.dumps(self.notes, indent=0)
             img.save(url, exif=exif_data)
         else:
             print("no notes to save")
