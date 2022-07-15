@@ -1,4 +1,4 @@
-# TODO: add displaying virtual keyboard support
+# TODO: add button to display matchbox virtual keyboard
 # TODO: test airnef
 # Import required packages
 import os
@@ -23,7 +23,7 @@ from os.path import isfile, join
 # TODO: init airnef connection window first
 # TODO: start airnef by commandline
 
-os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
+#os.environ["QT_IM_MODULE"] = "qtvirtualkeyboard"
 
 
 def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
@@ -33,7 +33,7 @@ def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
 
 
 # Workaround function to make qtvirtualkeyboard not black in the top portion
-def handleVisibleChanged():
+"""def handleVisibleChanged():
     if not QtGui.QGuiApplication.inputMethod().isVisible():
         return
     for w in QtGui.QGuiApplication.allWindows():
@@ -44,7 +44,7 @@ def handleVisibleChanged():
                 r.moveTop(keyboard.property("y"))
                 w.setMask(QtGui.QRegion(r))
                 return
-
+"""
 
 class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
@@ -167,7 +167,7 @@ class Ui(QtWidgets.QMainWindow):
     def show_open_dialog(self):
         self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', '/')
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
-        self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
+        self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
         self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.bmp *.nef)")
         self.file_dialog.fileSelected.connect(self.load_image)
@@ -254,7 +254,7 @@ class Ui(QtWidgets.QMainWindow):
     def show_save_dialog(self):
         self.file_dialog = QtWidgets.QFileDialog(self, 'Save Image', '/')
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
-        self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, True)
+        self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptSave)
         self.file_dialog.setNameFilter("JPG Image (*.jpg)")
         self.file_dialog.fileSelected.connect(self.save_image)
@@ -365,7 +365,7 @@ class Ui(QtWidgets.QMainWindow):
 app = QtWidgets.QApplication(sys.argv)
 
 # Make sure virtual keyboard window isn't opaque when it is triggered
-QtGui.QGuiApplication.inputMethod().visibleChanged.connect(handleVisibleChanged)
+# QtGui.QGuiApplication.inputMethod().visibleChanged.connect(handleVisibleChanged)
 
 window = Ui()
 app.exec_()
