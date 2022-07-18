@@ -7,7 +7,7 @@ import subprocess
 
 def show_virtual_keyboard():
     try:
-        subprocess.run(["matchbox-keyboard"])
+        subprocess.Popen(["matchbox-keyboard"])
     except FileNotFoundError:
         print("no virtual keyboard found")
 
