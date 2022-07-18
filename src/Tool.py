@@ -200,7 +200,7 @@ class ColourPickerTool(Tool):
         self.lastPoint = QtCore.QPoint()
         self.color_button = None
 
-    def set_color_button(self,color_button : QtWidgets.QPushButton ):
+    def set_color_button(self, color_button: QtWidgets.QPushButton):
         self.color_button = color_button
 
     def set_color_variable(self, color: list[QtGui.QColor]):
@@ -209,7 +209,7 @@ class ColourPickerTool(Tool):
     def set_image(self, image: QtGui.QImage):
         self.image = image
 
-    def set_button(self, push_button : QtWidgets.QPushButton):
+    def set_button(self, push_button: QtWidgets.QPushButton):
         self.push_button = push_button
 
     def on_deselect_tool(self):
@@ -232,3 +232,56 @@ class ColourPickerTool(Tool):
 
     def get_effect_type(self):
         return EffectType.NONE
+
+
+class EraserTool(Tool):
+
+    def __init__(self):
+        Tool.__init__(self)
+        self.push_button = None
+        self.image = None
+        self.paint_radius = 5
+        # self.paint_sizes = dict()
+        self.drawing = False
+        self.lastPoint = QtCore.QPoint()
+        self.color = QtGui.QColor(QtCore.Qt.white)
+        self.scale = [float(1)]
+
+    def set_image(self, image: QtGui.QImage):
+        self.image = image
+
+    def set_scale(self, scale: list[float]):
+        self.scale = scale
+
+    def set_button(self, QPushButton):
+        self.push_button = QPushButton
+
+    # def set_paint_radius(self, paint_sizes: dict, paint_brush_size: list):
+    #    self.paint_sizes = paint_sizes
+    #    self.paint_radius = paint_brush_size
+
+    def on_deselect_tool(self):
+        self.push_button.setChecked(False)
+
+    def on_click(self, pos: QtCore.QPoint, effects: deque):
+        self.drawing = True
+        new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+        self.lastPoint = new_pos
+
+    def on_drag(self, pos: QtCore.QPoint, effects: deque):
+        if self.drawing:
+            painter = QtGui.QPainter(self.image)
+            painter.setPen(QtGui.QPen(self.color, self.paint_radius,
+                                      QtCore.Qt.SolidLine, QtCore.Qt.SquareCap, QtCore.Qt.BevelJoin))
+            new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+            painter.drawLine(self.lastPoint, new_pos)
+            self.lastPoint = new_pos
+
+    def on_release(self, pos: QtCore.QPoint, effects: deque):
+        self.drawing = False
+
+    def apply_effect(self, effects: deque, effect_type: EffectType):
+        pass
+
+    def get_effect_type(self):
+        return EffectType.RGB

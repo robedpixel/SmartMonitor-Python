@@ -107,7 +107,7 @@ class Ui(QtWidgets.QMainWindow):
         self.eraser_button = self.findChild(QtWidgets.QPushButton, 'eraserButton')
         self.eraser_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        # self.color_picker_button.clicked.connect(self.on_color_picker_button_clicked)
+        self.eraser_button.clicked.connect(self.on_eraser_button_clicked)
 
         self.move_button = self.findChild(QtWidgets.QPushButton, 'moveButton')
         self.move_button.setStyleSheet(
@@ -328,6 +328,9 @@ class Ui(QtWidgets.QMainWindow):
     def on_color_picker_button_clicked(self):
         self.select_tool(self.color_picker_button, self.color_picker_tool_setup)
 
+    def on_eraser_button_clicked(self):
+        self.select_tool(self.eraser_button, self.eraser_tool_setup)
+
     def brush_tool_setup(self) -> PaintTool:
         new_tool = PaintTool()
         new_tool.set_button(self.brush_button)
@@ -356,6 +359,13 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_color_button(self.brush_color_button)
         new_tool.set_image(self.current_image)
         new_tool.set_color_variable(self.current_brush_color)
+        return new_tool
+
+    def eraser_tool_setup(self) -> EraserTool:
+        new_tool = EraserTool()
+        new_tool.set_button(self.eraser_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_scale(self.scale_factor)
         return new_tool
 
     def on_folder_changed_event(self, folder_changed_url: str):
