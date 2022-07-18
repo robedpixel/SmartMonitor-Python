@@ -22,3 +22,11 @@ class Action:
     # Returns a deque of Effects
     def get_effects(self) -> deque:
         return self.effects
+
+
+class PaintAction(Action):
+
+    def __init__(self, tool, effect, effect_type: EffectType, radius, color):
+        Action.__init__(self, tool, effect, effect_type)
+        self.radius = radius
+        self.color = color

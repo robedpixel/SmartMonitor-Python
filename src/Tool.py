@@ -1,7 +1,7 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 from collections import deque
 from Effect import *
-from Action import Action, EffectType
+from Action import Action,PaintAction, EffectType
 
 
 class Tool:
@@ -31,7 +31,7 @@ class Tool:
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         raise NotImplementedError()
 
-    def apply_effect(self, effects: deque):
+    def apply_effect(self, action, image: QtGui.QImage):
         raise NotImplementedError()
 
     def get_effect_type(self):
@@ -84,7 +84,7 @@ class PaintTool(Tool):
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
             painter = QtGui.QPainter(self.image)
-            painter.setPen(QtGui.QPen(self.color[0], self.paint_radius[0],
+            painter.setPen(QtGui.QPen(self.color[0], int(self.paint_sizes[self.paint_radius[0]]),
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
             painter.drawLine(self.lastPoint, new_pos)
@@ -93,12 +93,22 @@ class PaintTool(Tool):
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = False
-        self.action_list.append(Action(self, self.current_effect, EffectType.RGB))
-        print(self.action_list)
-        print(self.current_effect)
+        self.action_list.append(PaintAction(self, self.current_effect, EffectType.RGB,
+                                            int(self.paint_sizes[self.paint_radius[0]]), self.color[0]))
 
-    def apply_effect(self, effects: deque):
-        pass
+    def apply_effect(self, action, image: QtGui.QImage):
+        first = True
+        painter = QtGui.QPainter(image)
+        last_point = QtCore.QPoint()
+        painter.setPen(QtGui.QPen(action.color, action.radius,
+                                  QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
+        for effect in reversed(action.effects):
+            if first:
+                last_point = effect.pos
+                first = False
+            else:
+                painter.drawLine(last_point, effect.pos)
+                last_point = effect.pos
 
     def get_effect_type(self):
         return EffectType.RGB
@@ -142,7 +152,7 @@ class MoveTool(Tool):
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.activated = False
 
-    def apply_effect(self, effects: deque):
+    def apply_effect(self, action, image: QtGui.QImage):
         pass
 
     def get_effect_type(self):
@@ -197,7 +207,7 @@ class ScaleTool(Tool):
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.activated = False
 
-    def apply_effect(self, effects: deque):
+    def apply_effect(self, action, image: QtGui.QImage):
         pass
 
     def get_effect_type(self):
@@ -242,7 +252,7 @@ class ColourPickerTool(Tool):
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         pass
 
-    def apply_effect(self, effects: deque):
+    def apply_effect(self, action, image: QtGui.QImage):
         pass
 
     def get_effect_type(self):

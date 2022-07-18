@@ -94,6 +94,12 @@ class Ui_MainWindow(object):
         self.brushsizelabel.setObjectName(u"brushsizelabel")
         self.brushsizelabel.setGeometry(QRect(740, 0, 31, 31))
         self.brushsizelabel.setWordWrap(True)
+        self.undoButton = QPushButton(self.centralwidget)
+        self.undoButton.setObjectName(u"undoButton")
+        self.undoButton.setGeometry(QRect(270, 0, 71, 51))
+        self.redoButton = QPushButton(self.centralwidget)
+        self.redoButton.setObjectName(u"redoButton")
+        self.redoButton.setGeometry(QRect(360, 0, 71, 51))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -123,5 +129,7 @@ class Ui_MainWindow(object):
         self.resetZoomButton.setText(QCoreApplication.translate("MainWindow", u"Reset zoom", None))
         self.brushSizeButton.setText("")
         self.brushsizelabel.setText(QCoreApplication.translate("MainWindow", u"Brush Size:", None))
+        self.undoButton.setText(QCoreApplication.translate("MainWindow", u"Undo", None))
+        self.redoButton.setText(QCoreApplication.translate("MainWindow", u"Redo", None))
     # retranslateUi
 

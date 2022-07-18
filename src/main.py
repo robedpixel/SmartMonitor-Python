@@ -1,5 +1,6 @@
 # TODO: test airnef
 # TODO: add airnef function
+# TODO: add redo function
 # Import required packages
 import os
 import subprocess
@@ -88,6 +89,12 @@ class Ui(QtWidgets.QMainWindow):
 
         self.reset_zoom_button = self.findChild(QtWidgets.QPushButton, 'resetZoomButton')
         self.reset_zoom_button.clicked.connect(self.on_reset_zoom_button_clicked)
+
+        self.undo_button = self.findChild(QtWidgets.QPushButton, 'undoButton')
+        self.undo_button.clicked.connect(self.on_undo_button_clicked)
+
+        self.redo_button = self.findChild(QtWidgets.QPushButton, 'redoButton')
+        self.redo_button.clicked.connect(self.on_redo_button_clicked)
 
         self.scroll_area = self.findChild(QtWidgets.QScrollArea, 'scrollArea')
         self.display = ImageDisplay(self.on_image_display_clicked, self.on_image_display_move,
@@ -332,6 +339,12 @@ class Ui(QtWidgets.QMainWindow):
     def on_eraser_button_clicked(self):
         self.select_tool(self.eraser_button, self.eraser_tool_setup)
 
+    def on_redo_button_clicked(self):
+        self.redo_action()
+
+    def on_undo_button_clicked(self):
+        self.undo_action()
+
     def brush_tool_setup(self) -> PaintTool:
         new_tool = PaintTool()
         new_tool.set_button(self.brush_button)
@@ -383,12 +396,27 @@ class Ui(QtWidgets.QMainWindow):
             self.load_image_from_file(latest_file)
 
     def undo_action(self):
-        if self.current_action[0]<(len(self.actions)-1):
+        if self.current_action[0] < (len(self.actions) - 1):
             self.current_action[0] += 1
+            self.redraw_image()
 
     def redo_action(self):
-        if self.current_action[0]>0:
+        if self.current_action[0] > 0:
             self.current_action[0] -= 1
+            self.redraw_image()
+
+    def redraw_image(self):
+        new_image = QtGui.QImage(self.original_image)
+        index = -1
+        stop_index = len(self.actions) - 1 - self.current_action[0]
+        for action in reversed(self.actions):
+            index += 1
+            if index <= stop_index:
+                action.tool.apply_effect(action, new_image)
+
+        self.current_image = new_image
+        self.update_image()
+
 
 app = QtWidgets.QApplication(sys.argv)
 
