@@ -1,4 +1,5 @@
 # TODO: test airnef
+# TODO: add airnef function
 # Import required packages
 import os
 import subprocess
@@ -75,7 +76,9 @@ class Ui(QtWidgets.QMainWindow):
         self.file_dialog = None
 
         self.actions = deque()
-        self.current_action = None
+        self.current_action = [0]
+        self.original_image = QtGui.QImage()
+        self.current_image = QtGui.QImage()
 
         self.note_window = None
 
@@ -90,8 +93,6 @@ class Ui(QtWidgets.QMainWindow):
         self.display = ImageDisplay(self.on_image_display_clicked, self.on_image_display_move,
                                     self.on_image_display_release)
         self.display.setMouseTracking(True)
-        self.original_image = QtGui.QImage()
-        self.current_image = QtGui.QImage()
         self.scroll_area.setWidget(self.display)
 
         self.brush_button = self.findChild(QtWidgets.QPushButton, 'brushButton')
@@ -338,6 +339,7 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_color(self.current_brush_color)
         new_tool.set_scale(self.scale_factor)
         new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
+        new_tool.set_action_list(self.actions)
         return new_tool
 
     def move_tool_setup(self) -> MoveTool:
@@ -380,6 +382,13 @@ class Ui(QtWidgets.QMainWindow):
             time.sleep(1)
             self.load_image_from_file(latest_file)
 
+    def undo_action(self):
+        if self.current_action[0]<(len(self.actions)-1):
+            self.current_action[0] += 1
+
+    def redo_action(self):
+        if self.current_action[0]>0:
+            self.current_action[0] -= 1
 
 app = QtWidgets.QApplication(sys.argv)
 

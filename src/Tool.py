@@ -1,20 +1,25 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 from collections import deque
-from Effect import EffectType
+from Effect import *
+from Action import Action, EffectType
 
 
 class Tool:
     def __init__(self):
         self.height = 0
         self.width = 0
+        self.action_list = []
 
-    def set_image(self):
+    def set_image(self, image: QtGui.QImage):
         pass
 
     def on_select_tool(self):
         pass
 
     def on_deselect_tool(self):
+        pass
+
+    def set_effect(self, effect_list):
         pass
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
@@ -26,7 +31,7 @@ class Tool:
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         raise NotImplementedError()
 
-    def apply_effect(self, effects: deque, effect_type: EffectType):
+    def apply_effect(self, effects: deque):
         raise NotImplementedError()
 
     def get_effect_type(self):
@@ -45,6 +50,7 @@ class PaintTool(Tool):
         self.lastPoint = QtCore.QPoint()
         self.color = QtGui.QColor(QtCore.Qt.black)
         self.scale = [float(1)]
+        self.current_effect = None
 
     def set_image(self, image: QtGui.QImage):
         self.image = image
@@ -54,6 +60,9 @@ class PaintTool(Tool):
 
     def set_scale(self, scale: list[float]):
         self.scale = scale
+
+    def set_action_list(self, action_list):
+        self.action_list = action_list
 
     def set_button(self, QPushButton):
         self.push_button = QPushButton
@@ -69,6 +78,8 @@ class PaintTool(Tool):
         self.drawing = True
         new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
         self.lastPoint = new_pos
+        self.current_effect = []
+        self.current_effect.append(Effect(new_pos))
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
@@ -78,11 +89,15 @@ class PaintTool(Tool):
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
             painter.drawLine(self.lastPoint, new_pos)
             self.lastPoint = new_pos
+            self.current_effect.append(Effect(new_pos))
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = False
+        self.action_list.append(Action(self, self.current_effect, EffectType.RGB))
+        print(self.action_list)
+        print(self.current_effect)
 
-    def apply_effect(self, effects: deque, effect_type: EffectType):
+    def apply_effect(self, effects: deque):
         pass
 
     def get_effect_type(self):
@@ -127,7 +142,7 @@ class MoveTool(Tool):
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.activated = False
 
-    def apply_effect(self, effects: deque, effect_type: EffectType):
+    def apply_effect(self, effects: deque):
         pass
 
     def get_effect_type(self):
@@ -182,7 +197,7 @@ class ScaleTool(Tool):
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.activated = False
 
-    def apply_effect(self, effects: deque, effect_type: EffectType):
+    def apply_effect(self, effects: deque):
         pass
 
     def get_effect_type(self):
@@ -227,7 +242,7 @@ class ColourPickerTool(Tool):
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         pass
 
-    def apply_effect(self, effects: deque, effect_type: EffectType):
+    def apply_effect(self, effects: deque):
         pass
 
     def get_effect_type(self):
@@ -280,7 +295,7 @@ class EraserTool(Tool):
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = False
 
-    def apply_effect(self, effects: deque, effect_type: EffectType):
+    def apply_effect(self, effects: deque):
         pass
 
     def get_effect_type(self):

@@ -1,13 +1,19 @@
 from PySide2 import QtCore
 from collections import deque
-from Tool import Tool
-from Effect import Effect, EffectType
+from Effect import Effect
+from enum import Enum
+
+
+class EffectType(Enum):
+    NONE = 0
+    RGB = 1
+    ERASER = 2
 
 
 class Action:
-    def __init__(self, tool: Tool, effect_type : EffectType):
+    def __init__(self, tool, effect, effect_type: EffectType):
         self.tool = tool
-        self.effects = deque()
+        self.effects = effect
         self.effect_type = effect_type
 
     def get_tool(self):
@@ -16,4 +22,3 @@ class Action:
     # Returns a deque of Effects
     def get_effects(self) -> deque:
         return self.effects
-
