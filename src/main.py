@@ -226,7 +226,7 @@ class Ui(QtWidgets.QMainWindow):
         return True
 
     def set_image(self, new_image: QtGui.QImage):
-        self.current_image = new_image
+        self.current_image = QtGui.QImage(new_image)
         if self.current_image.colorSpace().isValid():
             self.current_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.display.setPixmap(QtGui.QPixmap.fromImage(self.current_image))
@@ -396,7 +396,7 @@ class Ui(QtWidgets.QMainWindow):
             self.load_image_from_file(latest_file)
 
     def undo_action(self):
-        if self.current_action[0] < (len(self.actions) - 1):
+        if self.current_action[0] < (len(self.actions) ):
             self.current_action[0] += 1
             self.redraw_image()
 
@@ -409,7 +409,7 @@ class Ui(QtWidgets.QMainWindow):
         new_image = QtGui.QImage(self.original_image)
         index = -1
         stop_index = len(self.actions) - 1 - self.current_action[0]
-        for action in reversed(self.actions):
+        for action in self.actions:
             index += 1
             if index <= stop_index:
                 action.tool.apply_effect(action, new_image)
