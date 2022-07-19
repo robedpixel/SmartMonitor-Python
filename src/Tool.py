@@ -271,6 +271,7 @@ class EraserTool(Tool):
         self.lastPoint = QtCore.QPoint()
         self.color = QtGui.QColor(QtCore.Qt.white)
         self.scale = [float(1)]
+        self.current_effect = None
 
     def set_image(self, image: QtGui.QImage):
         self.image = image
@@ -292,6 +293,8 @@ class EraserTool(Tool):
         self.drawing = True
         new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
         self.lastPoint = new_pos
+        self.current_effect = []
+        self.current_effect.append(Effect(new_pos))
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
@@ -301,12 +304,29 @@ class EraserTool(Tool):
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
             painter.drawLine(self.lastPoint, new_pos)
             self.lastPoint = new_pos
+            self.current_effect.append(Effect(new_pos))
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = False
+        self.action_list.append(PaintAction(self, self.current_effect, EffectType.RGB,
+                                            self.paint_radius, self.color))
 
-    def apply_effect(self, effects: deque):
-        pass
+    def apply_effect(self, action, image: QtGui.QImage):
+        first = True
+        painter = QtGui.QPainter(image)
+        last_point = QtCore.QPoint()
+        painter.setPen(QtGui.QPen(QtGui.QColor(QtCore.Qt.white), self.paint_radius,
+                                  QtCore.Qt.SolidLine, QtCore.Qt.SquareCap, QtCore.Qt.BevelJoin))
+        for effect in reversed(action.effects):
+            if first:
+                last_point = effect.pos
+                first = False
+            else:
+                painter.drawLine(last_point, effect.pos)
+                last_point = effect.pos
+
+    def set_action_list(self, action_list):
+        self.action_list = action_list
 
     def get_effect_type(self):
         return EffectType.RGB

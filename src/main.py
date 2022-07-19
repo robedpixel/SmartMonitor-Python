@@ -381,6 +381,7 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_button(self.eraser_button)
         new_tool.set_image(self.current_image)
         new_tool.set_scale(self.scale_factor)
+        new_tool.set_action_list(self.actions)
         return new_tool
 
     def on_folder_changed_event(self, folder_changed_url: str):
