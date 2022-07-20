@@ -1,7 +1,7 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 from collections import deque
 from Effect import *
-from Action import Action,PaintAction, EffectType
+from Action import Action, PaintAction, EffectType
 
 
 class Tool:
@@ -9,8 +9,9 @@ class Tool:
         self.height = 0
         self.width = 0
         self.action_list = []
+        self.action_list_state = []
 
-    def set_image(self, image: QtGui.QImage):
+    def set_image(self, image: [QtGui.QImage]):
         pass
 
     def on_select_tool(self):
@@ -52,7 +53,7 @@ class PaintTool(Tool):
         self.scale = [float(1)]
         self.current_effect = None
 
-    def set_image(self, image: QtGui.QImage):
+    def set_image(self, image: [QtGui.QImage]):
         self.image = image
 
     def set_color(self, color: list[QtGui.QColor]):
@@ -61,8 +62,9 @@ class PaintTool(Tool):
     def set_scale(self, scale: list[float]):
         self.scale = scale
 
-    def set_action_list(self, action_list):
+    def set_action_list(self, action_list, action_list_state):
         self.action_list = action_list
+        self.action_list_state = action_list_state
 
     def set_button(self, QPushButton):
         self.push_button = QPushButton
@@ -83,7 +85,7 @@ class PaintTool(Tool):
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
-            painter = QtGui.QPainter(self.image)
+            painter = QtGui.QPainter(self.image[0])
             painter.setPen(QtGui.QPen(self.color[0], int(self.paint_sizes[self.paint_radius[0]]),
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
@@ -93,8 +95,12 @@ class PaintTool(Tool):
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = False
-        self.action_list.append(PaintAction(self, self.current_effect, EffectType.RGB,
-                                            int(self.paint_sizes[self.paint_radius[0]]), self.color[0]))
+        stop_index = len(self.action_list) - self.action_list_state[0]
+        self.action_list.insert(stop_index, PaintAction(self, self.current_effect, EffectType.RGB,
+                                                        int(self.paint_sizes[self.paint_radius[0]]), self.color[0]))
+        while len(self.action_list) > stop_index + 1:
+            self.action_list.pop()
+        self.action_list_state[0] = 0
 
     def apply_effect(self, action, image: QtGui.QImage):
         first = True
@@ -131,7 +137,7 @@ class MoveTool(Tool):
         self.horizontal_scroll_bar = self.scroll_area.horizontalScrollBar()
         self.vertical_scroll_bar = self.scroll_area.verticalScrollBar()
 
-    def set_image(self, image: QtGui.QImage):
+    def set_image(self, image: [QtGui.QImage]):
         self.image = image
 
     def set_button(self, QPushButton):
@@ -179,7 +185,7 @@ class ScaleTool(Tool):
         self.scaling = scale
         self.lastScale = self.scaling[0]
 
-    def set_image(self, image: QtGui.QImage):
+    def set_image(self, image: [QtGui.QImage]):
         self.image = image
 
     def set_scale_control(self, scale: list[float]):
@@ -231,7 +237,7 @@ class ColourPickerTool(Tool):
     def set_color_variable(self, color: list[QtGui.QColor]):
         self.color = color
 
-    def set_image(self, image: QtGui.QImage):
+    def set_image(self, image: [QtGui.QImage]):
         self.image = image
 
     def set_button(self, push_button: QtWidgets.QPushButton):
@@ -241,7 +247,7 @@ class ColourPickerTool(Tool):
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
-        self.color[0] = self.image.pixelColor(pos)
+        self.color[0] = self.image[0].pixelColor(pos)
         if self.color[0].isValid():
             qss = "background-color: " + (self.color[0].name())
             self.color_button.setStyleSheet(qss)
@@ -273,7 +279,7 @@ class EraserTool(Tool):
         self.scale = [float(1)]
         self.current_effect = None
 
-    def set_image(self, image: QtGui.QImage):
+    def set_image(self, image: [QtGui.QImage]):
         self.image = image
 
     def set_scale(self, scale: list[float]):
@@ -298,7 +304,7 @@ class EraserTool(Tool):
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
-            painter = QtGui.QPainter(self.image)
+            painter = QtGui.QPainter(self.image[0])
             painter.setPen(QtGui.QPen(self.color, self.paint_radius,
                                       QtCore.Qt.SolidLine, QtCore.Qt.SquareCap, QtCore.Qt.BevelJoin))
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
@@ -308,8 +314,12 @@ class EraserTool(Tool):
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = False
-        self.action_list.append(PaintAction(self, self.current_effect, EffectType.RGB,
-                                            self.paint_radius, self.color))
+        stop_index = len(self.action_list) - self.action_list_state[0]
+        self.action_list.insert(stop_index, PaintAction(self, self.current_effect, EffectType.RGB,
+                                                        self.paint_radius, self.color))
+        while len(self.action_list) > stop_index+1:
+            self.action_list.pop()
+        self.action_list_state[0] = 0
 
     def apply_effect(self, action, image: QtGui.QImage):
         first = True
@@ -325,8 +335,9 @@ class EraserTool(Tool):
                 painter.drawLine(last_point, effect.pos)
                 last_point = effect.pos
 
-    def set_action_list(self, action_list):
+    def set_action_list(self, action_list, action_list_state):
         self.action_list = action_list
+        self.action_list_state = action_list_state
 
     def get_effect_type(self):
         return EffectType.RGB

@@ -1,6 +1,6 @@
 # TODO: test airnef
 # TODO: add airnef function
-# TODO: add redo function
+# TODO: find way to connect dslr and detect changes in ubuntu
 # Import required packages
 import os
 import subprocess
@@ -58,6 +58,7 @@ def show_virtual_keyboard():
 
 class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
+    MAX_UNDO_SIZE = 5
 
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
@@ -79,7 +80,7 @@ class Ui(QtWidgets.QMainWindow):
         self.actions = deque()
         self.current_action = [0]
         self.original_image = QtGui.QImage()
-        self.current_image = QtGui.QImage()
+        self.current_image = [QtGui.QImage()]
 
         self.note_window = None
 
@@ -229,11 +230,13 @@ class Ui(QtWidgets.QMainWindow):
         return True
 
     def set_image(self, new_image: QtGui.QImage):
-        self.current_image = QtGui.QImage(new_image)
-        if self.current_image.colorSpace().isValid():
-            self.current_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
-        self.display.setPixmap(QtGui.QPixmap.fromImage(self.current_image))
+        self.current_image[0] = QtGui.QImage(new_image)
+        if self.current_image[0].colorSpace().isValid():
+            self.current_image[0].convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
+        self.display.setPixmap(QtGui.QPixmap.fromImage(self.current_image[0]))
         self.scale_factor[0] = 1.0
+        self.current_action[0] = 0
+        self.actions.clear()
         self.reset_zoom_button.setEnabled(True)
 
         self.scroll_area.setVisible(True)
@@ -242,29 +245,27 @@ class Ui(QtWidgets.QMainWindow):
             button.setEnabled(True)
 
     def update_image(self):
-        display_image = self.current_image.scaledToWidth(int(self.current_image.width() * self.scale_factor[0]))
+        display_image = self.current_image[0].scaledToWidth(int(self.current_image[0].width() * self.scale_factor[0]))
         self.display.setPixmap(QtGui.QPixmap.fromImage(display_image))
 
         self.scroll_area.setVisible(True)
         self.display.adjustSize()
 
     def on_image_display_clicked(self, QMouseEvent):
-        pass
         if self.selected_tool:
             self.selected_tool.on_click(QMouseEvent.pos(), None)
             self.update_image()
 
     def on_image_display_move(self, QMouseEvent):
-        pass
         if self.selected_tool:
             self.selected_tool.on_drag(QMouseEvent.pos(), None)
             self.update_image()
 
     def on_image_display_release(self, QMouseEvent):
-        pass
         if self.selected_tool:
             self.selected_tool.on_release(QMouseEvent.pos(), None)
             self.update_image()
+            self.limit_action_list_size()
 
     def on_file_open_button_clicked(self):
         self.show_open_dialog()
@@ -287,7 +288,7 @@ class Ui(QtWidgets.QMainWindow):
         if filename:
             if not filename.endswith(".jpg"):
                 filename += ".jpg"
-            success = self.current_image.save(filename)
+            success = self.current_image[0].save(filename)
             self.note_module.save_notes_to_file(filename)
 
     def on_file_save_button_clicked(self):
@@ -360,7 +361,7 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_color(self.current_brush_color)
         new_tool.set_scale(self.scale_factor)
         new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
-        new_tool.set_action_list(self.actions)
+        new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
 
     def move_tool_setup(self) -> MoveTool:
@@ -389,7 +390,7 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_button(self.eraser_button)
         new_tool.set_image(self.current_image)
         new_tool.set_scale(self.scale_factor)
-        new_tool.set_action_list(self.actions)
+        new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
 
     def on_folder_changed_event(self, folder_changed_url: str):
@@ -425,8 +426,13 @@ class Ui(QtWidgets.QMainWindow):
             if index <= stop_index:
                 action.tool.apply_effect(action, new_image)
 
-        self.current_image = new_image
+        self.current_image[0] = new_image
         self.update_image()
+
+    def limit_action_list_size(self):
+        if len(self.actions) > 5:
+            action = self.actions.popleft()
+            action.tool.apply_effect(action, self.original_image)
 
 
 app = QtWidgets.QApplication(sys.argv)
