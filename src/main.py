@@ -84,6 +84,9 @@ class Ui(QtWidgets.QMainWindow):
         self.note_window = None
 
         # Initialise buttons
+        self.camera_folder_button = self.findChild(QtWidgets.QPushButton, 'folderButton')
+        self.camera_folder_button.clicked.connect(self.on_camera_folder_button_clicked)
+
         self.file_open_button = self.findChild(QtWidgets.QPushButton, 'fileopenButton')
         self.file_open_button.clicked.connect(self.on_file_open_button_clicked)
 
@@ -345,6 +348,11 @@ class Ui(QtWidgets.QMainWindow):
     def on_undo_button_clicked(self):
         self.undo_action()
 
+    def on_camera_folder_button_clicked(self):
+        directory = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory", "/")
+        if directory:
+            self.file_watcher.monitor_directory(QtCore.QFileInfo(directory[0]).dir().absolutePath())
+
     def brush_tool_setup(self) -> PaintTool:
         new_tool = PaintTool()
         new_tool.set_button(self.brush_button)
@@ -386,7 +394,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_folder_changed_event(self, folder_changed_url: str):
         changed_files = [join(folder_changed_url, f) for f in listdir(folder_changed_url) if
-                         isfile(join(folder_changed_url, f))]
+                         isfile(join(folder_changed_url, f)) and join(folder_changed_url, f).endswith('.JPG')]
         if len(changed_files) > len(self.image_file_list):
             self.image_file_list = changed_files
             # Iterate through list to find latest file
@@ -395,6 +403,8 @@ class Ui(QtWidgets.QMainWindow):
             # SmartMonitor, adjust time or find more reliable workaround
             time.sleep(1)
             self.load_image_from_file(latest_file)
+        else:
+            self.image_file_list = changed_files
 
     def undo_action(self):
         if self.current_action[0] < (len(self.actions) ):

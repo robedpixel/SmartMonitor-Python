@@ -7,12 +7,18 @@ class CameraFolderWatcher:
         self.folder_watcher = QtCore.QFileSystemWatcher()
         self.callback_list = list()
         self.activated = False
+        self.monitored_directory = None
 
     def monitor_directory(self, folder_url: str):
-        self.folder_watcher.addPath(folder_url)
         if not self.activated:
+            self.folder_watcher.addPath(folder_url)
+            self.monitored_directory = folder_url
             self.folder_watcher.directoryChanged.connect(self._on_folder_changed_event)
             self.activated = True
+        else:
+            self.folder_watcher.removePath(self.monitored_directory)
+            self.folder_watcher.addPath(folder_url)
+            self.monitored_directory = folder_url
 
     # Callback function takes in 1 argument, which is the file url of the new camera picture
     def register_callback(self, callback_function):

@@ -271,6 +271,20 @@
      <string>Redo</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="folderButton">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>0</y>
+      <width>91</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Change
+ camera folder</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

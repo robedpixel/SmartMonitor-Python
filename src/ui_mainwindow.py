@@ -100,6 +100,9 @@ class Ui_MainWindow(object):
         self.redoButton = QPushButton(self.centralwidget)
         self.redoButton.setObjectName(u"redoButton")
         self.redoButton.setGeometry(QRect(360, 0, 71, 51))
+        self.folderButton = QPushButton(self.centralwidget)
+        self.folderButton.setObjectName(u"folderButton")
+        self.folderButton.setGeometry(QRect(610, 0, 91, 51))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -131,5 +134,7 @@ class Ui_MainWindow(object):
         self.brushsizelabel.setText(QCoreApplication.translate("MainWindow", u"Brush Size:", None))
         self.undoButton.setText(QCoreApplication.translate("MainWindow", u"Undo", None))
         self.redoButton.setText(QCoreApplication.translate("MainWindow", u"Redo", None))
+        self.folderButton.setText(QCoreApplication.translate("MainWindow", u"Change\n"
+" camera folder", None))
     # retranslateUi
 
