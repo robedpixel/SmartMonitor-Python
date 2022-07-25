@@ -194,8 +194,7 @@ class Ui(QtWidgets.QMainWindow):
         self.file_dialog.show()
 
     def load_image(self, filename: str):
-        # filename = QtWidgets.QFileDialog.getOpenFileName(self, 'Open Image', '/', "Image Files (*.png *.jpg *.bmp "
-        #                                                                          "*.nef)")
+
         if filename:
             self.load_image_from_file(filename)
 
@@ -229,6 +228,7 @@ class Ui(QtWidgets.QMainWindow):
         self.note_module.read_notes_from_file(filename)
         return True
 
+    # This method is for loading in a new image into SmartMonitor
     def set_image(self, new_image: QtGui.QImage):
         self.current_image[0] = QtGui.QImage(new_image)
         if self.current_image[0].colorSpace().isValid():
@@ -244,6 +244,7 @@ class Ui(QtWidgets.QMainWindow):
         for button in self.button_list:
             button.setEnabled(True)
 
+    # This method is for updating the image display on SmartMonitor when a change is made
     def update_image(self):
         display_image = self.current_image[0].scaledToWidth(int(self.current_image[0].width() * self.scale_factor[0]))
         self.display.setPixmap(QtGui.QPixmap.fromImage(display_image))
@@ -295,6 +296,8 @@ class Ui(QtWidgets.QMainWindow):
         self.show_save_dialog()
         # self.save_image()
 
+    # Method to do setup on buttons that are linked to selecting tools, tool_button is the button associated with the
+    # tool, new_tool_setup_func is the function to call for extra tool setup code
     def select_tool(self, tool_button: QtWidgets.QPushButton, new_tool_setup_func):
         if tool_button.isEnabled():
             if self.selected_button == tool_button:
@@ -417,6 +420,7 @@ class Ui(QtWidgets.QMainWindow):
             self.current_action[0] -= 1
             self.redraw_image()
 
+    # Redraws the image after an undo/redo action
     def redraw_image(self):
         new_image = QtGui.QImage(self.original_image)
         index = -1
@@ -429,6 +433,7 @@ class Ui(QtWidgets.QMainWindow):
         self.current_image[0] = new_image
         self.update_image()
 
+    # Limits how far the user is able to undo to save memory
     def limit_action_list_size(self):
         if len(self.actions) > 5:
             action = self.actions.popleft()
