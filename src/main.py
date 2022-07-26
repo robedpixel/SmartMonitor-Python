@@ -194,7 +194,7 @@ class Ui(QtWidgets.QMainWindow):
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
-        self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.bmp *.nef)")
+        self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.nef)")
         self.file_dialog.fileSelected.connect(self.load_image)
         self.file_dialog.show()
 
@@ -216,7 +216,6 @@ class Ui(QtWidgets.QMainWindow):
                 buf = src.data.tobytes()  # or bytes(src.data)
                 new_image = QtGui.QImage(buf, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
         else:
-            # TODO: check image size and compress if too large
             if fileinfo.size() > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
                 print("image too large! shrinking image for viewing and editing...")
                 image_to_read = self.shrink_file_size(filename)
@@ -455,9 +454,9 @@ class Ui(QtWidgets.QMainWindow):
     def shrink_file_size(self, filename: str) -> str:
         # Clear temp file
         [f.unlink() for f in Path(Ui.TEMP_DIRECTORY).glob("*") if f.is_file()]
-
+        file_extension = Path(filename).suffix
         # Make shrunken image
-        temp_filename = Ui.TEMP_DIRECTORY + "/tempimage.jpg"
+        temp_filename = Ui.TEMP_DIRECTORY + "/tempimage" + file_extension
 
         if os.path.getsize(filename) > 5000000:
             img = Image.open(filename)
