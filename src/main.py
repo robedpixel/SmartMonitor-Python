@@ -20,6 +20,8 @@ from Tool import *
 from ui_mainwindow import Ui_MainWindow
 from os import listdir
 from os.path import isfile, join
+from PIL import Image
+from pathlib import Path
 
 
 # TODO: init airnef connection window first
@@ -58,6 +60,7 @@ def show_virtual_keyboard():
 
 class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
+    TEMP_DIRECTORY = "temp"
     MAX_UNDO_SIZE = 5
 
     def __init__(self):
@@ -171,8 +174,9 @@ class Ui(QtWidgets.QMainWindow):
             button.animateClick()
 
         # TODO:Start airnef
-        # Make sure airnef picture folder exists
+        # Make sure airnef picture folder and temp folder exists
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
+        os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
         self.image_file_list = [join(Ui.AIRNEF_PICTURE_DIRECTORY, f) for f in listdir(Ui.AIRNEF_PICTURE_DIRECTORY) if
                                 isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
         # subprocess.run(["python", "airnef/airnefcmd.py","--outputdir", Ui.AIRNEF_PICTURE_DIRECTORY , "--realtimedownload",
@@ -201,6 +205,7 @@ class Ui(QtWidgets.QMainWindow):
     def load_image_from_file(self, filename: str) -> bool:
         fileinfo = QtCore.QFileInfo(filename)
         new_image = QtGui.QImage()
+        image_to_read = None
         if fileinfo.suffix() == "nef":
             # Sse rawpy to read nef file then load as QImage
             with rawpy.imread(path) as raw:
@@ -210,11 +215,18 @@ class Ui(QtWidgets.QMainWindow):
                 buf = src.data.tobytes()  # or bytes(src.data)
                 new_image = QtGui.QImage(buf, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
         else:
+            # TODO: check image size and compress if too large
+            if fileinfo.size() > 5000000:
+                print("image too large! shrinking image for viewing and editing...")
+                image_to_read = self.shrink_file_size(filename)
+            else:
+                image_to_read = filename
+            # Load in image
             reader = QImageReader()
-            reader.setFileName(filename)
+            reader.setFileName(image_to_read)
             reader.setAutoTransform(True)
             new_image = reader.read()
-            self.note_module.read_notes_from_file(filename)
+            self.note_module.read_notes_from_file(image_to_read)
         if new_image.isNull():
             msg_box = QtWidgets.QMessageBox()
             msg_box.setWindowTitle(QtGui.QGuiApplication.applicationDisplayName())
@@ -411,7 +423,7 @@ class Ui(QtWidgets.QMainWindow):
             self.image_file_list = changed_files
 
     def undo_action(self):
-        if self.current_action[0] < (len(self.actions) ):
+        if self.current_action[0] < (len(self.actions)):
             self.current_action[0] += 1
             self.redraw_image()
 
@@ -438,6 +450,29 @@ class Ui(QtWidgets.QMainWindow):
         if len(self.actions) > 5:
             action = self.actions.popleft()
             action.tool.apply_effect(action, self.original_image)
+
+    def shrink_file_size(self, filename: str) -> str:
+        # Clear temp file
+        [f.unlink() for f in Path(Ui.TEMP_DIRECTORY).glob("*") if f.is_file()]
+
+        # Make shrunken image
+        temp_filename = Ui.TEMP_DIRECTORY + "/tempimage.jpg"
+        print(os.path.getsize(filename))
+
+        img = Image.open(filename)
+        exif_data = img.getexif()
+        width, height = img.size
+        resized_img = img.resize((width//2, height//2))
+        resized_img.save(temp_filename, exif=exif_data)
+        while os.path.getsize(temp_filename) > 5000000:
+            img = Image.open(temp_filename)
+            exif_data = img.getexif()
+            width, height = img.size
+            resized_img = img.resize((width // 2, height // 2))
+            resized_img.save(temp_filename, exif=exif_data)
+
+        # Return string to new image
+        return temp_filename
 
 
 app = QtWidgets.QApplication(sys.argv)
