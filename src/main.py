@@ -214,6 +214,7 @@ class Ui(QtWidgets.QMainWindow):
             reader.setFileName(filename)
             reader.setAutoTransform(True)
             new_image = reader.read()
+            self.note_module.read_notes_from_file(filename)
         if new_image.isNull():
             msg_box = QtWidgets.QMessageBox()
             msg_box.setWindowTitle(QtGui.QGuiApplication.applicationDisplayName())
@@ -225,7 +226,6 @@ class Ui(QtWidgets.QMainWindow):
             self.original_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.set_image(new_image)
         QtWidgets.QWidget.setWindowFilePath(self, filename)
-        self.note_module.read_notes_from_file(filename)
         return True
 
     # This method is for loading in a new image into SmartMonitor
