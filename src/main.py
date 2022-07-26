@@ -62,6 +62,7 @@ class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
     TEMP_DIRECTORY = "temp"
     MAX_UNDO_SIZE = 5
+    MAX_IMAGE_VIEW_SIZE_BYTES = 100000
 
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
@@ -216,7 +217,7 @@ class Ui(QtWidgets.QMainWindow):
                 new_image = QtGui.QImage(buf, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
         else:
             # TODO: check image size and compress if too large
-            if fileinfo.size() > 5000000:
+            if fileinfo.size() > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
                 print("image too large! shrinking image for viewing and editing...")
                 image_to_read = self.shrink_file_size(filename)
             else:
@@ -457,14 +458,13 @@ class Ui(QtWidgets.QMainWindow):
 
         # Make shrunken image
         temp_filename = Ui.TEMP_DIRECTORY + "/tempimage.jpg"
-        print(os.path.getsize(filename))
 
         img = Image.open(filename)
         exif_data = img.getexif()
         width, height = img.size
         resized_img = img.resize((width//2, height//2))
         resized_img.save(temp_filename, exif=exif_data)
-        while os.path.getsize(temp_filename) > 5000000:
+        while os.path.getsize(temp_filename) > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
             img = Image.open(temp_filename)
             exif_data = img.getexif()
             width, height = img.size
