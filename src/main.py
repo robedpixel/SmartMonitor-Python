@@ -459,11 +459,19 @@ class Ui(QtWidgets.QMainWindow):
         # Make shrunken image
         temp_filename = Ui.TEMP_DIRECTORY + "/tempimage.jpg"
 
-        img = Image.open(filename)
-        exif_data = img.getexif()
-        width, height = img.size
-        resized_img = img.resize((width//2, height//2))
-        resized_img.save(temp_filename, exif=exif_data)
+        if os.path.getsize(filename) > 5000000:
+            img = Image.open(filename)
+            exif_data = img.getexif()
+            width, height = img.size
+            resized_img = img.resize((width // 8, height // 8))
+            resized_img.save(temp_filename, exif=exif_data)
+        else:
+            img = Image.open(filename)
+            exif_data = img.getexif()
+            width, height = img.size
+            resized_img = img.resize((width // 2, height // 2))
+            resized_img.save(temp_filename, exif=exif_data)
+
         while os.path.getsize(temp_filename) > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
             img = Image.open(temp_filename)
             exif_data = img.getexif()
