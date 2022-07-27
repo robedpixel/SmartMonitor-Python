@@ -60,22 +60,28 @@ def show_virtual_keyboard():
 
 # Extracts preview image from DSLR jpg image and returns a path to the extracted preview image
 def extract_preview_image(filename: str) -> str:
+    # Set what preview image to extract with exiftool
+    preview_image = "-preview:MPImage3"
+    # preview_image = "-preview:PreviewImage"
+    # preview_image = "-preview:ThumbnailImage"
+
+    clear_temp_folder()
     # run exiftool to extract the image to temp file
     # run exiftool -a -b -W <path to destination file>.%s -preview:MPImage3 <path to image>
     output_path = "temp/tempimage.jpg"
     if os.name == 'nt':
         subprocess.call(
-            ["tools/windows/exiftool", "-a", "-b", "-W", output_path, "-preview:MPImage3", filename])
+            ["tools/windows/exiftool", "-a", "-b", "-W", output_path, preview_image, filename])
     else:
         subprocess.call(
-            ["tools/linux/exiftool", "-a", "-b", "-W", output_path, "-preview:MPImage3", filename])
+            ["tools/linux/exiftool", "-a", "-b", "-W", output_path, preview_image, filename])
     # return path to the extracted image
     return output_path
 
 
 def shrink_file_size(filename: str) -> str:
     # Clear temp file
-    [f.unlink() for f in Path(Ui.TEMP_DIRECTORY).glob("*") if f.is_file()]
+    clear_temp_folder()
     file_extension = Path(filename).suffix
     # Make shrunken image
     temp_filename = Ui.TEMP_DIRECTORY + "/tempimage" + file_extension
@@ -102,6 +108,10 @@ def shrink_file_size(filename: str) -> str:
 
     # Return string to new image
     return temp_filename
+
+
+def clear_temp_folder():
+    [f.unlink() for f in Path(Ui.TEMP_DIRECTORY).glob("*") if f.is_file()]
 
 
 class Ui(QtWidgets.QMainWindow):
@@ -264,7 +274,10 @@ class Ui(QtWidgets.QMainWindow):
         else:
             if fileinfo.size() > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
                 print("image too large! shrinking image for viewing and editing...")
-                image_to_read = shrink_file_size(filename)
+                # Uncomment this line if SmartMonitor is set to read any kind of jpg file
+                #image_to_read = shrink_file_size(filename)
+                # Uncomment this line if SmartMonitor is going to be set to read nikon DSLR images only
+                image_to_read = extract_preview_image(filename)
             else:
                 image_to_read = filename
             # Load in image
