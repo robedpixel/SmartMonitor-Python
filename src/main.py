@@ -58,6 +58,52 @@ def show_virtual_keyboard():
         print("no virtual keyboard found")
 
 
+# Extracts preview image from DSLR jpg image and returns a path to the extracted preview image
+def extract_preview_image(filename: str) -> str:
+    # run exiftool to extract the image to temp file
+    # run exiftool -a -b -W <path to destination file>.%s -preview:MPImage3 <path to image>
+    output_path = "temp/tempimage.jpg"
+    if os.name == 'nt':
+        subprocess.call(
+            ["tools/windows/exiftool", "-a", "-b", "-W", output_path, "-preview:MPImage3", filename])
+    else:
+        subprocess.call(
+            ["tools/linux/exiftool", "-a", "-b", "-W", output_path, "-preview:MPImage3", filename])
+    # return path to the extracted image
+    return output_path
+
+
+def shrink_file_size(filename: str) -> str:
+    # Clear temp file
+    [f.unlink() for f in Path(Ui.TEMP_DIRECTORY).glob("*") if f.is_file()]
+    file_extension = Path(filename).suffix
+    # Make shrunken image
+    temp_filename = Ui.TEMP_DIRECTORY + "/tempimage" + file_extension
+
+    if os.path.getsize(filename) > 5000000:
+        img = Image.open(filename)
+        exif_data = img.getexif()
+        width, height = img.size
+        resized_img = img.resize((width // 8, height // 8))
+        resized_img.save(temp_filename, exif=exif_data)
+    else:
+        img = Image.open(filename)
+        exif_data = img.getexif()
+        width, height = img.size
+        resized_img = img.resize((width // 2, height // 2))
+        resized_img.save(temp_filename, exif=exif_data)
+
+    while os.path.getsize(temp_filename) > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
+        img = Image.open(temp_filename)
+        exif_data = img.getexif()
+        width, height = img.size
+        resized_img = img.resize((width // 2, height // 2))
+        resized_img.save(temp_filename, exif=exif_data)
+
+    # Return string to new image
+    return temp_filename
+
+
 class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
     TEMP_DIRECTORY = "temp"
@@ -218,7 +264,7 @@ class Ui(QtWidgets.QMainWindow):
         else:
             if fileinfo.size() > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
                 print("image too large! shrinking image for viewing and editing...")
-                image_to_read = self.shrink_file_size(filename)
+                image_to_read = shrink_file_size(filename)
             else:
                 image_to_read = filename
             # Load in image
@@ -450,36 +496,6 @@ class Ui(QtWidgets.QMainWindow):
         if len(self.actions) > 5:
             action = self.actions.popleft()
             action.tool.apply_effect(action, self.original_image)
-
-    def shrink_file_size(self, filename: str) -> str:
-        # Clear temp file
-        [f.unlink() for f in Path(Ui.TEMP_DIRECTORY).glob("*") if f.is_file()]
-        file_extension = Path(filename).suffix
-        # Make shrunken image
-        temp_filename = Ui.TEMP_DIRECTORY + "/tempimage" + file_extension
-
-        if os.path.getsize(filename) > 5000000:
-            img = Image.open(filename)
-            exif_data = img.getexif()
-            width, height = img.size
-            resized_img = img.resize((width // 8, height // 8))
-            resized_img.save(temp_filename, exif=exif_data)
-        else:
-            img = Image.open(filename)
-            exif_data = img.getexif()
-            width, height = img.size
-            resized_img = img.resize((width // 2, height // 2))
-            resized_img.save(temp_filename, exif=exif_data)
-
-        while os.path.getsize(temp_filename) > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
-            img = Image.open(temp_filename)
-            exif_data = img.getexif()
-            width, height = img.size
-            resized_img = img.resize((width // 2, height // 2))
-            resized_img.save(temp_filename, exif=exif_data)
-
-        # Return string to new image
-        return temp_filename
 
 
 app = QtWidgets.QApplication(sys.argv)
