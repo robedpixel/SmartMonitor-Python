@@ -275,9 +275,9 @@ class Ui(QtWidgets.QMainWindow):
             if fileinfo.size() > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
                 print("image too large! shrinking image for viewing and editing...")
                 # Uncomment this line if SmartMonitor is set to read any kind of jpg file
-                #image_to_read = shrink_file_size(filename)
+                image_to_read = shrink_file_size(filename)
                 # Uncomment this line if SmartMonitor is going to be set to read nikon DSLR images only
-                image_to_read = extract_preview_image(filename)
+                #image_to_read = extract_preview_image(filename)
             else:
                 image_to_read = filename
             # Load in image
