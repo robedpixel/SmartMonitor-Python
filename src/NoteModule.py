@@ -1,5 +1,6 @@
 import PIL.Image
 import json
+import exifread
 from PIL.ExifTags import TAGS
 
 USR_CMT_TAG_ID = 37510
@@ -23,11 +24,13 @@ class ExifNoteModule(NoteModule):
 
     # read ImageDescription exif tag
     def read_notes_from_file(self, url: str):
+
         img = PIL.Image.open(url)
         exif_data = img.getexif()
         if exif_data:
             for tag, value in exif_data.items():
                 decoded = TAGS.get(tag, tag)
+                print(tag)
                 if decoded == "UserComment":
                     # Load notes in
                     raw_value = value
@@ -53,7 +56,7 @@ class ExifNoteModule(NoteModule):
         return True
 
 
-# TODO:Stores picture notes by appending it after the jpg or png image data
+# Stores picture notes by appending it after the jpg or png image data
 class AppendedDataNoteModule(NoteModule):
     NOTE_IDENTIFIER = "@@SmartMonitor@@"
 

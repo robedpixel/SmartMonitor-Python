@@ -2,6 +2,7 @@
 # TODO: add airnef function
 # TODO: find way to connect dslr and detect changes in ubuntu
 # Import required packages
+import io
 import os
 import subprocess
 import sys
@@ -20,7 +21,7 @@ from Tool import *
 from ui_mainwindow import Ui_MainWindow
 from os import listdir
 from os.path import isfile, join
-from PIL import Image
+from PIL import Image, ImageQt
 from pathlib import Path
 
 
@@ -51,6 +52,26 @@ def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
 """
 
 
+# Function copied form StackOverflow
+def convertImageFormat(imgObj, outputFormat=None):
+    """Convert image format
+    Args:
+        imgObj (Image): the Pillow Image instance
+        outputFormat (str): Image format, eg: "JPEG"/"PNG"/"BMP"/"TIFF"/...
+            more refer: https://pillow.readthedocs.io/en/stable/handbook/image-file-formats.html
+    Returns:
+        bytes, binary data of Image
+    Raises:
+    """
+    new_img_obj = imgObj
+    if outputFormat and (imgObj.format != outputFormat):
+        img_io = io.BytesIO()
+        imgObj.save(img_io, outputFormat)
+        new_img_obj = Image.open(img_io)
+
+    return new_img_obj
+
+
 def show_virtual_keyboard():
     try:
         subprocess.Popen(["matchbox-keyboard"])
@@ -61,7 +82,7 @@ def show_virtual_keyboard():
 # Extracts preview image from DSLR jpg image and returns a path to the extracted preview image
 def extract_preview_image(filename: str) -> str:
     # Set what preview image to extract with exiftool
-    preview_image = "-preview:MPImage3"
+    # preview_image = "-preview:MPImage3"
     # preview_image = "-preview:PreviewImage"
     # preview_image = "-preview:ThumbnailImage"
 
@@ -69,12 +90,18 @@ def extract_preview_image(filename: str) -> str:
     # run exiftool to extract the image to temp file
     # run exiftool -a -b -W <path to destination file>.%s -preview:MPImage3 <path to image>
     output_path = "temp/tempimage.jpg"
-    if os.name == 'nt':
+    """if os.name == 'nt':
         subprocess.call(
             ["tools/windows/exiftool", "-a", "-b", "-W", output_path, preview_image, filename])
     else:
         subprocess.call(
             ["tools/linux/exiftool", "-a", "-b", "-W", output_path, preview_image, filename])
+    """
+
+    img = Image.open(filename)
+    new_img = convertImageFormat(img, outputFormat="MPO")
+    new_img.seek(2)
+    new_img.save(output_path)
     # return path to the extracted image
     return output_path
 
@@ -123,6 +150,7 @@ class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
         # Initialise window contents form ui python script
+
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setAttribute(Qt.WA_AcceptTouchEvents, False)
@@ -273,11 +301,11 @@ class Ui(QtWidgets.QMainWindow):
                 new_image = QtGui.QImage(buf, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
         else:
             if fileinfo.size() > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
-                print("image too large! shrinking image for viewing and editing...")
+                #    print("image too large! shrinking image for viewing and editing...")
                 # Uncomment this line if SmartMonitor is set to read any kind of jpg file
-                image_to_read = shrink_file_size(filename)
+                # image_to_read = shrink_file_size(filename)
                 # Uncomment this line if SmartMonitor is going to be set to read nikon DSLR images only
-                #image_to_read = extract_preview_image(filename)
+                image_to_read = extract_preview_image(filename)
             else:
                 image_to_read = filename
             # Load in image
