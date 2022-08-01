@@ -1,6 +1,5 @@
 import PIL.Image
 import json
-import exifread
 from PIL.ExifTags import TAGS
 
 USR_CMT_TAG_ID = 37510
