@@ -110,6 +110,10 @@ class Ui_MainWindow(object):
         self.folderButton = QPushButton(self.centralwidget)
         self.folderButton.setObjectName(u"folderButton")
         self.folderButton.setGeometry(QRect(610, 0, 91, 51))
+        self.cropButton = QPushButton(self.centralwidget)
+        self.cropButton.setObjectName(u"cropButton")
+        self.cropButton.setEnabled(False)
+        self.cropButton.setGeometry(QRect(450, 0, 71, 51))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -144,5 +148,6 @@ class Ui_MainWindow(object):
         self.redoButton.setText(QCoreApplication.translate("MainWindow", u"Redo", None))
         self.folderButton.setText(QCoreApplication.translate("MainWindow", u"Change\n"
 " camera folder", None))
+        self.cropButton.setText(QCoreApplication.translate("MainWindow", u"Crop", None))
     # retranslateUi
 

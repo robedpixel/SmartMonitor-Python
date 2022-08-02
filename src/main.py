@@ -174,6 +174,10 @@ class Ui(QtWidgets.QMainWindow):
         self.note_window = None
 
         # Initialise buttons
+        self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
+        self.crop_button.setVisible(False)
+        self.crop_button.clicked.connect(self.on_crop_button_clicked)
+
         self.camera_folder_button = self.findChild(QtWidgets.QPushButton, 'folderButton')
         self.camera_folder_button.clicked.connect(self.on_camera_folder_button_clicked)
 
@@ -359,7 +363,6 @@ class Ui(QtWidgets.QMainWindow):
 
         # DRAW SELECTION BOX CODE START #
         display_image = QtGui.QImage(self.current_image[0])
-        # TODO: add selection box to display image
         if self.selection[0].isValid():
             painter = QtGui.QPainter(display_image)
             painter.setPen(QtGui.QPen(QtCore.Qt.black, 5,
@@ -434,6 +437,7 @@ class Ui(QtWidgets.QMainWindow):
                 self.selected_tool = new_tool
                 self.selected_tool.on_select_tool()
                 self.selected_button = tool_button
+                self.update_image()
 
     def on_brush_button_clicked(self):
         self.select_tool(self.brush_button, self.brush_tool_setup)
@@ -472,6 +476,13 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_select_button_clicked(self):
         self.select_tool(self.select_button, self.select_tool_setup)
+
+    def on_crop_button_clicked(self):
+        if self.selection[0].isValid:
+            # TODO: set cropped image as new image
+            self.current_image[0] = self.current_image[0].copy(self.selection[0])
+            self.selection[0].setRect(0, 0, 0, 0)
+            self.update_image()
 
     def on_redo_button_clicked(self):
         self.redo_action()
@@ -524,7 +535,7 @@ class Ui(QtWidgets.QMainWindow):
         return new_tool
 
     def select_tool_setup(self) -> SelectTool:
-        new_tool = SelectTool()
+        new_tool = SelectTool([self.crop_button])
         new_tool.set_button(self.select_button)
         new_tool.set_image(self.current_image)
         new_tool.set_scale(self.scale_factor)

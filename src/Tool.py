@@ -350,8 +350,9 @@ class SelectTool(Tool):
     SELECT_STATE = 0
     DRAG_STATE = 1
 
-    def __init__(self):
+    def __init__(self, child_buttons_list):
         Tool.__init__(self)
+        self.child_buttons = child_buttons_list
         self.selection = [QtCore.QRect()]
         self.startPoint = QtCore.QPoint()
         self.push_button = None
@@ -361,6 +362,9 @@ class SelectTool(Tool):
         self.color = QtGui.QColor(QtCore.Qt.white)
         self.scale = [float(1)]
         self.current_effect = None
+        for button in self.child_buttons:
+            button.setVisible(True)
+            button.setEnabled(True)
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -374,12 +378,18 @@ class SelectTool(Tool):
     def set_button(self, QPushButton):
         self.push_button = QPushButton
 
+    def add_child_button(self,QPushButton):
+        self.child_buttons.append(QPushButton)
+
     # def set_paint_radius(self, paint_sizes: dict, paint_brush_size: list):
     #    self.paint_sizes = paint_sizes
     #    self.paint_radius = paint_brush_size
 
     def on_deselect_tool(self):
-        self.selection[0].setCoords(0, 0, 0, 0)
+        self.selection[0].setRect(0, 0, 0, 0)
+        for button in self.child_buttons:
+            button.setEnabled(False)
+            button.setVisible(False)
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):

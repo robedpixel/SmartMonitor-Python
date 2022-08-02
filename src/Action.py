@@ -8,6 +8,7 @@ class EffectType(Enum):
     NONE = 0
     RGB = 1
     ERASER = 2
+    CROP = 3
 
 
 class Action:
