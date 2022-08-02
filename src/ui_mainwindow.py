@@ -47,6 +47,13 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.eraserButton)
 
+        self.selectButton = QPushButton(self.verticalLayoutWidget)
+        self.selectButton.setObjectName(u"selectButton")
+        self.selectButton.setEnabled(False)
+        self.selectButton.setCheckable(True)
+
+        self.verticalLayout.addWidget(self.selectButton)
+
         self.scrollArea = QScrollArea(self.centralwidget)
         self.scrollArea.setObjectName(u"scrollArea")
         self.scrollArea.setGeometry(QRect(160, 50, 1131, 581))
@@ -122,6 +129,7 @@ class Ui_MainWindow(object):
         self.brushButton.setText(QCoreApplication.translate("MainWindow", u"Brush", None))
         self.pickerButton.setText(QCoreApplication.translate("MainWindow", u"Colour Picker", None))
         self.eraserButton.setText(QCoreApplication.translate("MainWindow", u"Eraser", None))
+        self.selectButton.setText(QCoreApplication.translate("MainWindow", u"Select", None))
         self.fileopenButton.setText(QCoreApplication.translate("MainWindow", u"Open File", None))
         self.zoomButton.setText(QCoreApplication.translate("MainWindow", u"Zoom", None))
         self.moveButton.setText(QCoreApplication.translate("MainWindow", u"Move", None))

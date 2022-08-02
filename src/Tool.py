@@ -4,6 +4,7 @@ from Effect import *
 from Action import Action, PaintAction, EffectType
 
 
+# TODO: use QPainter to draw a dotted line for rect selection after normal drawing functions
 class Tool:
     def __init__(self):
         self.height = 0
@@ -317,7 +318,7 @@ class EraserTool(Tool):
         stop_index = len(self.action_list) - self.action_list_state[0]
         self.action_list.insert(stop_index, PaintAction(self, self.current_effect, EffectType.RGB,
                                                         self.paint_radius, self.color))
-        while len(self.action_list) > stop_index+1:
+        while len(self.action_list) > stop_index + 1:
             self.action_list.pop()
         self.action_list_state[0] = 0
 
@@ -341,3 +342,81 @@ class EraserTool(Tool):
 
     def get_effect_type(self):
         return EffectType.RGB
+
+
+# TODO: two states, selecting and dragging
+# TODO: dragging happens when user clicks within bounds of selection
+class SelectTool(Tool):
+    SELECT_STATE = 0
+    DRAG_STATE = 1
+
+    def __init__(self):
+        Tool.__init__(self)
+        self.selection = [QtCore.QRect()]
+        self.startPoint = QtCore.QPoint()
+        self.push_button = None
+        self.image = None
+        self.drawing = False
+        self.lastPoint = QtCore.QPoint()
+        self.color = QtGui.QColor(QtCore.Qt.white)
+        self.scale = [float(1)]
+        self.current_effect = None
+
+    def set_image(self, image: [QtGui.QImage]):
+        self.image = image
+
+    def set_scale(self, scale: list[float]):
+        self.scale = scale
+
+    def set_selection(self, selection: list[QtCore.QRect]):
+        self.selection = selection
+
+    def set_button(self, QPushButton):
+        self.push_button = QPushButton
+
+    # def set_paint_radius(self, paint_sizes: dict, paint_brush_size: list):
+    #    self.paint_sizes = paint_sizes
+    #    self.paint_radius = paint_brush_size
+
+    def on_deselect_tool(self):
+        self.selection[0].setCoords(0, 0, 0, 0)
+        self.push_button.setChecked(False)
+
+    def on_click(self, pos: QtCore.QPoint, effects: deque):
+        self.drawing = True
+        new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+        self.startPoint = new_pos
+        self.lastPoint = new_pos
+
+    def on_drag(self, pos: QtCore.QPoint, effects: deque):
+        if self.drawing:
+            new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+            self.lastPoint = new_pos
+            self.selection[0].setTopLeft(self.startPoint)
+            self.selection[0].setBottomRight(self.lastPoint)
+
+    def on_release(self, pos: QtCore.QPoint, effects: deque):
+        self.drawing = False
+        self.selection[0].setTopLeft(self.startPoint)
+        self.selection[0].setBottomRight(self.lastPoint)
+
+    def apply_effect(self, action, image: QtGui.QImage):
+        """first = True
+        painter = QtGui.QPainter(image)
+        last_point = QtCore.QPoint()
+        painter.setPen(QtGui.QPen(QtGui.QColor(QtCore.Qt.white), self.paint_radius,
+                                  QtCore.Qt.SolidLine, QtCore.Qt.SquareCap, QtCore.Qt.BevelJoin))
+        for effect in reversed(action.effects):
+            if first:
+                last_point = effect.pos
+                first = False
+            else:
+                painter.drawLine(last_point, effect.pos)
+                last_point = effect.pos"""
+
+    def set_action_list(self, action_list, action_list_state):
+        self.action_list = action_list
+        self.action_list_state = action_list_state
+
+    def get_effect_type(self):
+        return EffectType.NONE

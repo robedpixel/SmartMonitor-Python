@@ -53,7 +53,7 @@ def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
 
 
 # Function copied form StackOverflow
-def convertImageFormat(imgObj, outputFormat=None):
+def convert_image_format(imgObj, outputFormat=None):
     """Convert image format
     Args:
         imgObj (Image): the Pillow Image instance
@@ -99,7 +99,7 @@ def extract_preview_image(filename: str) -> str:
     """
 
     img = Image.open(filename)
-    new_img = convertImageFormat(img, outputFormat="MPO")
+    new_img = convert_image_format(img, outputFormat="MPO")
     new_img.seek(2)
     new_img.save(output_path)
     # return path to the extracted image
@@ -164,6 +164,7 @@ class Ui(QtWidgets.QMainWindow):
         self.brush_sizes = {1: '1', 2: '3', 3: '5', 4: '7'}
         self.current_brush_size = [1]
         self.file_dialog = None
+        self.selection = [QtCore.QRect()]
 
         self.actions = deque()
         self.current_action = [0]
@@ -209,6 +210,11 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.eraser_button.clicked.connect(self.on_eraser_button_clicked)
 
+        self.select_button = self.findChild(QtWidgets.QPushButton, 'selectButton')
+        self.select_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.select_button.clicked.connect(self.on_select_button_clicked)
+
         self.move_button = self.findChild(QtWidgets.QPushButton, 'moveButton')
         self.move_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
@@ -245,12 +251,14 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.zoom_button)
         self.button_list.append(self.color_picker_button)
         self.button_list.append(self.eraser_button)
+        self.button_list.append(self.select_button)
         self.button_list.append(self.file_save_button)
         self.tool_list = deque()
         self.tool_list.append(self.zoom_button)
         self.tool_list.append(self.move_button)
         self.tool_list.append(self.brush_button)
         self.tool_list.append(self.color_picker_button)
+        self.tool_list.append(self.select_button)
         self.tool_list.append(self.eraser_button)
 
         # Click all the buttons for the tools so that they work with touch when an image is loaded
@@ -345,7 +353,24 @@ class Ui(QtWidgets.QMainWindow):
 
     # This method is for updating the image display on SmartMonitor when a change is made
     def update_image(self):
-        display_image = self.current_image[0].scaledToWidth(int(self.current_image[0].width() * self.scale_factor[0]))
+        # display_image = self.current_image[0].scaledToWidth(int(display_image.width() * self.scale_factor[0]))
+
+        # Remove this code block if selection implementation takes up too much memory
+
+        # DRAW SELECTION BOX CODE START #
+        display_image = QtGui.QImage(self.current_image[0])
+        # TODO: add selection box to display image
+        if self.selection[0].isValid():
+            painter = QtGui.QPainter(display_image)
+            painter.setPen(QtGui.QPen(QtCore.Qt.black, 5,
+                                      QtCore.Qt.DotLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
+            # new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+            painter.drawRect(self.selection[0])
+            painter.end()
+
+        display_image = display_image.scaledToWidth(int(display_image.width() * self.scale_factor[0]))
+        # DRAW SELECTION BOX CODE END #
+
         self.display.setPixmap(QtGui.QPixmap.fromImage(display_image))
 
         self.scroll_area.setVisible(True)
@@ -445,6 +470,9 @@ class Ui(QtWidgets.QMainWindow):
     def on_eraser_button_clicked(self):
         self.select_tool(self.eraser_button, self.eraser_tool_setup)
 
+    def on_select_button_clicked(self):
+        self.select_tool(self.select_button, self.select_tool_setup)
+
     def on_redo_button_clicked(self):
         self.redo_action()
 
@@ -492,6 +520,15 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_button(self.eraser_button)
         new_tool.set_image(self.current_image)
         new_tool.set_scale(self.scale_factor)
+        new_tool.set_action_list(self.actions, self.current_action)
+        return new_tool
+
+    def select_tool_setup(self) -> SelectTool:
+        new_tool = SelectTool()
+        new_tool.set_button(self.select_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_scale(self.scale_factor)
+        new_tool.set_selection(self.selection)
         new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
 
