@@ -171,6 +171,12 @@ class Ui(QtWidgets.QMainWindow):
         self.original_image = QtGui.QImage()
         self.current_image = [QtGui.QImage()]
 
+        self.crop_tool = CropTool()
+        self.crop_tool.set_selection(self.selection)
+        self.crop_tool.set_image(self.current_image)
+        self.crop_tool.set_scale(self.scale_factor)
+        self.crop_tool.set_action_list(self.actions,self.current_action)
+
         self.note_window = None
 
         # Initialise buttons
@@ -478,11 +484,8 @@ class Ui(QtWidgets.QMainWindow):
         self.select_tool(self.select_button, self.select_tool_setup)
 
     def on_crop_button_clicked(self):
-        if self.selection[0].isValid:
-            # TODO: set cropped image as new image
-            self.current_image[0] = self.current_image[0].copy(self.selection[0])
-            self.selection[0].setRect(0, 0, 0, 0)
-            self.update_image()
+        self.crop_tool.crop()
+        self.update_image()
 
     def on_redo_button_clicked(self):
         self.redo_action()
@@ -569,7 +572,7 @@ class Ui(QtWidgets.QMainWindow):
 
     # Redraws the image after an undo/redo action
     def redraw_image(self):
-        new_image = QtGui.QImage(self.original_image)
+        new_image = [QtGui.QImage(self.original_image)]
         index = -1
         stop_index = len(self.actions) - 1 - self.current_action[0]
         for action in self.actions:
@@ -577,14 +580,14 @@ class Ui(QtWidgets.QMainWindow):
             if index <= stop_index:
                 action.tool.apply_effect(action, new_image)
 
-        self.current_image[0] = new_image
+        self.current_image[0] = new_image[0]
         self.update_image()
 
     # Limits how far the user is able to undo to save memory
     def limit_action_list_size(self):
         if len(self.actions) > 5:
             action = self.actions.popleft()
-            action.tool.apply_effect(action, self.original_image)
+            action.tool.apply_effect(action, [self.original_image])
 
 
 app = QtWidgets.QApplication(sys.argv)
