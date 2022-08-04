@@ -512,6 +512,7 @@ class LineTool(Tool):
         self.scale = [float(1)]
         self.current_effect = None
         self.image_copy = None
+        self.image_copy_two = None
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -538,6 +539,7 @@ class LineTool(Tool):
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = True
+        self.image_copy = QtGui.QImage(self.image[0])
         new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
         self.startPoint = new_pos
         self.current_effect = []
@@ -545,12 +547,13 @@ class LineTool(Tool):
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
-            self.image_copy = QtGui.QImage(self.image[0])
-            painter = QtGui.QPainter(self.image_copy)
+            self.image_copy_two = QtGui.QImage(self.image_copy)
+            painter = QtGui.QPainter(self.image_copy_two)
             painter.setPen(QtGui.QPen(self.color[0], int(self.paint_sizes[self.paint_radius[0]]),
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
             painter.drawLine(self.startPoint, new_pos)
+            self.image[0] = self.image_copy_two
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = False

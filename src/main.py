@@ -175,7 +175,7 @@ class Ui(QtWidgets.QMainWindow):
         self.crop_tool.set_selection(self.selection)
         self.crop_tool.set_image(self.current_image)
         self.crop_tool.set_scale(self.scale_factor)
-        self.crop_tool.set_action_list(self.actions,self.current_action)
+        self.crop_tool.set_action_list(self.actions, self.current_action)
 
         self.note_window = None
 
@@ -225,6 +225,11 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.select_button.clicked.connect(self.on_select_button_clicked)
 
+        self.line_button = self.findChild(QtWidgets.QPushButton, 'lineButton')
+        self.line_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.line_button.clicked.connect(self.on_line_button_clicked)
+
         self.move_button = self.findChild(QtWidgets.QPushButton, 'moveButton')
         self.move_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
@@ -262,13 +267,16 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.color_picker_button)
         self.button_list.append(self.eraser_button)
         self.button_list.append(self.select_button)
+        self.button_list.append(self.line_button)
         self.button_list.append(self.file_save_button)
+
         self.tool_list = deque()
         self.tool_list.append(self.zoom_button)
         self.tool_list.append(self.move_button)
         self.tool_list.append(self.brush_button)
         self.tool_list.append(self.color_picker_button)
         self.tool_list.append(self.select_button)
+        self.tool_list.append(self.line_button)
         self.tool_list.append(self.eraser_button)
 
         # Click all the buttons for the tools so that they work with touch when an image is loaded
@@ -483,6 +491,9 @@ class Ui(QtWidgets.QMainWindow):
     def on_select_button_clicked(self):
         self.select_tool(self.select_button, self.select_tool_setup)
 
+    def on_line_button_clicked(self):
+        self.select_tool(self.line_button, self.line_tool_setup)
+
     def on_crop_button_clicked(self):
         self.crop_tool.crop()
         self.update_image()
@@ -543,6 +554,16 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_image(self.current_image)
         new_tool.set_scale(self.scale_factor)
         new_tool.set_selection(self.selection)
+        new_tool.set_action_list(self.actions, self.current_action)
+        return new_tool
+
+    def line_tool_setup(self) -> LineTool:
+        new_tool = LineTool()
+        new_tool.set_button(self.line_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_color(self.current_brush_color)
+        new_tool.set_scale(self.scale_factor)
+        new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
         new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
 
