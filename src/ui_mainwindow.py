@@ -29,6 +29,7 @@ class Ui_MainWindow(object):
         self.brushButton = QPushButton(self.verticalLayoutWidget)
         self.brushButton.setObjectName(u"brushButton")
         self.brushButton.setEnabled(False)
+        self.brushButton.setMinimumSize(QSize(0, 51))
         self.brushButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.brushButton)
@@ -36,6 +37,7 @@ class Ui_MainWindow(object):
         self.pickerButton = QPushButton(self.verticalLayoutWidget)
         self.pickerButton.setObjectName(u"pickerButton")
         self.pickerButton.setEnabled(False)
+        self.pickerButton.setMinimumSize(QSize(0, 51))
         self.pickerButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.pickerButton)
@@ -43,6 +45,7 @@ class Ui_MainWindow(object):
         self.eraserButton = QPushButton(self.verticalLayoutWidget)
         self.eraserButton.setObjectName(u"eraserButton")
         self.eraserButton.setEnabled(False)
+        self.eraserButton.setMinimumSize(QSize(0, 51))
         self.eraserButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.eraserButton)
@@ -50,6 +53,7 @@ class Ui_MainWindow(object):
         self.selectButton = QPushButton(self.verticalLayoutWidget)
         self.selectButton.setObjectName(u"selectButton")
         self.selectButton.setEnabled(False)
+        self.selectButton.setMinimumSize(QSize(0, 51))
         self.selectButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.selectButton)
@@ -57,6 +61,7 @@ class Ui_MainWindow(object):
         self.lineButton = QPushButton(self.verticalLayoutWidget)
         self.lineButton.setObjectName(u"lineButton")
         self.lineButton.setEnabled(False)
+        self.lineButton.setMinimumSize(QSize(0, 51))
         self.lineButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.lineButton)

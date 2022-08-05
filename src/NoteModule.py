@@ -26,10 +26,10 @@ class ExifNoteModule(NoteModule):
 
         img = PIL.Image.open(url)
         exif_data = img.getexif()
+        found = False
         if exif_data:
             for tag, value in exif_data.items():
                 decoded = TAGS.get(tag, tag)
-                print(tag)
                 if decoded == "UserComment":
                     # Load notes in
                     raw_value = value
@@ -37,11 +37,16 @@ class ExifNoteModule(NoteModule):
                         raw_json = json.loads(raw_value)
                         if isinstance(raw_json, list):
                             self.notes = raw_json
+                            found = True
+                            break
                         else:
                             print("no notes found for jpg")
+                            break
                     except ValueError:
                         print("no notes found for jpg")
-        pass
+                        break
+        if not found:
+            self.notes.clear()
 
     def save_notes_to_file(self, url: str) -> bool:
         if self.notes:

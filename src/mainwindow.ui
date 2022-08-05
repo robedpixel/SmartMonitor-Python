@@ -29,6 +29,12 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>51</height>
+        </size>
+       </property>
        <property name="text">
         <string>Brush</string>
        </property>
@@ -41,6 +47,12 @@
       <widget class="QPushButton" name="pickerButton">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>51</height>
+        </size>
        </property>
        <property name="text">
         <string>Colour Picker</string>
@@ -55,6 +67,12 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>51</height>
+        </size>
+       </property>
        <property name="text">
         <string>Eraser</string>
        </property>
@@ -68,6 +86,12 @@
        <property name="enabled">
         <bool>false</bool>
        </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>51</height>
+        </size>
+       </property>
        <property name="text">
         <string>Select</string>
        </property>
@@ -80,6 +104,12 @@
       <widget class="QPushButton" name="lineButton">
        <property name="enabled">
         <bool>false</bool>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>51</height>
+        </size>
        </property>
        <property name="text">
         <string>Line</string>
