@@ -15,6 +15,120 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
+    <item row="0" column="0">
+     <widget class="QPushButton" name="moveButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>71</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Move</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="8">
+     <widget class="QLabel" name="brushsizelabel">
+      <property name="maximumSize">
+       <size>
+        <width>51</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Brush Size:</string>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="15">
+     <widget class="QPushButton" name="fileopenButton">
+      <property name="maximumSize">
+       <size>
+        <width>71</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="tabletTracking">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Open File</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QPushButton" name="zoomButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>71</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Zoom</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="7">
+     <widget class="QPushButton" name="folderButton">
+      <property name="maximumSize">
+       <size>
+        <width>91</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Change
+ camera folder</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2" colspan="14">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>639</width>
+         <height>499</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="9">
+     <widget class="QPushButton" name="brushSizeButton">
+      <property name="maximumSize">
+       <size>
+        <width>51</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="10">
      <widget class="QLabel" name="brushcolorlabel">
       <property name="maximumSize">
@@ -28,6 +142,38 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <widget class="QPushButton" name="resetZoomButton">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>71</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Reset zoom</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="5">
+     <widget class="QPushButton" name="cropButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>71</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Crop</string>
       </property>
      </widget>
     </item>
@@ -45,18 +191,44 @@
      </widget>
     </item>
     <item row="0" column="14">
-     <widget class="QPushButton" name="fileopenButton">
+     <widget class="QPushButton" name="filesaveButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="maximumSize">
        <size>
         <width>71</width>
         <height>51</height>
        </size>
       </property>
-      <property name="tabletTracking">
-       <bool>false</bool>
+      <property name="text">
+       <string>Save File</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="redoButton">
+      <property name="maximumSize">
+       <size>
+        <width>71</width>
+        <height>51</height>
+       </size>
       </property>
       <property name="text">
-       <string>Open File</string>
+       <string>Redo</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <widget class="QPushButton" name="undoButton">
+      <property name="maximumSize">
+       <size>
+        <width>71</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Undo</string>
       </property>
      </widget>
     </item>
@@ -159,149 +331,6 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="3">
-     <widget class="QPushButton" name="undoButton">
-      <property name="maximumSize">
-       <size>
-        <width>71</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Undo</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="9">
-     <widget class="QPushButton" name="brushSizeButton">
-      <property name="maximumSize">
-       <size>
-        <width>51</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QPushButton" name="moveButton">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>71</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Move</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="2">
-     <widget class="QPushButton" name="resetZoomButton">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>71</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Reset zoom</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="8">
-     <widget class="QLabel" name="brushsizelabel">
-      <property name="maximumSize">
-       <size>
-        <width>51</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Brush Size:</string>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="2" colspan="13">
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="widgetResizable">
-       <bool>false</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>639</width>
-         <height>499</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item row="0" column="1">
-     <widget class="QPushButton" name="zoomButton">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>71</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Zoom</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="13">
-     <widget class="QPushButton" name="filesaveButton">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>71</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Save File</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="7">
-     <widget class="QPushButton" name="folderButton">
-      <property name="maximumSize">
-       <size>
-        <width>91</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Change
- camera folder</string>
-      </property>
-     </widget>
-    </item>
     <item row="0" column="11">
      <widget class="QPushButton" name="brushcolorButton">
       <property name="maximumSize">
@@ -315,21 +344,8 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="4">
-     <widget class="QPushButton" name="redoButton">
-      <property name="maximumSize">
-       <size>
-        <width>71</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Redo</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="5">
-     <widget class="QPushButton" name="cropButton">
+    <item row="0" column="13">
+     <widget class="QPushButton" name="infoButton">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -340,7 +356,7 @@
        </size>
       </property>
       <property name="text">
-       <string>Crop</string>
+       <string>Image Info</string>
       </property>
      </widget>
     </item>
