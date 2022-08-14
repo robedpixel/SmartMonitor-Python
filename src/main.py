@@ -146,11 +146,6 @@ def get_image_exif_tags(filename: str) -> str:
     return output
 
 
-# TODO: test this out later
-def show_image_exif_info(info: str):
-    pass
-
-
 def shrink_file_size(filename: str) -> str:
     # Clear temp file
     clear_temp_folder()
@@ -186,6 +181,25 @@ def clear_temp_folder():
     [f.unlink() for f in Path(Ui.TEMP_DIRECTORY).glob("*") if f.is_file()]
 
 
+class InfoWindow(QtWidgets.QWidget):
+    """
+    This "window" is a QWidget. If it has no parent, it
+    will appear as a free-floating window as we want.
+    """
+
+    def __init__(self, text_to_display):
+        super().__init__()
+        layout = QtWidgets.QVBoxLayout()
+        text_view = QtWidgets.QPlainTextEdit()
+        text_view.setPlainText(text_to_display)
+        scroll_area = QtWidgets.QScrollArea()
+        scroll_area.setWidget(text_view)
+        scroll_area.setWidgetResizable(True)
+        layout.addWidget(scroll_area)
+        self.setLayout(layout)
+        self.setWindowTitle('Image Info')
+
+
 class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
     TEMP_DIRECTORY = "temp"
@@ -210,6 +224,7 @@ class Ui(QtWidgets.QMainWindow):
         self.current_brush_size = [1]
         self.file_dialog = None
         self.selection = [QtCore.QRect()]
+        self.note_window = None
 
         self.actions = deque()
         self.current_action = [0]
@@ -377,7 +392,7 @@ class Ui(QtWidgets.QMainWindow):
                 # image_to_read = shrink_file_size(filename)
                 # Uncomment this line if SmartMonitor is going to be set to read nikon DSLR images only
                 text_to_display = get_image_exif_tags(filename)
-                print(text_to_display)
+                self.show_image_exif_info(text_to_display)
                 image_to_read = extract_preview_image(filename)
             else:
                 image_to_read = filename
@@ -656,6 +671,11 @@ class Ui(QtWidgets.QMainWindow):
         if len(self.actions) > 5:
             action = self.actions.popleft()
             action.tool.apply_effect(action, [self.original_image])
+
+    # TODO: test this out later
+    def show_image_exif_info(self, info: str):
+        self.note_window = InfoWindow(info)
+        self.note_window.show()
 
 
 app = QtWidgets.QApplication(sys.argv)
