@@ -1,6 +1,7 @@
 # TODO: test airnef
 # TODO: add airnef function
 # TODO: find way to connect dslr and detect changes in ubuntu
+# TODO: find way to display image from original image
 # Import required packages
 import io
 import os
@@ -23,6 +24,8 @@ from os import listdir
 from os.path import isfile, join
 from PIL import Image, ImageQt
 from pathlib import Path
+from PIL.ExifTags import TAGS
+import pyexiv2
 
 
 # TODO: init airnef connection window first
@@ -104,6 +107,48 @@ def extract_preview_image(filename: str) -> str:
     new_img.save(output_path)
     # return path to the extracted image
     return output_path
+
+
+# TODO: test this out later and show in new window
+def get_image_exif_tags(filename: str) -> str:
+    """
+    img = Image.open(filename)
+    temp_list = []
+    exif_data = img.getexif()
+    if exif_data:
+        for tag, value in exif_data.items():
+            decoded = TAGS.get(tag, tag)
+            temp_list.append(decoded)
+            temp_list.append(" : ")
+            temp_list.append(str(value))
+            temp_list.append("\n")
+        ifd_data = exif_data.get_ifd(0x8769)
+        for tag, value in ifd_data.items():
+            decoded = TAGS.get(tag, tag)
+            temp_list.append(decoded)
+            temp_list.append(" : ")
+            temp_list.append(str(value))
+            temp_list.append("\n")
+        output = ''.join(temp_list)
+        return output
+    return ""
+    """
+    img = pyexiv2.Image(filename)
+    temp_list = []
+    data = img.read_exif()
+    for row in data:
+        temp_list.append(row)
+        temp_list.append(" : ")
+        temp_list.append(data[row])
+        temp_list.append("\n")
+    output = ''.join(temp_list)
+    img.close()
+    return output
+
+
+# TODO: test this out later
+def show_image_exif_info(info: str):
+    pass
 
 
 def shrink_file_size(filename: str) -> str:
@@ -331,6 +376,8 @@ class Ui(QtWidgets.QMainWindow):
                 # Uncomment this line if SmartMonitor is set to read any kind of jpg file
                 # image_to_read = shrink_file_size(filename)
                 # Uncomment this line if SmartMonitor is going to be set to read nikon DSLR images only
+                text_to_display = get_image_exif_tags(filename)
+                print(text_to_display)
                 image_to_read = extract_preview_image(filename)
             else:
                 image_to_read = filename

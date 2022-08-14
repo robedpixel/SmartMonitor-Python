@@ -23,7 +23,6 @@ class ExifNoteModule(NoteModule):
 
     # read ImageDescription exif tag
     def read_notes_from_file(self, url: str):
-
         img = PIL.Image.open(url)
         exif_data = img.getexif()
         found = False
@@ -38,13 +37,13 @@ class ExifNoteModule(NoteModule):
                         if isinstance(raw_json, list):
                             self.notes = raw_json
                             found = True
-                            break
+                            #break
                         else:
                             print("no notes found for jpg")
-                            break
+                            #break
                     except ValueError:
                         print("no notes found for jpg")
-                        break
+                        #break
         if not found:
             self.notes.clear()
 
