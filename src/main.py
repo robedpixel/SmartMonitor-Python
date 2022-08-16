@@ -198,6 +198,7 @@ class InfoWindow(QtWidgets.QWidget):
         layout.addWidget(scroll_area)
         self.setLayout(layout)
         self.setWindowTitle('Image Info')
+        self.resize(1000,600)
 
 
 class Ui(QtWidgets.QMainWindow):
@@ -225,6 +226,7 @@ class Ui(QtWidgets.QMainWindow):
         self.file_dialog = None
         self.selection = [QtCore.QRect()]
         self.note_window = None
+        self.info_to_display = ""
 
         self.actions = deque()
         self.current_action = [0]
@@ -310,6 +312,9 @@ class Ui(QtWidgets.QMainWindow):
         self.file_save_button = self.findChild(QtWidgets.QWidget, 'filesaveButton')
         self.file_save_button.clicked.connect(self.on_file_save_button_clicked)
 
+        self.info_button = self.findChild(QtWidgets.QWidget, 'infoButton')
+        self.info_button.clicked.connect(self.on_info_button_clicked)
+
         self.note_button = self.findChild(QtWidgets.QWidget, 'noteButton')
         self.note_button.clicked.connect(self.on_note_button_clicked)
 
@@ -329,6 +334,7 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.select_button)
         self.button_list.append(self.line_button)
         self.button_list.append(self.file_save_button)
+        self.button_list.append(self.info_button)
 
         self.tool_list = deque()
         self.tool_list.append(self.zoom_button)
@@ -391,8 +397,8 @@ class Ui(QtWidgets.QMainWindow):
                 # Uncomment this line if SmartMonitor is set to read any kind of jpg file
                 # image_to_read = shrink_file_size(filename)
                 # Uncomment this line if SmartMonitor is going to be set to read nikon DSLR images only
-                text_to_display = get_image_exif_tags(filename)
-                self.show_image_exif_info(text_to_display)
+                self.info_to_display = get_image_exif_tags(filename)
+                #self.show_image_exif_info(text_to_display)
                 image_to_read = extract_preview_image(filename)
             else:
                 image_to_read = filename
@@ -565,6 +571,9 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_undo_button_clicked(self):
         self.undo_action()
+
+    def on_info_button_clicked(self):
+        self.show_image_exif_info(self.info_to_display)
 
     def on_camera_folder_button_clicked(self):
         directory = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory", "/")
