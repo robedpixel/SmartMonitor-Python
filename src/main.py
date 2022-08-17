@@ -25,7 +25,7 @@ from os.path import isfile, join
 from PIL import Image, ImageQt
 from pathlib import Path
 from PIL.ExifTags import TAGS
-import pyexiv2
+import exifread
 
 
 # TODO: init airnef connection window first
@@ -133,17 +133,17 @@ def get_image_exif_tags(filename: str) -> str:
         return output
     return ""
     """
-    img = pyexiv2.Image(filename)
-    temp_list = []
-    data = img.read_exif()
-    for row in data:
-        temp_list.append(row)
-        temp_list.append(" : ")
-        temp_list.append(data[row])
-        temp_list.append("\n")
-    output = ''.join(temp_list)
-    img.close()
-    return output
+    with open(filename, 'rb') as file:
+        temp_list = []
+        tags = exifread.process_file(file, details=False)
+        for tag in tags.keys():
+            temp_list.append(str(tag))
+            temp_list.append(" : ")
+            temp_list.append(str(tags[tag]))
+            temp_list.append("\n")
+        output = ''.join(temp_list)
+        return output
+    return ""
 
 
 def shrink_file_size(filename: str) -> str:
@@ -198,7 +198,7 @@ class InfoWindow(QtWidgets.QWidget):
         layout.addWidget(scroll_area)
         self.setLayout(layout)
         self.setWindowTitle('Image Info')
-        self.resize(1000,600)
+        self.resize(1000, 600)
 
 
 class Ui(QtWidgets.QMainWindow):
@@ -398,7 +398,7 @@ class Ui(QtWidgets.QMainWindow):
                 # image_to_read = shrink_file_size(filename)
                 # Uncomment this line if SmartMonitor is going to be set to read nikon DSLR images only
                 self.info_to_display = get_image_exif_tags(filename)
-                #self.show_image_exif_info(text_to_display)
+                # self.show_image_exif_info(text_to_display)
                 image_to_read = extract_preview_image(filename)
             else:
                 image_to_read = filename
