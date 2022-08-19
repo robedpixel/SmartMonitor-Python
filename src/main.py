@@ -363,7 +363,7 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher = CameraFolderWatcher()
         self.file_watcher.monitor_directory(Ui.AIRNEF_PICTURE_DIRECTORY)
         self.file_watcher.register_callback(self.on_folder_changed_event)
-        self.show()  # Show the GUI
+        self.showMaximized()  # Show the GUI
 
     def show_open_dialog(self):
         self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', '/')
