@@ -39,7 +39,7 @@ class Ui_MainWindow(object):
 
         self.fileopenButton = QPushButton(self.centralwidget)
         self.fileopenButton.setObjectName(u"fileopenButton")
-        self.fileopenButton.setMaximumSize(QSize(71, 51))
+        self.fileopenButton.setMaximumSize(QSize(81, 51))
         self.fileopenButton.setTabletTracking(False)
 
         self.gridLayout_3.addWidget(self.fileopenButton, 0, 15, 1, 1)
@@ -84,39 +84,39 @@ class Ui_MainWindow(object):
         self.resetZoomButton = QPushButton(self.centralwidget)
         self.resetZoomButton.setObjectName(u"resetZoomButton")
         self.resetZoomButton.setEnabled(True)
-        self.resetZoomButton.setMaximumSize(QSize(71, 51))
+        self.resetZoomButton.setMaximumSize(QSize(81, 51))
 
         self.gridLayout_3.addWidget(self.resetZoomButton, 0, 2, 1, 1)
 
         self.cropButton = QPushButton(self.centralwidget)
         self.cropButton.setObjectName(u"cropButton")
         self.cropButton.setEnabled(False)
-        self.cropButton.setMaximumSize(QSize(71, 51))
+        self.cropButton.setMaximumSize(QSize(81, 51))
 
         self.gridLayout_3.addWidget(self.cropButton, 0, 5, 1, 1)
 
         self.noteButton = QPushButton(self.centralwidget)
         self.noteButton.setObjectName(u"noteButton")
-        self.noteButton.setMaximumSize(QSize(71, 51))
+        self.noteButton.setMaximumSize(QSize(81, 51))
 
         self.gridLayout_3.addWidget(self.noteButton, 0, 12, 1, 1)
 
         self.filesaveButton = QPushButton(self.centralwidget)
         self.filesaveButton.setObjectName(u"filesaveButton")
         self.filesaveButton.setEnabled(False)
-        self.filesaveButton.setMaximumSize(QSize(71, 51))
+        self.filesaveButton.setMaximumSize(QSize(81, 51))
 
         self.gridLayout_3.addWidget(self.filesaveButton, 0, 14, 1, 1)
 
         self.redoButton = QPushButton(self.centralwidget)
         self.redoButton.setObjectName(u"redoButton")
-        self.redoButton.setMaximumSize(QSize(71, 51))
+        self.redoButton.setMaximumSize(QSize(81, 51))
 
         self.gridLayout_3.addWidget(self.redoButton, 0, 4, 1, 1)
 
         self.undoButton = QPushButton(self.centralwidget)
         self.undoButton.setObjectName(u"undoButton")
-        self.undoButton.setMaximumSize(QSize(71, 51))
+        self.undoButton.setMaximumSize(QSize(81, 51))
 
         self.gridLayout_3.addWidget(self.undoButton, 0, 3, 1, 1)
 
@@ -174,7 +174,7 @@ class Ui_MainWindow(object):
         self.infoButton = QPushButton(self.centralwidget)
         self.infoButton.setObjectName(u"infoButton")
         self.infoButton.setEnabled(False)
-        self.infoButton.setMaximumSize(QSize(71, 51))
+        self.infoButton.setMaximumSize(QSize(81, 51))
 
         self.gridLayout_3.addWidget(self.infoButton, 0, 13, 1, 1)
 
@@ -204,7 +204,8 @@ class Ui_MainWindow(object):
         self.brushcolorlabel.setText(QCoreApplication.translate("MainWindow", u"Color:", None))
         self.resetZoomButton.setText(QCoreApplication.translate("MainWindow", u"Reset zoom", None))
         self.cropButton.setText(QCoreApplication.translate("MainWindow", u"Crop", None))
-        self.noteButton.setText(QCoreApplication.translate("MainWindow", u"Notes", None))
+        self.noteButton.setText(QCoreApplication.translate("MainWindow", u"Exif\n"
+"Comments", None))
         self.filesaveButton.setText(QCoreApplication.translate("MainWindow", u"Save File", None))
         self.redoButton.setText(QCoreApplication.translate("MainWindow", u"Redo", None))
         self.undoButton.setText(QCoreApplication.translate("MainWindow", u"Undo", None))
@@ -214,6 +215,7 @@ class Ui_MainWindow(object):
         self.selectButton.setText(QCoreApplication.translate("MainWindow", u"Select", None))
         self.lineButton.setText(QCoreApplication.translate("MainWindow", u"Line", None))
         self.brushcolorButton.setText("")
-        self.infoButton.setText(QCoreApplication.translate("MainWindow", u"Image Info", None))
+        self.infoButton.setText(QCoreApplication.translate("MainWindow", u"Image\n"
+"Info", None))
     # retranslateUi
 

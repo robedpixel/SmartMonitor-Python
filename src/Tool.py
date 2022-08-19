@@ -341,8 +341,6 @@ class EraserTool(Tool):
         return EffectType.RGB
 
 
-# TODO: two states, selecting and dragging
-# TODO: dragging happens when user clicks within bounds of selection
 class SelectTool(Tool):
     SELECT_STATE = 0
     DRAG_STATE = 1

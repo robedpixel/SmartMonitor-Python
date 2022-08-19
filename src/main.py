@@ -221,7 +221,7 @@ class Ui(QtWidgets.QMainWindow):
         self.note_module = ExifNoteModule()
         self.selected_tool = None
         self.selected_button = None
-        self.brush_sizes = {1: '1', 2: '3', 3: '5', 4: '7'}
+        self.brush_sizes = {1: '3', 2: '5', 3: '7', 4: '10'}
         self.current_brush_size = [1]
         self.file_dialog = None
         self.selection = [QtCore.QRect()]
@@ -305,7 +305,7 @@ class Ui(QtWidgets.QMainWindow):
 
         self.brush_color_button = self.findChild(QtWidgets.QWidget, 'brushcolorButton')
         self.brush_color_button.clicked.connect(self.on_brush_color_button_clicked)
-        self.current_brush_color = [QtGui.QColor(QtCore.Qt.black)]
+        self.current_brush_color = [QtGui.QColor(QtCore.Qt.red)]
         set_button_color(self.current_brush_color[0], self.brush_color_button)
         self.brush_color_button.update()
 
