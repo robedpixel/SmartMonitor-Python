@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1303</width>
-    <height>672</height>
+    <width>1920</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="0" column="0">
-     <widget class="QPushButton" name="moveButton">
+     <widget class="QPushButton" name="panButton">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -27,7 +27,7 @@
        </size>
       </property>
       <property name="text">
-       <string>Move</string>
+       <string>Pan</string>
       </property>
       <property name="checkable">
        <bool>true</bool>
@@ -330,6 +330,44 @@ Comments</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="QPushButton" name="rectButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Rectangle</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="cirButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Ellipse</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
     <item row="0" column="11">
@@ -369,7 +407,7 @@ Info</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1303</width>
+     <width>1920</width>
      <height>22</height>
     </rect>
    </property>

@@ -118,7 +118,7 @@ class PaintTool(Tool):
         return EffectType.RGB
 
 
-class MoveTool(Tool):
+class PanTool(Tool):
 
     def __init__(self):
         Tool.__init__(self)

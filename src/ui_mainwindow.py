@@ -17,18 +17,18 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1303, 672)
+        MainWindow.resize(1920, 800)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_3 = QGridLayout(self.centralwidget)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.moveButton = QPushButton(self.centralwidget)
-        self.moveButton.setObjectName(u"moveButton")
-        self.moveButton.setEnabled(False)
-        self.moveButton.setMaximumSize(QSize(71, 51))
-        self.moveButton.setCheckable(True)
+        self.panButton = QPushButton(self.centralwidget)
+        self.panButton.setObjectName(u"panButton")
+        self.panButton.setEnabled(False)
+        self.panButton.setMaximumSize(QSize(71, 51))
+        self.panButton.setCheckable(True)
 
-        self.gridLayout_3.addWidget(self.moveButton, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.panButton, 0, 0, 1, 1)
 
         self.brushsizelabel = QLabel(self.centralwidget)
         self.brushsizelabel.setObjectName(u"brushsizelabel")
@@ -162,6 +162,22 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addWidget(self.lineButton)
 
+        self.rectButton = QPushButton(self.centralwidget)
+        self.rectButton.setObjectName(u"rectButton")
+        self.rectButton.setEnabled(False)
+        self.rectButton.setMinimumSize(QSize(0, 51))
+        self.rectButton.setCheckable(True)
+
+        self.verticalLayout.addWidget(self.rectButton)
+
+        self.cirButton = QPushButton(self.centralwidget)
+        self.cirButton.setObjectName(u"cirButton")
+        self.cirButton.setEnabled(False)
+        self.cirButton.setMinimumSize(QSize(0, 51))
+        self.cirButton.setCheckable(True)
+
+        self.verticalLayout.addWidget(self.cirButton)
+
 
         self.gridLayout_3.addLayout(self.verticalLayout, 1, 0, 1, 2)
 
@@ -181,7 +197,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1303, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1920, 22))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -194,7 +210,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.moveButton.setText(QCoreApplication.translate("MainWindow", u"Move", None))
+        self.panButton.setText(QCoreApplication.translate("MainWindow", u"Pan", None))
         self.brushsizelabel.setText(QCoreApplication.translate("MainWindow", u"Brush Size:", None))
         self.fileopenButton.setText(QCoreApplication.translate("MainWindow", u"Open File", None))
         self.zoomButton.setText(QCoreApplication.translate("MainWindow", u"Zoom", None))
@@ -214,6 +230,8 @@ class Ui_MainWindow(object):
         self.eraserButton.setText(QCoreApplication.translate("MainWindow", u"Eraser", None))
         self.selectButton.setText(QCoreApplication.translate("MainWindow", u"Select", None))
         self.lineButton.setText(QCoreApplication.translate("MainWindow", u"Line", None))
+        self.rectButton.setText(QCoreApplication.translate("MainWindow", u"Rectangle", None))
+        self.cirButton.setText(QCoreApplication.translate("MainWindow", u"Ellipse", None))
         self.brushcolorButton.setText("")
         self.infoButton.setText(QCoreApplication.translate("MainWindow", u"Image\n"
 "Info", None))

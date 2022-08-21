@@ -292,11 +292,21 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.line_button.clicked.connect(self.on_line_button_clicked)
 
-        self.move_button = self.findChild(QtWidgets.QPushButton, 'moveButton')
-        self.move_button.setStyleSheet(
+        self.rect_button = self.findChild(QtWidgets.QPushButton, 'rectButton')
+        self.rect_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.rect_button.clicked.connect(self.on_rect_button_clicked)
+
+        self.circle_button = self.findChild(QtWidgets.QPushButton, 'cirButton')
+        self.circle_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.circle_button.clicked.connect(self.on_circle_button_clicked)
+
+        self.pan_button = self.findChild(QtWidgets.QPushButton, 'panButton')
+        self.pan_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
 
-        self.move_button.clicked.connect(self.on_move_button_clicked)
+        self.pan_button.clicked.connect(self.on_pan_button_clicked)
 
         self.zoom_button = self.findChild(QtWidgets.QWidget, 'zoomButton')
         self.zoom_button.setStyleSheet(
@@ -327,22 +337,26 @@ class Ui(QtWidgets.QMainWindow):
 
         self.button_list = deque()
         self.button_list.append(self.brush_button)
-        self.button_list.append(self.move_button)
+        self.button_list.append(self.pan_button)
         self.button_list.append(self.zoom_button)
         self.button_list.append(self.color_picker_button)
         self.button_list.append(self.eraser_button)
         self.button_list.append(self.select_button)
         self.button_list.append(self.line_button)
+        self.button_list.append(self.rect_button)
+        self.button_list.append(self.circle_button)
         self.button_list.append(self.file_save_button)
         self.button_list.append(self.info_button)
 
         self.tool_list = deque()
         self.tool_list.append(self.zoom_button)
-        self.tool_list.append(self.move_button)
+        self.tool_list.append(self.pan_button)
         self.tool_list.append(self.brush_button)
         self.tool_list.append(self.color_picker_button)
         self.tool_list.append(self.select_button)
         self.tool_list.append(self.line_button)
+        self.tool_list.append(self.rect_button)
+        self.tool_list.append(self.circle_button)
         self.tool_list.append(self.eraser_button)
 
         # Click all the buttons for the tools so that they work with touch when an image is loaded
@@ -524,8 +538,8 @@ class Ui(QtWidgets.QMainWindow):
     def on_brush_button_clicked(self):
         self.select_tool(self.brush_button, self.brush_tool_setup)
 
-    def on_move_button_clicked(self):
-        self.select_tool(self.move_button, self.move_tool_setup)
+    def on_pan_button_clicked(self):
+        self.select_tool(self.pan_button, self.pan_tool_setup)
 
     def on_brush_color_button_clicked(self):
         self.current_brush_color[0] = QtWidgets.QColorDialog.getColor()
@@ -562,6 +576,12 @@ class Ui(QtWidgets.QMainWindow):
     def on_line_button_clicked(self):
         self.select_tool(self.line_button, self.line_tool_setup)
 
+    def on_rect_button_clicked(self):
+        self.select_tool(self.rect_button, self.rect_tool_setup)
+
+    def on_circle_button_clicked(self):
+        self.select_tool(self.circle_button, self.circle_tool_setup)
+
     def on_crop_button_clicked(self):
         self.crop_tool.crop()
         self.update_image()
@@ -590,9 +610,9 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
 
-    def move_tool_setup(self) -> MoveTool:
-        new_tool = MoveTool()
-        new_tool.set_button(self.move_button)
+    def pan_tool_setup(self) -> PanTool:
+        new_tool = PanTool()
+        new_tool.set_button(self.pan_button)
         new_tool.set_image(self.current_image)
         new_tool.set_scroll_area(self.scroll_area)
         return new_tool
@@ -631,6 +651,26 @@ class Ui(QtWidgets.QMainWindow):
     def line_tool_setup(self) -> LineTool:
         new_tool = LineTool()
         new_tool.set_button(self.line_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_color(self.current_brush_color)
+        new_tool.set_scale(self.scale_factor)
+        new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
+        new_tool.set_action_list(self.actions, self.current_action)
+        return new_tool
+
+    def rect_tool_setup(self) -> RectTool:
+        new_tool = RectTool()
+        new_tool.set_button(self.rect_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_color(self.current_brush_color)
+        new_tool.set_scale(self.scale_factor)
+        new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
+        new_tool.set_action_list(self.actions, self.current_action)
+        return new_tool
+
+    def circle_tool_setup(self) -> CircleTool:
+        new_tool = CircleTool()
+        new_tool.set_button(self.circle_button)
         new_tool.set_image(self.current_image)
         new_tool.set_color(self.current_brush_color)
         new_tool.set_scale(self.scale_factor)
@@ -681,10 +721,20 @@ class Ui(QtWidgets.QMainWindow):
             action = self.actions.popleft()
             action.tool.apply_effect(action, [self.original_image])
 
-    # TODO: test this out later
     def show_image_exif_info(self, info: str):
         self.note_window = InfoWindow(info)
         self.note_window.show()
+
+    # TODO: touch gesture event handler
+    """
+    def event(self, e):
+        if e.type() == PySide.QtCore.QEvent.Gesture:
+            return gesture_event(e)
+        e.ignore()
+
+    def gesture_event(self, e):
+        pass
+    """
 
 
 app = QtWidgets.QApplication(sys.argv)
