@@ -227,6 +227,9 @@ class Ui(QtWidgets.QMainWindow):
         self.selection = [QtCore.QRect()]
         self.note_window = None
         self.info_to_display = ""
+        self.activated = False
+        self.lastPoint = QtCore.QPoint()
+        self.lastScale = self.scale_factor[0]
 
         self.actions = deque()
         self.current_action = [0]
@@ -302,11 +305,13 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.circle_button.clicked.connect(self.on_circle_button_clicked)
 
+        """
         self.pan_button = self.findChild(QtWidgets.QPushButton, 'panButton')
         self.pan_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
 
         self.pan_button.clicked.connect(self.on_pan_button_clicked)
+        """
 
         self.zoom_button = self.findChild(QtWidgets.QWidget, 'zoomButton')
         self.zoom_button.setStyleSheet(
@@ -337,7 +342,7 @@ class Ui(QtWidgets.QMainWindow):
 
         self.button_list = deque()
         self.button_list.append(self.brush_button)
-        self.button_list.append(self.pan_button)
+        #self.button_list.append(self.pan_button)
         self.button_list.append(self.zoom_button)
         self.button_list.append(self.color_picker_button)
         self.button_list.append(self.eraser_button)
@@ -350,7 +355,7 @@ class Ui(QtWidgets.QMainWindow):
 
         self.tool_list = deque()
         self.tool_list.append(self.zoom_button)
-        self.tool_list.append(self.pan_button)
+        #self.tool_list.append(self.pan_button)
         self.tool_list.append(self.brush_button)
         self.tool_list.append(self.color_picker_button)
         self.tool_list.append(self.select_button)
@@ -377,7 +382,7 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher = CameraFolderWatcher()
         self.file_watcher.monitor_directory(Ui.AIRNEF_PICTURE_DIRECTORY)
         self.file_watcher.register_callback(self.on_folder_changed_event)
-        self.showMaximized()  # Show the GUI
+        self.show()  # Show the GUI
 
     def show_open_dialog(self):
         self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', '/')
@@ -726,16 +731,57 @@ class Ui(QtWidgets.QMainWindow):
         self.note_window.show()
 
     # TODO: touch gesture event handler
-    """
     def event(self, e):
-        if e.type() == PySide.QtCore.QEvent.Gesture:
-            return gesture_event(e)
-        e.ignore()
+        if e.type() == QtCore.QEvent.Gesture:
+            print("gesture detected")
+            return gesture_event(QtWidgets.QGestureEvent(e))
+        return super(Ui, self).event(e)
 
     def gesture_event(self, e):
-        pass
+        pan = e.gesture(QtGui.QPanGesture)
+        pinch = e.gesture(QtGui.QPinchGesture)
+        if pan:
+            print("pan gesture detected")
+            #self.pan_triggered(e)
+        elif pinch:
+            print("pinch gesture detected")
+            #self.pinch_triggered(e)
+        else:
+            pass
+        e.accept()
+        return True
     """
+    def pan_triggered(self, gesture):
+        if gesture.state() == QtCore.Qt.GestureState.Qt.GestureStarted:
+            self.activated = True
+        elif gesture.state() == QtCore.Qt.GestureState.Qt.GestureUpdated:
+            if self.activated:
+                self.scroll_area.horizontalScrollBar().setValue(
+                    self.horizontal_scroll_bar.value() + (gesture.delta().toPoint()))
+                self.scroll_area.verticalScrollBar().setValue(
+                    self.vertical_scroll_bar.value() + (gesture.delta().toPoint()))
+        elif gesture.state() == QtCore.Qt.GestureState.Qt.GestureFinished:
+            self.activated = False
+        else:
+            pass
 
+    def pinch_triggered(self, gesture):
+        if gesture.state() == QtCore.Qt.GestureState.Qt.GestureStarted:
+            self.activated = True
+            self.lastPoint = pos
+            self.lastScale = self.scale_factor[0]
+        elif gesture.state() == QtCore.Qt.GestureState.Qt.GestureUpdated:
+            if self.activated:
+                self.scale_factor[0] = self.lastScale + gesture.scaleFactor()
+                if self.scale_factor[0] > 4.0:
+                    self.scale_factor[0] = 4.0
+                if self.scale_factor[0] < 0.25:
+                    self.scale_factor[0] = 0.25
+        elif gesture.state() == QtCore.Qt.GestureState.Qt.GestureFinished:
+            self.activated = False
+        else:
+            pass
+    """
 
 app = QtWidgets.QApplication(sys.argv)
 

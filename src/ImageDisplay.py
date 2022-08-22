@@ -20,3 +20,4 @@ class ImageDisplay(QtWidgets.QLabel):
     def mouseReleaseEvent(self, QMouseEvent):
         self.mouse_down = False
         self.release_callback_function(QMouseEvent)
+
