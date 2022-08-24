@@ -266,7 +266,8 @@ class Ui(QtWidgets.QMainWindow):
 
         self.scroll_area = self.findChild(QtWidgets.QScrollArea, 'scrollArea')
         self.display = ImageDisplay(self.on_image_display_clicked, self.on_image_display_move,
-                                    self.on_image_display_release)
+                                    self.on_image_display_release, self.update_image,
+                                    self.scale_factor, self.scroll_area)
         self.display.setMouseTracking(True)
         self.scroll_area.setWidget(self.display)
 
@@ -312,12 +313,12 @@ class Ui(QtWidgets.QMainWindow):
 
         self.pan_button.clicked.connect(self.on_pan_button_clicked)
         """
-
+        """
         self.zoom_button = self.findChild(QtWidgets.QWidget, 'zoomButton')
         self.zoom_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.zoom_button.clicked.connect(self.on_zoom_button_clicked)
-
+        """
         self.brush_color_button = self.findChild(QtWidgets.QWidget, 'brushcolorButton')
         self.brush_color_button.clicked.connect(self.on_brush_color_button_clicked)
         self.current_brush_color = [QtGui.QColor(QtCore.Qt.red)]
@@ -342,8 +343,8 @@ class Ui(QtWidgets.QMainWindow):
 
         self.button_list = deque()
         self.button_list.append(self.brush_button)
-        #self.button_list.append(self.pan_button)
-        self.button_list.append(self.zoom_button)
+        # self.button_list.append(self.pan_button)
+        # self.button_list.append(self.zoom_button)
         self.button_list.append(self.color_picker_button)
         self.button_list.append(self.eraser_button)
         self.button_list.append(self.select_button)
@@ -354,8 +355,8 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.info_button)
 
         self.tool_list = deque()
-        self.tool_list.append(self.zoom_button)
-        #self.tool_list.append(self.pan_button)
+        # self.tool_list.append(self.zoom_button)
+        # self.tool_list.append(self.pan_button)
         self.tool_list.append(self.brush_button)
         self.tool_list.append(self.color_picker_button)
         self.tool_list.append(self.select_button)
@@ -730,6 +731,7 @@ class Ui(QtWidgets.QMainWindow):
         self.note_window = InfoWindow(info)
         self.note_window.show()
 
+    """
     # TODO: touch gesture event handler
     def event(self, e):
         if e.type() == QtCore.QEvent.Gesture:
@@ -750,7 +752,7 @@ class Ui(QtWidgets.QMainWindow):
             pass
         e.accept()
         return True
-    """
+    
     def pan_triggered(self, gesture):
         if gesture.state() == QtCore.Qt.GestureState.Qt.GestureStarted:
             self.activated = True
@@ -782,6 +784,7 @@ class Ui(QtWidgets.QMainWindow):
         else:
             pass
     """
+
 
 app = QtWidgets.QApplication(sys.argv)
 
