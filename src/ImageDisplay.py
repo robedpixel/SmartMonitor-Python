@@ -2,6 +2,7 @@ from PySide2 import QtWidgets, QtCore, QtGui
 
 
 class ImageDisplay(QtWidgets.QLabel):
+    """
     def __init__(self, press_callback_function, move_callback_function, release_callback_function,
                  update_image_callback_function, scale_factor, scroll_area):
         QtWidgets.QLabel.__init__(self)
@@ -17,6 +18,15 @@ class ImageDisplay(QtWidgets.QLabel):
         self.lastScale = self.scale_factor[0]
         self.scroll_area = scroll_area
         self.pan_point = QtCore.QPointF()
+    """
+
+    def __init__(self, press_callback_function, move_callback_function, release_callback_function):
+        QtWidgets.QLabel.__init__(self)
+        self.mouse_down = False
+        self.activated = False
+        self.press_callback_function = press_callback_function
+        self.move_callback_function = move_callback_function
+        self.release_callback_function = release_callback_function
 
     def mousePressEvent(self, QMouseEvent):
         self.mouse_down = True
@@ -30,6 +40,7 @@ class ImageDisplay(QtWidgets.QLabel):
         self.mouse_down = False
         self.release_callback_function(QMouseEvent)
 
+    """
     def event(self, e):
         if e.type() == QtCore.QEvent.Type.Gesture:
             return self.gesture_event(e)
@@ -52,7 +63,7 @@ class ImageDisplay(QtWidgets.QLabel):
             self.lastScale = self.scale_factor[0]
         elif gesture.state() == QtCore.Qt.GestureState.GestureUpdated:
             if self.activated:
-                self.scale_factor[0] = self.scale_factor[0] * ((1 + gesture.scaleFactor())/2)
+                self.scale_factor[0] = self.scale_factor[0] * ((1 + gesture.scaleFactor()) / 2)
                 if self.scale_factor[0] > 4.0:
                     self.scale_factor[0] = 4.0
                 if self.scale_factor[0] < 0.25:
@@ -78,3 +89,4 @@ class ImageDisplay(QtWidgets.QLabel):
             self.activated = False
         else:
             pass
+    """

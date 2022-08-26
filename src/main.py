@@ -265,9 +265,11 @@ class Ui(QtWidgets.QMainWindow):
         self.redo_button.clicked.connect(self.on_redo_button_clicked)
 
         self.scroll_area = self.findChild(QtWidgets.QScrollArea, 'scrollArea')
+        #self.display = ImageDisplay(self.on_image_display_clicked, self.on_image_display_move,
+        #                            self.on_image_display_release, self.update_image,
+        #                            self.scale_factor, self.scroll_area)
         self.display = ImageDisplay(self.on_image_display_clicked, self.on_image_display_move,
-                                    self.on_image_display_release, self.update_image,
-                                    self.scale_factor, self.scroll_area)
+                                    self.on_image_display_release)
         self.display.setMouseTracking(True)
         self.scroll_area.setWidget(self.display)
 
@@ -306,19 +308,17 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.circle_button.clicked.connect(self.on_circle_button_clicked)
 
-        """
         self.pan_button = self.findChild(QtWidgets.QPushButton, 'panButton')
         self.pan_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
 
         self.pan_button.clicked.connect(self.on_pan_button_clicked)
-        """
-        """
+
         self.zoom_button = self.findChild(QtWidgets.QWidget, 'zoomButton')
         self.zoom_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.zoom_button.clicked.connect(self.on_zoom_button_clicked)
-        """
+
         self.brush_color_button = self.findChild(QtWidgets.QWidget, 'brushcolorButton')
         self.brush_color_button.clicked.connect(self.on_brush_color_button_clicked)
         self.current_brush_color = [QtGui.QColor(QtCore.Qt.red)]
@@ -343,8 +343,8 @@ class Ui(QtWidgets.QMainWindow):
 
         self.button_list = deque()
         self.button_list.append(self.brush_button)
-        # self.button_list.append(self.pan_button)
-        # self.button_list.append(self.zoom_button)
+        self.button_list.append(self.pan_button)
+        self.button_list.append(self.zoom_button)
         self.button_list.append(self.color_picker_button)
         self.button_list.append(self.eraser_button)
         self.button_list.append(self.select_button)
@@ -355,8 +355,8 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.info_button)
 
         self.tool_list = deque()
-        # self.tool_list.append(self.zoom_button)
-        # self.tool_list.append(self.pan_button)
+        self.tool_list.append(self.zoom_button)
+        self.tool_list.append(self.pan_button)
         self.tool_list.append(self.brush_button)
         self.tool_list.append(self.color_picker_button)
         self.tool_list.append(self.select_button)
