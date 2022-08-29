@@ -251,7 +251,7 @@ class Ui(QtWidgets.QMainWindow):
 
         self.zoom_bar = self.findChild(QtWidgets.QScrollBar, 'zoomBar')
         self.zoom_bar.setVisible(False)
-        #self.zoom_bar.clicked.connect(self.on_crop_button_clicked)
+        self.zoom_bar.sliderMoved.connect(self.on_zoom_bar_modified)
 
         self.camera_folder_button = self.findChild(QtWidgets.QPushButton, 'folderButton')
         self.camera_folder_button.clicked.connect(self.on_camera_folder_button_clicked)
@@ -269,7 +269,7 @@ class Ui(QtWidgets.QMainWindow):
         self.redo_button.clicked.connect(self.on_redo_button_clicked)
 
         self.scroll_area = self.findChild(QtWidgets.QScrollArea, 'scrollArea')
-        #self.display = ImageDisplay(self.on_image_display_clicked, self.on_image_display_move,
+        # self.display = ImageDisplay(self.on_image_display_clicked, self.on_image_display_move,
         #                            self.on_image_display_release, self.update_image,
         #                            self.scale_factor, self.scroll_area)
         self.display = ImageDisplay(self.on_image_display_clicked, self.on_image_display_move,
@@ -562,6 +562,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_reset_zoom_button_clicked(self):
         self.scale_factor[0] = 1.0
+        self.zoom_bar.setValue(int(100 * (self.scale_factor[0] - 0.25)))
         self.update_image()
 
     def on_note_button_clicked(self):
@@ -611,6 +612,10 @@ class Ui(QtWidgets.QMainWindow):
         if directory:
             self.file_watcher.monitor_directory(QtCore.QFileInfo(directory[0]).dir().absolutePath())
 
+    def on_zoom_bar_modified(self, position):
+        self.scale_factor[0] = (position + 25) / 100
+        self.update_image()
+
     def brush_tool_setup(self) -> PaintTool:
         new_tool = PaintTool()
         new_tool.set_button(self.brush_button)
@@ -629,7 +634,7 @@ class Ui(QtWidgets.QMainWindow):
         return new_tool
 
     def zoom_tool_setup(self) -> ScaleTool:
-        new_tool = ScaleTool(self.scale_factor,self.zoom_bar)
+        new_tool = ScaleTool(self.scale_factor, self.zoom_bar)
         new_tool.set_button(self.zoom_button)
         new_tool.set_image(self.current_image)
         return new_tool

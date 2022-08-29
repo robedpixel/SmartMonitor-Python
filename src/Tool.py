@@ -184,6 +184,9 @@ class ScaleTool(Tool):
         self.lastPoint = QtCore.QPoint()
         self.scaling = scale
         self.lastScale = self.scaling[0]
+        self.zoom_bar.setMinimum(0)
+        self.zoom_bar.setMaximum(375)
+        self.zoom_bar.setValue(int(100*(self.scaling[0]-0.25)))
         self.zoom_bar.setVisible(True)
         self.zoom_bar.setEnabled(True)
 
@@ -213,6 +216,7 @@ class ScaleTool(Tool):
                 self.scaling[0] = 4.0
             if self.scaling[0] < 0.25:
                 self.scaling[0] = 0.25
+            self.zoom_bar.setValue(int(100 * (self.scaling[0] - 0.25)))
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.activated = False
