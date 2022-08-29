@@ -167,6 +167,7 @@ class ScaleTool(Tool):
 
     def __init__(self):
         Tool.__init__(self)
+        self.zoom_bar = None
         self.push_button = None
         self.image = None
         self.activated = False
@@ -174,14 +175,17 @@ class ScaleTool(Tool):
         self.scaling = [float(1)]
         self.lastScale = self.scaling[0]
 
-    def __init__(self, scale: list[float]):
+    def __init__(self, scale: list[float], zoom_bar):
         Tool.__init__(self)
+        self.zoom_bar = zoom_bar
         self.push_button = None
         self.image = None
         self.activated = False
         self.lastPoint = QtCore.QPoint()
         self.scaling = scale
         self.lastScale = self.scaling[0]
+        self.zoom_bar.setVisible(True)
+        self.zoom_bar.setEnabled(True)
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -193,6 +197,8 @@ class ScaleTool(Tool):
         self.push_button = QPushButton
 
     def on_deselect_tool(self):
+        self.zoom_bar.setEnabled(False)
+        self.zoom_bar.setVisible(False)
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):

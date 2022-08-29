@@ -249,6 +249,10 @@ class Ui(QtWidgets.QMainWindow):
         self.crop_button.setVisible(False)
         self.crop_button.clicked.connect(self.on_crop_button_clicked)
 
+        self.zoom_bar = self.findChild(QtWidgets.QScrollBar, 'zoomBar')
+        self.zoom_bar.setVisible(False)
+        #self.zoom_bar.clicked.connect(self.on_crop_button_clicked)
+
         self.camera_folder_button = self.findChild(QtWidgets.QPushButton, 'folderButton')
         self.camera_folder_button.clicked.connect(self.on_camera_folder_button_clicked)
 
@@ -530,6 +534,7 @@ class Ui(QtWidgets.QMainWindow):
     def select_tool(self, tool_button: QtWidgets.QPushButton, new_tool_setup_func):
         if tool_button.isEnabled():
             if self.selected_button == tool_button:
+                self.selected_tool.on_deselect_tool()
                 self.selected_tool = None
                 self.selected_button = None
             else:
@@ -624,7 +629,7 @@ class Ui(QtWidgets.QMainWindow):
         return new_tool
 
     def zoom_tool_setup(self) -> ScaleTool:
-        new_tool = ScaleTool(self.scale_factor)
+        new_tool = ScaleTool(self.scale_factor,self.zoom_bar)
         new_tool.set_button(self.zoom_button)
         new_tool.set_image(self.current_image)
         return new_tool
