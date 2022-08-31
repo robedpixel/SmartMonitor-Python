@@ -347,6 +347,9 @@ class Ui(QtWidgets.QMainWindow):
         self.brush_size_icon = QtGui.QIcon(self.brush_size_pixmap)
         self.brush_size_button.setIcon(self.brush_size_icon)
         self.brush_size_button.setIconSize(self.brush_size_pixmap.rect().size())
+        
+        horizontal_layout = self.findChild(QtWidgets.QHBoxLayout, 'horizontalLayout')
+        horizontal_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 
         self.button_list = deque()
         self.button_list.append(self.brush_button)

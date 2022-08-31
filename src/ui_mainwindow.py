@@ -90,6 +90,9 @@ class Ui_MainWindow(object):
         self.brushButton.setEnabled(False)
         self.brushButton.setMinimumSize(QSize(0, 51))
         self.brushButton.setMaximumSize(QSize(147, 16777215))
+        icon1 = QIcon()
+        icon1.addFile(u"resources/paint-brush.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.brushButton.setIcon(icon1)
         self.brushButton.setCheckable(True)
 
         self.verticalLayout.addWidget(self.brushButton)
@@ -163,9 +166,9 @@ class Ui_MainWindow(object):
         self.zoomButton.setObjectName(u"zoomButton")
         self.zoomButton.setEnabled(False)
         self.zoomButton.setMaximumSize(QSize(71, 51))
-        icon1 = QIcon()
-        icon1.addFile(u"resources/zoom icon.ico", QSize(), QIcon.Normal, QIcon.Off)
-        self.zoomButton.setIcon(icon1)
+        icon2 = QIcon()
+        icon2.addFile(u"resources/zoom icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        self.zoomButton.setIcon(icon2)
         self.zoomButton.setCheckable(True)
 
         self.gridLayout_3.addWidget(self.zoomButton, 0, 1, 1, 1)
@@ -194,33 +197,6 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.brushcolorButton, 0, 14, 1, 1)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.zoomBar = QScrollBar(self.centralwidget)
-        self.zoomBar.setObjectName(u"zoomBar")
-        self.zoomBar.setEnabled(False)
-        self.zoomBar.setMinimumSize(QSize(0, 0))
-        self.zoomBar.setMaximumSize(QSize(300, 41))
-        self.zoomBar.setOrientation(Qt.Horizontal)
-
-        self.horizontalLayout.addWidget(self.zoomBar)
-
-        self.cropButton = QPushButton(self.centralwidget)
-        self.cropButton.setObjectName(u"cropButton")
-        self.cropButton.setEnabled(False)
-        self.cropButton.setMaximumSize(QSize(81, 51))
-
-        self.horizontalLayout.addWidget(self.cropButton)
-
-        self.zoomdisplaylabel = QLabel(self.centralwidget)
-        self.zoomdisplaylabel.setObjectName(u"zoomdisplaylabel")
-        self.zoomdisplaylabel.setEnabled(False)
-
-        self.horizontalLayout.addWidget(self.zoomdisplaylabel)
-
-
-        self.gridLayout_3.addLayout(self.horizontalLayout, 0, 6, 1, 1)
-
         self.redoButton = QPushButton(self.centralwidget)
         self.redoButton.setObjectName(u"redoButton")
         self.redoButton.setMaximumSize(QSize(81, 51))
@@ -242,6 +218,38 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
 
         self.gridLayout_3.addWidget(self.scrollArea, 1, 3, 1, 12)
+
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.zoomBar = QScrollBar(self.centralwidget)
+        self.zoomBar.setObjectName(u"zoomBar")
+        self.zoomBar.setEnabled(False)
+        self.zoomBar.setMinimumSize(QSize(300, 41))
+        self.zoomBar.setMaximumSize(QSize(300, 41))
+        self.zoomBar.setOrientation(Qt.Horizontal)
+
+        self.horizontalLayout.addWidget(self.zoomBar)
+
+        self.cropButton = QPushButton(self.centralwidget)
+        self.cropButton.setObjectName(u"cropButton")
+        self.cropButton.setEnabled(False)
+        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.cropButton.sizePolicy().hasHeightForWidth())
+        self.cropButton.setSizePolicy(sizePolicy)
+        self.cropButton.setMaximumSize(QSize(81, 51))
+
+        self.horizontalLayout.addWidget(self.cropButton)
+
+        self.zoomdisplaylabel = QLabel(self.centralwidget)
+        self.zoomdisplaylabel.setObjectName(u"zoomdisplaylabel")
+        self.zoomdisplaylabel.setEnabled(False)
+
+        self.horizontalLayout.addWidget(self.zoomdisplaylabel)
+
+
+        self.gridLayout_3.addLayout(self.horizontalLayout, 0, 6, 1, 2)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -271,7 +279,7 @@ class Ui_MainWindow(object):
         self.folderButton.setText(QCoreApplication.translate("MainWindow", u"Change\n"
 " camera folder", None))
         self.filesaveButton.setText(QCoreApplication.translate("MainWindow", u"Save File", None))
-        self.brushButton.setText(QCoreApplication.translate("MainWindow", u"Brush", None))
+        self.brushButton.setText("")
         self.pickerButton.setText(QCoreApplication.translate("MainWindow", u"Colour Picker", None))
         self.eraserButton.setText(QCoreApplication.translate("MainWindow", u"Eraser", None))
         self.selectButton.setText(QCoreApplication.translate("MainWindow", u"Select", None))
@@ -286,9 +294,9 @@ class Ui_MainWindow(object):
 "Comments", None))
         self.fileopenButton.setText(QCoreApplication.translate("MainWindow", u"Open File", None))
         self.brushcolorButton.setText("")
-        self.cropButton.setText(QCoreApplication.translate("MainWindow", u"Crop", None))
-        self.zoomdisplaylabel.setText(QCoreApplication.translate("MainWindow", u"zoom:", None))
         self.redoButton.setText(QCoreApplication.translate("MainWindow", u"Redo", None))
         self.brushSizeButton.setText("")
+        self.cropButton.setText(QCoreApplication.translate("MainWindow", u"Crop", None))
+        self.zoomdisplaylabel.setText(QCoreApplication.translate("MainWindow", u"zoom:", None))
     # retranslateUi
 
