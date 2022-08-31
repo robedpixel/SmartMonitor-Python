@@ -246,6 +246,8 @@ class Ui(QtWidgets.QMainWindow):
 
         # Initialise buttons
         self.help_text = self.findChild(QtWidgets.QPlainTextEdit, "helpEdit")
+        self.zoom_display_label = self.findChild(QtWidgets.QLabel, "zoomdisplaylabel")
+        self.zoom_display_label.setVisible(False)
         self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
         self.crop_button.setVisible(False)
         self.crop_button.clicked.connect(self.on_crop_button_clicked)
@@ -616,6 +618,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_zoom_bar_modified(self, position):
         self.scale_factor[0] = (position + 25) / 100
+        self.zoom_display_label.setText("zoom: " + "{:.2f}".format(100 * self.scale_factor[0]) + "%")
         self.update_image()
 
     def brush_tool_setup(self) -> PaintTool:
@@ -636,7 +639,7 @@ class Ui(QtWidgets.QMainWindow):
         return new_tool
 
     def zoom_tool_setup(self) -> ScaleTool:
-        new_tool = ScaleTool(self.scale_factor, self.zoom_bar)
+        new_tool = ScaleTool(self.scale_factor, self.zoom_bar, self.zoom_display_label)
         new_tool.set_button(self.zoom_button)
         new_tool.set_image(self.current_image)
         return new_tool

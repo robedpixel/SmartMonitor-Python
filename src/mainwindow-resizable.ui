@@ -76,7 +76,11 @@ Info</string>
        </size>
       </property>
       <property name="text">
-       <string>Pan</string>
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>resources/panningicon.png</normaloff>resources/panningicon.png</iconset>
       </property>
       <property name="checkable">
        <bool>true</bool>
@@ -141,7 +145,7 @@ Info</string>
        <attribute name="title">
         <string>Tools</string>
        </attribute>
-       <widget class="QWidget" name="">
+       <widget class="QWidget" name="layoutWidget">
         <property name="geometry">
          <rect>
           <x>-3</x>
@@ -349,7 +353,11 @@ Info</string>
        </size>
       </property>
       <property name="text">
-       <string>Zoom</string>
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>resources/zoom icon.ico</normaloff>resources/zoom icon.ico</iconset>
       </property>
       <property name="checkable">
        <bool>true</bool>
@@ -439,6 +447,16 @@ Comments</string>
         </property>
         <property name="text">
          <string>Crop</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="zoomdisplaylabel">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>zoom:</string>
         </property>
        </widget>
       </item>

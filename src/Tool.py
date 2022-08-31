@@ -136,7 +136,7 @@ class PanTool(Tool):
         self.scroll_area = None
         self.horizontal_scroll_bar = None
         self.vertical_scroll_bar = None
-        self.help_str = "Tap and drag on the canvas to pan the image"
+        self.help_str = "Panning:\nTap and drag on the canvas to pan the image"
 
     def set_scroll_area(self, area: QtWidgets.QScrollArea):
         self.scroll_area = area
@@ -177,19 +177,20 @@ class ScaleTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.zoom_bar = None
+        self.zoom_bar_display = None
         self.push_button = None
         self.image = None
         self.activated = False
         self.lastPoint = QtCore.QPoint()
         self.scaling = [float(1)]
         self.lastScale = self.scaling[0]
-        self.help_str = "Tap and drag left to zoom out, Tap and drag right to zoom in.\n You can also use the slider " \
-                        "to zoom " \
-                        "in and out "
+        self.help_str = "Zoom:\nTap and drag left to zoom out, Tap and drag right to zoom in.\n You can also use the " \
+                        "slider to zoom in and out "
 
-    def __init__(self, scale: list[float], zoom_bar):
+    def __init__(self, scale: list[float], zoom_bar, zoom_bar_display):
         Tool.__init__(self)
         self.zoom_bar = zoom_bar
+        self.zoom_bar_display = zoom_bar_display
         self.push_button = None
         self.image = None
         self.activated = False
@@ -201,9 +202,10 @@ class ScaleTool(Tool):
         self.zoom_bar.setValue(int(100 * (self.scaling[0] - 0.25)))
         self.zoom_bar.setVisible(True)
         self.zoom_bar.setEnabled(True)
-        self.help_str = "Tap and drag left to zoom out, Tap and drag right to zoom in.\n You can also use the slider " \
-                        "to zoom " \
-                        "in and out "
+        self.zoom_bar_display.setVisible(True)
+        self.zoom_bar_display.setEnabled(True)
+        self.help_str = "Zoom:\nTap and drag left to zoom out, Tap and drag right to zoom in.\n You can also use the " \
+                        "slider to zoom in and out "
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -218,6 +220,8 @@ class ScaleTool(Tool):
         self.help_text.clear()
         self.zoom_bar.setEnabled(False)
         self.zoom_bar.setVisible(False)
+        self.zoom_bar_display.setEnabled(False)
+        self.zoom_bar_display.setVisible(False)
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
@@ -233,6 +237,7 @@ class ScaleTool(Tool):
             if self.scaling[0] < 0.25:
                 self.scaling[0] = 0.25
             self.zoom_bar.setValue(int(100 * (self.scaling[0] - 0.25)))
+            self.zoom_bar_display.setText("zoom: " + "{:.2f}".format(100*self.scaling[0]) + "%")
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.activated = False
