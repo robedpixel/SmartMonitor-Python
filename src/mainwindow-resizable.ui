@@ -202,7 +202,11 @@ Info</string>
             </size>
            </property>
            <property name="text">
-            <string>Colour Picker</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>resources/color-picker.png</normaloff>resources/color-picker.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -227,7 +231,11 @@ Info</string>
             </size>
            </property>
            <property name="text">
-            <string>Eraser</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>resources/eraser.png</normaloff>resources/eraser.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>

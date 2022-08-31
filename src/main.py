@@ -652,6 +652,7 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_button(self.color_picker_button)
         new_tool.set_color_button(self.brush_color_button)
         new_tool.set_image(self.current_image)
+        new_tool.set_scale(self.scale_factor)
         new_tool.set_color_variable(self.current_brush_color)
         return new_tool
 

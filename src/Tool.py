@@ -253,6 +253,7 @@ class ColourPickerTool(Tool):
 
     def __init__(self):
         Tool.__init__(self)
+        self.scale = None
         self.push_button = None
         self.image = None
         self.activated = False
@@ -266,6 +267,9 @@ class ColourPickerTool(Tool):
     def set_color_variable(self, color: list[QtGui.QColor]):
         self.color = color
 
+    def set_scale(self, scale: list[float]):
+        self.scale = scale
+
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
 
@@ -277,7 +281,8 @@ class ColourPickerTool(Tool):
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
-        self.color[0] = self.image[0].pixelColor(pos)
+        new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+        self.color[0] = self.image[0].pixelColor(new_pos)
         if self.color[0].isValid():
             qss = "background-color: " + (self.color[0].name())
             self.color_button.setStyleSheet(qss)
