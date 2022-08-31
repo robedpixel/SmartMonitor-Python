@@ -245,6 +245,7 @@ class Ui(QtWidgets.QMainWindow):
         self.note_window = None
 
         # Initialise buttons
+        self.help_text = self.findChild(QtWidgets.QPlainTextEdit, "helpEdit")
         self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
         self.crop_button.setVisible(False)
         self.crop_button.clicked.connect(self.on_crop_button_clicked)
@@ -538,9 +539,10 @@ class Ui(QtWidgets.QMainWindow):
                 self.selected_tool = None
                 self.selected_button = None
             else:
-                new_tool = new_tool_setup_func()
                 if self.selected_tool:
                     self.selected_tool.on_deselect_tool()
+                new_tool = new_tool_setup_func()
+                new_tool.set_help_text(self.help_text)
                 self.selected_tool = new_tool
                 self.selected_tool.on_select_tool()
                 self.selected_button = tool_button

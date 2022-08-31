@@ -11,6 +11,8 @@ class Tool:
         self.width = 0
         self.action_list = []
         self.action_list_state = []
+        self.help_text = None
+        self.help_str = ""
 
     def set_image(self, image: [QtGui.QImage]):
         pass
@@ -35,6 +37,10 @@ class Tool:
 
     def get_effect_type(self):
         raise NotImplementedError()
+
+    def set_help_text(self, help_text):
+        self.help_text = help_text
+        self.help_text.setPlainText(self.help_str)
 
 
 class PaintTool(Tool):
@@ -72,6 +78,7 @@ class PaintTool(Tool):
         self.paint_radius = paint_brush_size
 
     def on_deselect_tool(self):
+        self.help_text.clear()
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
@@ -129,6 +136,7 @@ class PanTool(Tool):
         self.scroll_area = None
         self.horizontal_scroll_bar = None
         self.vertical_scroll_bar = None
+        self.help_str = "Tap and drag on the canvas to pan the image"
 
     def set_scroll_area(self, area: QtWidgets.QScrollArea):
         self.scroll_area = area
@@ -142,6 +150,7 @@ class PanTool(Tool):
         self.push_button = QPushButton
 
     def on_deselect_tool(self):
+        self.help_text.clear()
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
@@ -174,6 +183,9 @@ class ScaleTool(Tool):
         self.lastPoint = QtCore.QPoint()
         self.scaling = [float(1)]
         self.lastScale = self.scaling[0]
+        self.help_str = "Tap and drag left to zoom out, Tap and drag right to zoom in.\n You can also use the slider " \
+                        "to zoom " \
+                        "in and out "
 
     def __init__(self, scale: list[float], zoom_bar):
         Tool.__init__(self)
@@ -186,9 +198,12 @@ class ScaleTool(Tool):
         self.lastScale = self.scaling[0]
         self.zoom_bar.setMinimum(0)
         self.zoom_bar.setMaximum(375)
-        self.zoom_bar.setValue(int(100*(self.scaling[0]-0.25)))
+        self.zoom_bar.setValue(int(100 * (self.scaling[0] - 0.25)))
         self.zoom_bar.setVisible(True)
         self.zoom_bar.setEnabled(True)
+        self.help_str = "Tap and drag left to zoom out, Tap and drag right to zoom in.\n You can also use the slider " \
+                        "to zoom " \
+                        "in and out "
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -200,6 +215,7 @@ class ScaleTool(Tool):
         self.push_button = QPushButton
 
     def on_deselect_tool(self):
+        self.help_text.clear()
         self.zoom_bar.setEnabled(False)
         self.zoom_bar.setVisible(False)
         self.push_button.setChecked(False)
@@ -252,6 +268,7 @@ class ColourPickerTool(Tool):
         self.push_button = push_button
 
     def on_deselect_tool(self):
+        self.help_text.clear()
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
@@ -301,6 +318,7 @@ class EraserTool(Tool):
     #    self.paint_radius = paint_brush_size
 
     def on_deselect_tool(self):
+        self.help_text.clear()
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
@@ -391,6 +409,7 @@ class SelectTool(Tool):
     #    self.paint_radius = paint_brush_size
 
     def on_deselect_tool(self):
+        self.help_text.clear()
         self.selection[0].setRect(0, 0, 0, 0)
         for button in self.child_buttons:
             button.setEnabled(False)
@@ -542,6 +561,7 @@ class LineTool(Tool):
         self.paint_radius = paint_brush_size
 
     def on_deselect_tool(self):
+        self.help_text.clear()
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
@@ -630,6 +650,7 @@ class RectTool(Tool):
         self.paint_radius = paint_brush_size
 
     def on_deselect_tool(self):
+        self.help_text.clear()
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
@@ -728,6 +749,7 @@ class CircleTool(Tool):
         self.paint_radius = paint_brush_size
 
     def on_deselect_tool(self):
+        self.help_text.clear()
         self.push_button.setChecked(False)
 
     def on_click(self, pos: QtCore.QPoint, effects: deque):
