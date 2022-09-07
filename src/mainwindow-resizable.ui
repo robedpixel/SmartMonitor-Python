@@ -319,10 +319,10 @@ Comments</string>
     <item row="1" column="0" colspan="2">
      <widget class="QTabWidget" name="tabWidget">
       <property name="styleSheet">
-       <string notr="true">QTabBar::tab { height: 50px; width: 50px; }</string>
+       <string notr="true">QTabBar::tab { height: 50px; width: 70px; }</string>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tooltab">
        <attribute name="title">

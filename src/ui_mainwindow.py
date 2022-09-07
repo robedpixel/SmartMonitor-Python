@@ -171,7 +171,7 @@ class Ui_MainWindow(object):
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setStyleSheet(u"QTabBar::tab { height: 50px; width: 50px; }")
+        self.tabWidget.setStyleSheet(u"QTabBar::tab { height: 50px; width: 70px; }")
         self.tooltab = QWidget()
         self.tooltab.setObjectName(u"tooltab")
         self.verticalLayoutWidget_2 = QWidget(self.tooltab)
@@ -304,7 +304,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
