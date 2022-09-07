@@ -56,6 +56,7 @@ class PaintTool(Tool):
         self.color = QtGui.QColor(QtCore.Qt.black)
         self.scale = [float(1)]
         self.current_effect = None
+        self.help_str = "Brush:\nTap and drag to draw on the canvas"
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -260,6 +261,7 @@ class ColourPickerTool(Tool):
         self.color = None
         self.lastPoint = QtCore.QPoint()
         self.color_button = None
+        self.help_str = "Color Picker:\nTap on the canvas to set the brush color to the tapped color"
 
     def set_color_button(self, color_button: QtWidgets.QPushButton):
         self.color_button = color_button
@@ -313,6 +315,7 @@ class EraserTool(Tool):
         self.color = QtGui.QColor(QtCore.Qt.white)
         self.scale = [float(1)]
         self.current_effect = None
+        self.help_str = "Eraser:\nTap and drag to erase the canvas"
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -395,6 +398,8 @@ class SelectTool(Tool):
         self.color = QtGui.QColor(QtCore.Qt.white)
         self.scale = [float(1)]
         self.current_effect = None
+        self.help_str = "Selection Tool:\nTap and drag to select an Area on the Canvas\nPress the crop button to crop " \
+                        "the selected area "
         for button in self.child_buttons:
             button.setVisible(True)
             button.setEnabled(True)
@@ -549,6 +554,7 @@ class LineTool(Tool):
         self.current_effect = None
         self.image_copy = None
         self.image_copy_two = None
+        self.help_str = "Line Tool:\nTap and drag draw a straight line on the canvas"
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -638,6 +644,7 @@ class RectTool(Tool):
         self.current_effect = None
         self.image_copy = None
         self.image_copy_two = None
+        self.help_str = "Rectangle Tool:\nTap and drag draw a rectangle on the canvas"
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -737,6 +744,7 @@ class CircleTool(Tool):
         self.current_effect = None
         self.image_copy = None
         self.image_copy_two = None
+        self.help_str = "Ellipse Tool:\nTap and drag draw an ellipse on the canvas"
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
