@@ -271,12 +271,23 @@ class Ui_MainWindow(object):
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.pushButton = QPushButton(self.verticalLayoutWidget)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setMinimumSize(QSize(0, 51))
-        self.pushButton.setMaximumSize(QSize(147, 16777215))
+        self.burnButton = QPushButton(self.verticalLayoutWidget)
+        self.burnButton.setObjectName(u"burnButton")
+        self.burnButton.setEnabled(False)
+        self.burnButton.setMinimumSize(QSize(0, 51))
+        self.burnButton.setMaximumSize(QSize(147, 16777215))
+        self.burnButton.setCheckable(True)
 
-        self.verticalLayout.addWidget(self.pushButton)
+        self.verticalLayout.addWidget(self.burnButton)
+
+        self.dodgeButton = QPushButton(self.verticalLayoutWidget)
+        self.dodgeButton.setObjectName(u"dodgeButton")
+        self.dodgeButton.setEnabled(False)
+        self.dodgeButton.setMinimumSize(QSize(0, 51))
+        self.dodgeButton.setMaximumSize(QSize(147, 16777215))
+        self.dodgeButton.setCheckable(True)
+
+        self.verticalLayout.addWidget(self.dodgeButton)
 
         self.tabWidget.addTab(self.icontab, "")
 
@@ -293,7 +304,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -328,7 +339,8 @@ class Ui_MainWindow(object):
         self.rectButton.setText("")
         self.cirButton.setText("")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tooltab), QCoreApplication.translate("MainWindow", u"Tools", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"PushButton", None))
+        self.burnButton.setText(QCoreApplication.translate("MainWindow", u"Burn", None))
+        self.dodgeButton.setText(QCoreApplication.translate("MainWindow", u"Dodge", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.icontab), QCoreApplication.translate("MainWindow", u"Icons", None))
     # retranslateUi
 

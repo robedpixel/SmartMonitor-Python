@@ -108,8 +108,6 @@ def extract_preview_image(filename: str) -> str:
     # return path to the extracted image
     return output_path
 
-
-# TODO: test this out later and show in new window
 def get_image_exif_tags(filename: str) -> str:
     """
     img = Image.open(filename)
@@ -326,6 +324,16 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.zoom_button.clicked.connect(self.on_zoom_button_clicked)
 
+        self.burn_button = self.findChild(QtWidgets.QWidget, 'burnButton')
+        self.burn_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.burn_button.clicked.connect(self.on_burn_button_clicked)
+
+        self.dodge_button = self.findChild(QtWidgets.QWidget, 'dodgeButton')
+        self.dodge_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.dodge_button.clicked.connect(self.on_dodge_button_clicked)
+
         self.brush_color_button = self.findChild(QtWidgets.QWidget, 'brushcolorButton')
         self.brush_color_button.clicked.connect(self.on_brush_color_button_clicked)
         self.current_brush_color = [QtGui.QColor(QtCore.Qt.red)]
@@ -363,6 +371,8 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.circle_button)
         self.button_list.append(self.file_save_button)
         self.button_list.append(self.info_button)
+        self.button_list.append(self.burn_button)
+        self.button_list.append(self.dodge_button)
 
         self.tool_list = deque()
         self.tool_list.append(self.zoom_button)
@@ -374,6 +384,8 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.rect_button)
         self.tool_list.append(self.circle_button)
         self.tool_list.append(self.eraser_button)
+        self.tool_list.append(self.burn_button)
+        self.tool_list.append(self.dodge_button)
 
         # Click all the buttons for the tools so that they work with touch when an image is loaded
         # Don't ask me why, I don't know why either
@@ -601,6 +613,12 @@ class Ui(QtWidgets.QMainWindow):
     def on_circle_button_clicked(self):
         self.select_tool(self.circle_button, self.circle_tool_setup)
 
+    def on_burn_button_clicked(self):
+        self.select_tool(self.burn_button, self.burn_tool_setup)
+
+    def on_dodge_button_clicked(self):
+        self.select_tool(self.dodge_button, self.dodge_tool_setup)
+
     def on_crop_button_clicked(self):
         self.crop_tool.crop()
         self.update_image()
@@ -700,6 +718,24 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_color(self.current_brush_color)
         new_tool.set_scale(self.scale_factor)
         new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
+        new_tool.set_action_list(self.actions, self.current_action)
+        return new_tool
+
+    def burn_tool_setup(self) -> ImageTool:
+        new_tool = ImageTool()
+        new_tool.set_button(self.burn_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_scale(self.scale_factor)
+        new_tool.set_insert_image(QtGui.QImage("resources/burn.png"))
+        new_tool.set_action_list(self.actions, self.current_action)
+        return new_tool
+
+    def dodge_tool_setup(self) -> ImageTool:
+        new_tool = ImageTool()
+        new_tool.set_button(self.dodge_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_scale(self.scale_factor)
+        new_tool.set_insert_image(QtGui.QImage("resources/dodge.png"))
         new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
 
