@@ -472,7 +472,11 @@ Comments</string>
             </size>
            </property>
            <property name="text">
-            <string>Line</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>resources/line-tool.png</normaloff>resources/line-tool.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -491,7 +495,11 @@ Comments</string>
             </size>
            </property>
            <property name="text">
-            <string>Rectangle</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>resources/rectangle.png</normaloff>resources/rectangle.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -510,7 +518,11 @@ Comments</string>
             </size>
            </property>
            <property name="text">
-            <string>Ellipse</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>resources/ellipse.png</normaloff>resources/ellipse.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
