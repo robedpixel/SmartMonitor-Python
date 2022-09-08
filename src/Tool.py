@@ -88,6 +88,10 @@ class PaintTool(Tool):
         self.lastPoint = new_pos
         self.current_effect = []
         self.current_effect.append(Effect(new_pos))
+        painter = QtGui.QPainter(self.image[0])
+        painter.setPen(QtGui.QPen(self.color[0], int(self.paint_sizes[self.paint_radius[0]]),
+                                  QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
+        painter.drawPoint(self.lastPoint)
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
@@ -340,6 +344,10 @@ class EraserTool(Tool):
         self.lastPoint = new_pos
         self.current_effect = []
         self.current_effect.append(Effect(new_pos))
+        painter = QtGui.QPainter(self.image[0])
+        painter.setPen(QtGui.QPen(self.color, self.paint_radius,
+                                  QtCore.Qt.SolidLine, QtCore.Qt.SquareCap, QtCore.Qt.BevelJoin))
+        painter.drawPoint(self.lastPoint)
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
