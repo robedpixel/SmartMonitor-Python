@@ -177,9 +177,9 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget_2 = QWidget(self.tooltab)
         self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
         self.verticalLayoutWidget_2.setGeometry(QRect(0, 0, 141, 631))
-        self.verticalLayout_2 = QVBoxLayout(self.verticalLayoutWidget_2)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.toolLayout = QVBoxLayout(self.verticalLayoutWidget_2)
+        self.toolLayout.setObjectName(u"toolLayout")
+        self.toolLayout.setContentsMargins(0, 0, 0, 0)
         self.brushButton = QPushButton(self.verticalLayoutWidget_2)
         self.brushButton.setObjectName(u"brushButton")
         self.brushButton.setEnabled(False)
@@ -190,7 +190,7 @@ class Ui_MainWindow(object):
         self.brushButton.setIcon(icon2)
         self.brushButton.setCheckable(True)
 
-        self.verticalLayout_2.addWidget(self.brushButton)
+        self.toolLayout.addWidget(self.brushButton)
 
         self.pickerButton = QPushButton(self.verticalLayoutWidget_2)
         self.pickerButton.setObjectName(u"pickerButton")
@@ -202,7 +202,7 @@ class Ui_MainWindow(object):
         self.pickerButton.setIcon(icon3)
         self.pickerButton.setCheckable(True)
 
-        self.verticalLayout_2.addWidget(self.pickerButton)
+        self.toolLayout.addWidget(self.pickerButton)
 
         self.eraserButton = QPushButton(self.verticalLayoutWidget_2)
         self.eraserButton.setObjectName(u"eraserButton")
@@ -214,7 +214,7 @@ class Ui_MainWindow(object):
         self.eraserButton.setIcon(icon4)
         self.eraserButton.setCheckable(True)
 
-        self.verticalLayout_2.addWidget(self.eraserButton)
+        self.toolLayout.addWidget(self.eraserButton)
 
         self.selectButton = QPushButton(self.verticalLayoutWidget_2)
         self.selectButton.setObjectName(u"selectButton")
@@ -226,7 +226,7 @@ class Ui_MainWindow(object):
         self.selectButton.setIcon(icon5)
         self.selectButton.setCheckable(True)
 
-        self.verticalLayout_2.addWidget(self.selectButton)
+        self.toolLayout.addWidget(self.selectButton)
 
         self.lineButton = QPushButton(self.verticalLayoutWidget_2)
         self.lineButton.setObjectName(u"lineButton")
@@ -238,7 +238,7 @@ class Ui_MainWindow(object):
         self.lineButton.setIcon(icon6)
         self.lineButton.setCheckable(True)
 
-        self.verticalLayout_2.addWidget(self.lineButton)
+        self.toolLayout.addWidget(self.lineButton)
 
         self.rectButton = QPushButton(self.verticalLayoutWidget_2)
         self.rectButton.setObjectName(u"rectButton")
@@ -249,7 +249,7 @@ class Ui_MainWindow(object):
         self.rectButton.setIcon(icon7)
         self.rectButton.setCheckable(True)
 
-        self.verticalLayout_2.addWidget(self.rectButton)
+        self.toolLayout.addWidget(self.rectButton)
 
         self.cirButton = QPushButton(self.verticalLayoutWidget_2)
         self.cirButton.setObjectName(u"cirButton")
@@ -260,7 +260,7 @@ class Ui_MainWindow(object):
         self.cirButton.setIcon(icon8)
         self.cirButton.setCheckable(True)
 
-        self.verticalLayout_2.addWidget(self.cirButton)
+        self.toolLayout.addWidget(self.cirButton)
 
         self.tabWidget.addTab(self.tooltab, "")
         self.icontab = QWidget()
@@ -268,9 +268,9 @@ class Ui_MainWindow(object):
         self.verticalLayoutWidget = QWidget(self.icontab)
         self.verticalLayoutWidget.setObjectName(u"verticalLayoutWidget")
         self.verticalLayoutWidget.setGeometry(QRect(0, 0, 141, 631))
-        self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.iconLayout = QVBoxLayout(self.verticalLayoutWidget)
+        self.iconLayout.setObjectName(u"iconLayout")
+        self.iconLayout.setContentsMargins(0, 0, 0, 0)
         self.burnButton = QPushButton(self.verticalLayoutWidget)
         self.burnButton.setObjectName(u"burnButton")
         self.burnButton.setEnabled(False)
@@ -278,7 +278,7 @@ class Ui_MainWindow(object):
         self.burnButton.setMaximumSize(QSize(147, 16777215))
         self.burnButton.setCheckable(True)
 
-        self.verticalLayout.addWidget(self.burnButton)
+        self.iconLayout.addWidget(self.burnButton)
 
         self.dodgeButton = QPushButton(self.verticalLayoutWidget)
         self.dodgeButton.setObjectName(u"dodgeButton")
@@ -287,7 +287,7 @@ class Ui_MainWindow(object):
         self.dodgeButton.setMaximumSize(QSize(147, 16777215))
         self.dodgeButton.setCheckable(True)
 
-        self.verticalLayout.addWidget(self.dodgeButton)
+        self.iconLayout.addWidget(self.dodgeButton)
 
         self.tabWidget.addTab(self.icontab, "")
 
@@ -296,7 +296,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1920, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1920, 17))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")

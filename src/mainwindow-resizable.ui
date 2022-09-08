@@ -337,7 +337,7 @@ Comments</string>
           <height>631</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_2">
+        <layout class="QVBoxLayout" name="toolLayout">
          <item>
           <widget class="QPushButton" name="brushButton">
            <property name="enabled">
@@ -545,7 +545,7 @@ Comments</string>
           <height>631</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout">
+        <layout class="QVBoxLayout" name="iconLayout">
          <item>
           <widget class="QPushButton" name="burnButton">
            <property name="enabled">
@@ -609,7 +609,7 @@ Comments</string>
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>22</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>
