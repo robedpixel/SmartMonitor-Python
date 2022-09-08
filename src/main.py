@@ -40,6 +40,7 @@ def set_button_color(color: QtGui.QColor, button: QtWidgets.QPushButton):
         button.setStyleSheet(qss)
 
 
+
 # Workaround function to make qtvirtualkeyboard not black in the top portion
 """def handleVisibleChanged():
     if not QtGui.QGuiApplication.inputMethod().isVisible():
@@ -359,7 +360,7 @@ class Ui(QtWidgets.QMainWindow):
         horizontal_layout = self.findChild(QtWidgets.QHBoxLayout, 'horizontalLayout')
         horizontal_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 
-        self.button_list = deque()
+        self.button_list = list()
         self.button_list.append(self.brush_button)
         self.button_list.append(self.pan_button)
         self.button_list.append(self.zoom_button)
@@ -374,7 +375,7 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.burn_button)
         self.button_list.append(self.dodge_button)
 
-        self.tool_list = deque()
+        self.tool_list = list()
         self.tool_list.append(self.zoom_button)
         self.tool_list.append(self.pan_button)
         self.tool_list.append(self.brush_button)
@@ -386,6 +387,13 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.eraser_button)
         self.tool_list.append(self.burn_button)
         self.tool_list.append(self.dodge_button)
+
+        self.image_button_list = list()
+        self.image_button_list.append((self.burn_button, "Burn +1"))
+
+        # TODO: set icon
+        #for button in self.image_button_list:
+        #    button[0].set_image(self.get_qimage_from_text(button[1]))
 
         # Click all the buttons for the tools so that they work with touch when an image is loaded
         # Don't ask me why, I don't know why either
@@ -726,7 +734,7 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_button(self.burn_button)
         new_tool.set_image(self.current_image)
         new_tool.set_scale(self.scale_factor)
-        new_tool.set_insert_image(QtGui.QImage("resources/burn.png"))
+        new_tool.set_insert_image(self.get_qimage_from_text("Burn +1"))
         new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
 
@@ -839,6 +847,16 @@ class Ui(QtWidgets.QMainWindow):
         else:
             pass
     """
+
+    def get_qimage_from_text(self, text: str):
+        image = QtGui.QImage(QtCore.QSize(400, 300), QtGui.QImage.Format_ARGB32)
+        image.fill(QtGui.qRgba(0, 0, 0, 0))
+        painter = QtGui.QPainter(image)
+        painter.setBrush(QtGui.QBrush(self.current_brush_color[0]))
+        painter.setPen(QtGui.QPen(self.current_brush_color[0]))
+        painter.drawText(QtCore.QRect(0, 0, 400, 300), text)
+        painter.end()
+        return image
 
 
 app = QtWidgets.QApplication(sys.argv)
