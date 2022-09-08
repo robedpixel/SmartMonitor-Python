@@ -259,24 +259,6 @@ class Ui_MainWindow(object):
         self.iconLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.iconLayout.setObjectName(u"iconLayout")
         self.iconLayout.setContentsMargins(0, 0, 0, 0)
-        self.burnButton = QPushButton(self.verticalLayoutWidget)
-        self.burnButton.setObjectName(u"burnButton")
-        self.burnButton.setEnabled(False)
-        self.burnButton.setMinimumSize(QSize(0, 51))
-        self.burnButton.setMaximumSize(QSize(147, 16777215))
-        self.burnButton.setCheckable(True)
-
-        self.iconLayout.addWidget(self.burnButton)
-
-        self.dodgeButton = QPushButton(self.verticalLayoutWidget)
-        self.dodgeButton.setObjectName(u"dodgeButton")
-        self.dodgeButton.setEnabled(False)
-        self.dodgeButton.setMinimumSize(QSize(0, 51))
-        self.dodgeButton.setMaximumSize(QSize(147, 16777215))
-        self.dodgeButton.setCheckable(True)
-
-        self.iconLayout.addWidget(self.dodgeButton)
-
         self.tabWidget.addTab(self.icontab, "")
 
         self.gridLayout_3.addWidget(self.tabWidget, 1, 0, 1, 2)
@@ -292,7 +274,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -326,8 +308,6 @@ class Ui_MainWindow(object):
         self.rectButton.setText("")
         self.cirButton.setText("")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tooltab), QCoreApplication.translate("MainWindow", u"Tools", None))
-        self.burnButton.setText(QCoreApplication.translate("MainWindow", u"Burn", None))
-        self.dodgeButton.setText(QCoreApplication.translate("MainWindow", u"Dodge", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.icontab), QCoreApplication.translate("MainWindow", u"Icons", None))
     # retranslateUi
 

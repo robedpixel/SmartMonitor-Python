@@ -516,58 +516,7 @@ Comments</string>
           <height>631</height>
          </rect>
         </property>
-        <layout class="QVBoxLayout" name="iconLayout">
-         <item>
-          <widget class="QPushButton" name="burnButton">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>51</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>147</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Burn</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QPushButton" name="dodgeButton">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>51</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>147</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string>Dodge</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-        </layout>
+        <layout class="QVBoxLayout" name="iconLayout"/>
        </widget>
       </widget>
      </widget>

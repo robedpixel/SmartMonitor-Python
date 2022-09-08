@@ -20,13 +20,14 @@ class ImageDisplay(QtWidgets.QLabel):
         self.pan_point = QtCore.QPointF()
     """
 
-    def __init__(self, press_callback_function, move_callback_function, release_callback_function):
+    def __init__(self, press_callback_function, move_callback_function, release_callback_function, drop_image_callback_function):
         QtWidgets.QLabel.__init__(self)
         self.mouse_down = False
         self.activated = False
         self.press_callback_function = press_callback_function
         self.move_callback_function = move_callback_function
         self.release_callback_function = release_callback_function
+        self.drop_image_callback_function = drop_image_callback_function
 
     def mousePressEvent(self, QMouseEvent):
         self.mouse_down = True
@@ -39,6 +40,20 @@ class ImageDisplay(QtWidgets.QLabel):
     def mouseReleaseEvent(self, QMouseEvent):
         self.mouse_down = False
         self.release_callback_function(QMouseEvent)
+
+    def dragEnterEvent(self, event):
+        pass
+        event.acceptProposedAction()
+
+    def dragLeaveEvent(self, event):
+        pass
+        self.releaseMouse()
+
+    def dragMoveEvent(self, event):
+        pass
+
+    def dropEvent(self, event):
+        self.drop_image_callback_function(event)
 
     """
     def event(self, e):
