@@ -284,10 +284,10 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.brush_button.clicked.connect(self.on_brush_button_clicked)
 
-        self.color_picker_button = self.findChild(QtWidgets.QPushButton, 'pickerButton')
-        self.color_picker_button.setStyleSheet(
-            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        self.color_picker_button.clicked.connect(self.on_color_picker_button_clicked)
+        #self.color_picker_button = self.findChild(QtWidgets.QPushButton, 'pickerButton')
+        #self.color_picker_button.setStyleSheet(
+        #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        #self.color_picker_button.clicked.connect(self.on_color_picker_button_clicked)
 
         self.eraser_button = self.findChild(QtWidgets.QPushButton, 'eraserButton')
         self.eraser_button.setStyleSheet(
@@ -360,11 +360,13 @@ class Ui(QtWidgets.QMainWindow):
         horizontal_layout = self.findChild(QtWidgets.QHBoxLayout, 'horizontalLayout')
         horizontal_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 
+        self.icon_layout = self.findChild(QtWidgets.QHBoxLayout, 'iconLayout')
+
         self.button_list = list()
         self.button_list.append(self.brush_button)
         self.button_list.append(self.pan_button)
         self.button_list.append(self.zoom_button)
-        self.button_list.append(self.color_picker_button)
+        #self.button_list.append(self.color_picker_button)
         self.button_list.append(self.eraser_button)
         self.button_list.append(self.select_button)
         self.button_list.append(self.line_button)
@@ -379,7 +381,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.zoom_button)
         self.tool_list.append(self.pan_button)
         self.tool_list.append(self.brush_button)
-        self.tool_list.append(self.color_picker_button)
+        #self.tool_list.append(self.color_picker_button)
         self.tool_list.append(self.select_button)
         self.tool_list.append(self.line_button)
         self.tool_list.append(self.rect_button)
@@ -743,7 +745,7 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_button(self.dodge_button)
         new_tool.set_image(self.current_image)
         new_tool.set_scale(self.scale_factor)
-        new_tool.set_insert_image(QtGui.QImage("resources/dodge.png"))
+        new_tool.set_insert_image(self.get_qimage_from_text("Dodge +1"))
         new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
 
@@ -854,6 +856,9 @@ class Ui(QtWidgets.QMainWindow):
         painter = QtGui.QPainter(image)
         painter.setBrush(QtGui.QBrush(self.current_brush_color[0]))
         painter.setPen(QtGui.QPen(self.current_brush_color[0]))
+        font = QtGui.QFont()
+        font.setPixelSize(24)
+        painter.setFont(font)
         painter.drawText(QtCore.QRect(0, 0, 400, 300), text)
         painter.end()
         return image

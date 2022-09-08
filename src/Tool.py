@@ -870,15 +870,15 @@ class ImageTool(Tool):
         new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
         self.startPoint = new_pos
         self.current_effect = []
-        self.current_effect.append(Effect(new_pos))
+        #self.current_effect.append(Effect(new_pos))
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
             self.image_copy_two = QtGui.QImage(self.image_copy)
             painter = QtGui.QPainter(self.image_copy_two)
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
-            rect = QtCore.QRectF(QtCore.QPointF(self.startPoint), QtCore.QPointF(new_pos))
-            painter.drawImage(rect, self.image_to_insert)
+            #rect = QtCore.QRectF(QtCore.QPointF(self.startPoint), QtCore.QPointF(new_pos))
+            painter.drawImage(new_pos, self.image_to_insert)
             self.image[0] = self.image_copy_two
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
@@ -894,16 +894,9 @@ class ImageTool(Tool):
         self.action_list_state[0] = 0
 
     def apply_effect(self, action, image: [QtGui.QImage]):
-        first = True
         painter = QtGui.QPainter(image[0])
-        start_point = QtCore.QPoint()
         for effect in action.effects:
-            if first:
-                start_point = effect.pos
-                first = False
-            else:
-                rect = QtCore.QRectF(QtCore.QPointF(start_point), QtCore.QPointF(effect.pos))
-                painter.drawImage(rect, self.image_to_insert)
+            painter.drawImage(effect.pos, self.image_to_insert)
 
     def get_effect_type(self):
         return EffectType.IMAGE
