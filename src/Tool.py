@@ -894,9 +894,14 @@ class ImageTool(Tool):
         self.action_list_state[0] = 0
 
     def apply_effect(self, action, image: [QtGui.QImage]):
-        painter = QtGui.QPainter(image[0])
+        first = True
         for effect in action.effects:
-            painter.drawImage(effect.pos, self.image_to_insert)
+            if first:
+                start_point = effect.pos
+                first = False
+            else:
+                painter = QtGui.QPainter(image[0])
+                painter.drawImage(start_point, effect)
 
     def get_effect_type(self):
         return EffectType.IMAGE

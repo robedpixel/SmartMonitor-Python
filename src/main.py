@@ -230,6 +230,7 @@ class Ui(QtWidgets.QMainWindow):
         self.activated = False
         self.lastPoint = QtCore.QPoint()
         self.lastScale = self.scale_factor[0]
+        self.image_tool = ImageTool()
 
         self.actions = deque()
         self.current_action = [0]
@@ -543,10 +544,21 @@ class Ui(QtWidgets.QMainWindow):
         img = QtGui.QImage()
         mimedata = event.mimeData().data("PNG")
         if mimedata:
-            img.loadFromData(event.mimeData().data("PNG"))
+            current_effect = []
+            img.loadFromData(mimedata)
             painter = QtGui.QPainter(self.current_image[0])
             new_pos = QtCore.QPoint(int(event.pos().x() / self.scale_factor[0]), int(event.pos().y() / self.scale_factor[0]))
             painter.drawImage(new_pos, img)
+
+            current_effect.append(Effect(new_pos))
+            current_effect.append(img)
+
+            stop_index = len(self.actions) - self.current_action[0]
+            self.actions.insert(stop_index, Action(self.image_tool, current_effect, EffectType.IMAGE))
+            while len(self.actions) > stop_index + 1:
+                self.actions.pop()
+            self.current_action[0] = 0
+
             self.update_image()
 
     def on_file_open_button_clicked(self):
