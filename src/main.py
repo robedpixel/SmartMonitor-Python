@@ -393,16 +393,28 @@ class Ui(QtWidgets.QMainWindow):
         #self.tool_list.append(self.burn_button)
         #self.tool_list.append(self.dodge_button)
 
-        self.burn_label = DragDropTextLabel()
-        self.burn_label.setMinimumSize(QtCore.QSize(0, 51))
-        self.burn_label.setMaximumSize(QtCore.QSize(147, 51))
-        self.burn_label.setAlignment(QtCore.Qt.AlignCenter)
-        self.burn_label.setStyleSheet("border: 1px solid black;")
-        self.burn_label.update_image(self.get_qimage_from_text("Burn +1"))
-        self.icon_layout.addWidget(self.burn_label)
+        self.burn_label_1 = DragDropTextLabel()
+        self.burn_label_2 = DragDropTextLabel()
+        self.burn_label_3 = DragDropTextLabel()
+        self.dodge_label_1 = DragDropTextLabel()
+        self.dodge_label_2 = DragDropTextLabel()
+        self.dodge_label_3 = DragDropTextLabel()
 
         self.label_text_drag_list = list()
-        self.label_text_drag_list.append((self.burn_label, "Burn +1"))
+        self.label_text_drag_list.append((self.burn_label_1, "Burn +1"))
+        self.label_text_drag_list.append((self.burn_label_2, "Burn +2"))
+        self.label_text_drag_list.append((self.burn_label_3, "Burn +3"))
+        self.label_text_drag_list.append((self.dodge_label_1, "Dodge -1"))
+        self.label_text_drag_list.append((self.dodge_label_2, "Dodge -2"))
+        self.label_text_drag_list.append((self.dodge_label_3, "Dodge -3"))
+
+        for label in self.label_text_drag_list:
+            label[0].setMinimumSize(QtCore.QSize(0, 51))
+            label[0].setMaximumSize(QtCore.QSize(147, 51))
+            label[0].setAlignment(QtCore.Qt.AlignCenter)
+            label[0].setStyleSheet("border: 1px solid black;")
+            label[0].update_image(self.get_qimage_from_text(label[1]))
+            self.icon_layout.addWidget(label[0])
 
         # TODO: set icon
         # for button in self.image_button_list:
