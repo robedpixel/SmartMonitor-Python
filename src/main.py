@@ -416,6 +416,21 @@ class Ui(QtWidgets.QMainWindow):
             label[0].update_image(self.get_qimage_from_text(label[1]))
             self.icon_layout.addWidget(label[0])
 
+        self.accept_label = DragDropImageLabel()
+        self.accept_label.setMinimumSize(QtCore.QSize(0, 51))
+        self.accept_label.setMaximumSize(QtCore.QSize(147, 51))
+        self.accept_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.accept_label.setStyleSheet("border: 1px solid black;")
+        self.accept_label.update_image(QtGui.QImage("resources/accept.png"))
+        self.icon_layout.addWidget(self.accept_label)
+        self.cross_label = DragDropImageLabel()
+        self.cross_label.setMinimumSize(QtCore.QSize(0, 51))
+        self.cross_label.setMaximumSize(QtCore.QSize(147, 51))
+        self.cross_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.cross_label.setStyleSheet("border: 1px solid black;")
+        self.cross_label.update_image(QtGui.QImage("resources/cross.png"))
+        self.icon_layout.addWidget(self.cross_label)
+
         # TODO: set icon
         # for button in self.image_button_list:
         #    button[0].set_image(self.get_qimage_from_text(button[1]))
@@ -570,6 +585,7 @@ class Ui(QtWidgets.QMainWindow):
             while len(self.actions) > stop_index + 1:
                 self.actions.pop()
             self.current_action[0] = 0
+            self.limit_action_list_size()
 
             self.update_image()
 
