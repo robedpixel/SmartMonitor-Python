@@ -892,18 +892,20 @@ class CircleWithLabelTool(Tool):
 
     def on_release(self, pos: QtCore.QPoint, effects: deque):
         self.drawing = False
-
         new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
-
-        stop_index = len(self.action_list) - self.action_list_state[0]
-        self.action_list.insert(stop_index, PaintAction(self, self.current_effect, EffectType.RGB,
-                                                        int(self.paint_sizes[self.paint_radius[0]]), self.color[0]))
-        while len(self.action_list) > stop_index + 1:
-            self.action_list.pop()
-        self.action_list_state[0] = 0
-
         label = self.add_label(new_pos)
-        self.current_effect.append(LabelEffect(new_pos,label))
+        if label:
+
+            stop_index = len(self.action_list) - self.action_list_state[0]
+            self.action_list.insert(stop_index, PaintAction(self, self.current_effect, EffectType.RGB,
+                                                            int(self.paint_sizes[self.paint_radius[0]]), self.color[0]))
+            while len(self.action_list) > stop_index + 1:
+                self.action_list.pop()
+            self.action_list_state[0] = 0
+
+            self.current_effect.append(LabelEffect(new_pos, label))
+        else:
+            self.image[0] = self.image_copy
 
     def apply_effect(self, action, image: [QtGui.QImage]):
         first = True
@@ -924,7 +926,7 @@ class CircleWithLabelTool(Tool):
         return EffectType.RGB
 
     # TODO: EXPERIMENTAL
-    def add_label(self,pos):
+    def add_label(self, pos):
         window = BurnDodgeWindow()
         if window.exec_():
             label = window.string_output
