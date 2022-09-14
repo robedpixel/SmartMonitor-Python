@@ -43,6 +43,6 @@ class BurnDodgeWindow(QtWidgets.QDialog):
         self.string_output = "-2"
         self.accept()
 
-    def on_minuss_3_button_clicked(self):
+    def on_minus_3_button_clicked(self):
         self.string_output = "-3"
         self.accept()
