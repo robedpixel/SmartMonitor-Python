@@ -16,6 +16,12 @@ class BurnDodgeWindow(QtWidgets.QDialog):
         self.plus_2_button.clicked.connect(self.on_plus_2_button_clicked)
         self.plus_3_button = self.findChild(QtWidgets.QWidget, 'plus3Button')
         self.plus_3_button.clicked.connect(self.on_plus_3_button_clicked)
+        self.minus_1_button = self.findChild(QtWidgets.QWidget, 'minus1Button')
+        self.minus_1_button.clicked.connect(self.on_minus_1_button_clicked)
+        self.minus_2_button = self.findChild(QtWidgets.QWidget, 'minus2Button')
+        self.minus_2_button.clicked.connect(self.on_minus_2_button_clicked)
+        self.minus_3_button = self.findChild(QtWidgets.QWidget, 'minus3Button')
+        self.minus_3_button.clicked.connect(self.on_minus_3_button_clicked)
 
     def on_plus_1_button_clicked(self):
         self.string_output = "+1"
@@ -27,4 +33,16 @@ class BurnDodgeWindow(QtWidgets.QDialog):
 
     def on_plus_3_button_clicked(self):
         self.string_output = "+3"
+        self.accept()
+
+    def on_minus_1_button_clicked(self):
+        self.string_output = "-1"
+        self.accept()
+
+    def on_minus_2_button_clicked(self):
+        self.string_output = "-2"
+        self.accept()
+
+    def on_minuss_3_button_clicked(self):
+        self.string_output = "-3"
         self.accept()

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>407</width>
-    <height>129</height>
+    <width>440</width>
+    <height>118</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QPushButton" name="plus2Button">
    <property name="geometry">
     <rect>
-     <x>260</x>
+     <x>300</x>
      <y>50</y>
      <width>51</width>
      <height>41</height>
@@ -29,7 +29,7 @@
   <widget class="QPushButton" name="plus1Button">
    <property name="geometry">
     <rect>
-     <x>190</x>
+     <x>230</x>
      <y>50</y>
      <width>51</width>
      <height>41</height>
@@ -42,7 +42,7 @@
   <widget class="QPushButton" name="plus3Button">
    <property name="geometry">
     <rect>
-     <x>330</x>
+     <x>370</x>
      <y>50</y>
      <width>51</width>
      <height>41</height>
@@ -63,6 +63,45 @@
    </property>
    <property name="text">
     <string>Dodge/Burn Amount:</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="minus1Button">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>50</y>
+     <width>51</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>-1</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="minus2Button">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>50</y>
+     <width>51</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>-2</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="minus3Button">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>51</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>-3</string>
    </property>
   </widget>
  </widget>
