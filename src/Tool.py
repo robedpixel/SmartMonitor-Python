@@ -2,6 +2,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from collections import deque
 from Effect import *
 from Action import Action, PaintAction, EffectType
+from BurnDodgeWindow import *
 
 
 # TODO: use QPainter to draw a dotted line for rect selection after normal drawing functions
@@ -828,6 +829,128 @@ class CircleTool(Tool):
         return EffectType.RGB
 
 
+class CircleWithLabelTool(Tool):
+
+    def __init__(self):
+        Tool.__init__(self)
+        self.push_button = None
+        self.image = None
+        self.paint_radius = list()
+        self.paint_sizes = dict()
+        self.drawing = False
+        self.startPoint = QtCore.QPoint()
+        self.lastPoint = QtCore.QPoint()
+        self.color = QtGui.QColor(QtCore.Qt.black)
+        self.scale = [float(1)]
+        self.current_effect = None
+        self.image_copy = None
+        self.image_copy_two = None
+        self.help_str = "Ellipse Tool:\nTap and drag draw an ellipse on the canvas"
+
+    def set_image(self, image: [QtGui.QImage]):
+        self.image = image
+
+    def set_color(self, color: list[QtGui.QColor]):
+        self.color = color
+
+    def set_scale(self, scale: list[float]):
+        self.scale = scale
+
+    def set_action_list(self, action_list, action_list_state):
+        self.action_list = action_list
+        self.action_list_state = action_list_state
+
+    def set_button(self, QPushButton):
+        self.push_button = QPushButton
+
+    def set_paint_radius(self, paint_sizes: dict, paint_brush_size: list):
+        self.paint_sizes = paint_sizes
+        self.paint_radius = paint_brush_size
+
+    def on_deselect_tool(self):
+        self.help_text.clear()
+        self.push_button.setChecked(False)
+
+    def on_click(self, pos: QtCore.QPoint, effects: deque):
+        self.drawing = True
+        self.image_copy = QtGui.QImage(self.image[0])
+        new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+        self.startPoint = new_pos
+        self.current_effect = []
+        self.current_effect.append(Effect(new_pos))
+
+    def on_drag(self, pos: QtCore.QPoint, effects: deque):
+        if self.drawing:
+            self.image_copy_two = QtGui.QImage(self.image_copy)
+            painter = QtGui.QPainter(self.image_copy_two)
+            painter.setPen(QtGui.QPen(self.color[0], int(self.paint_sizes[self.paint_radius[0]]),
+                                      QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
+            new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+            rect = QtCore.QRectF(QtCore.QPointF(self.startPoint), QtCore.QPointF(new_pos))
+            painter.drawArc(rect, 0, 5760)
+            self.image[0] = self.image_copy_two
+
+    def on_release(self, pos: QtCore.QPoint, effects: deque):
+        self.drawing = False
+
+        new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+
+        stop_index = len(self.action_list) - self.action_list_state[0]
+        self.action_list.insert(stop_index, PaintAction(self, self.current_effect, EffectType.RGB,
+                                                        int(self.paint_sizes[self.paint_radius[0]]), self.color[0]))
+        while len(self.action_list) > stop_index + 1:
+            self.action_list.pop()
+        self.action_list_state[0] = 0
+
+        label = self.add_label(new_pos)
+        self.current_effect.append(LabelEffect(new_pos,label))
+
+    def apply_effect(self, action, image: [QtGui.QImage]):
+        first = True
+        painter = QtGui.QPainter(image[0])
+        start_point = QtCore.QPoint()
+        painter.setPen(QtGui.QPen(action.color, action.radius,
+                                  QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
+        for effect in action.effects:
+            if first:
+                start_point = effect.pos
+                first = False
+            else:
+                rect = QtCore.QRectF(QtCore.QPointF(start_point), QtCore.QPointF(effect.pos))
+                painter.drawArc(rect, 0, 5760)
+                painter.drawImage(effect.pos, self.get_qimage_from_text(effect.label))
+
+    def get_effect_type(self):
+        return EffectType.RGB
+
+    # TODO: EXPERIMENTAL
+    def add_label(self,pos):
+        window = BurnDodgeWindow()
+        if window.exec_():
+            label = window.string_output
+            image = self.get_qimage_from_text(label)
+            painter = QtGui.QPainter(self.image[0])
+            painter.drawImage(pos, image)
+            return label
+        return None
+
+    def get_qimage_from_text(self, text: str):
+        font = QtGui.QFont()
+        font.setPixelSize(24)
+        fm = QtGui.QFontMetrics(font)
+        pixelsWide = fm.horizontalAdvance(text)
+        pixelsHigh = fm.height()
+        image = QtGui.QImage(QtCore.QSize(100, 35), QtGui.QImage.Format_ARGB32)
+        image.fill(QtGui.qRgba(0, 0, 0, 0))
+        painter = QtGui.QPainter(image)
+        painter.setBrush(QtGui.QBrush(self.color[0]))
+        painter.setPen(QtGui.QPen(self.color[0]))
+        painter.setFont(font)
+        painter.drawText(QtCore.QRect(0, 0, 100, 35), QtCore.Qt.TextFlag.TextSingleLine, text)
+        painter.end()
+        return image
+
+
 class ImageTool(Tool):
 
     def __init__(self):
@@ -870,14 +993,14 @@ class ImageTool(Tool):
         new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
         self.startPoint = new_pos
         self.current_effect = []
-        #self.current_effect.append(Effect(new_pos))
+        # self.current_effect.append(Effect(new_pos))
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
             self.image_copy_two = QtGui.QImage(self.image_copy)
             painter = QtGui.QPainter(self.image_copy_two)
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
-            #rect = QtCore.QRectF(QtCore.QPointF(self.startPoint), QtCore.QPointF(new_pos))
+            # rect = QtCore.QRectF(QtCore.QPointF(self.startPoint), QtCore.QPointF(new_pos))
             painter.drawImage(new_pos, self.image_to_insert)
             self.image[0] = self.image_copy_two
 

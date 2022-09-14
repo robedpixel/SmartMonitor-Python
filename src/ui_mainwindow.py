@@ -250,6 +250,14 @@ class Ui_MainWindow(object):
 
         self.toolLayout.addWidget(self.cirButton)
 
+        self.cirlabButton = QPushButton(self.verticalLayoutWidget_2)
+        self.cirlabButton.setObjectName(u"cirlabButton")
+        self.cirlabButton.setEnabled(False)
+        self.cirlabButton.setMinimumSize(QSize(0, 51))
+        self.cirlabButton.setCheckable(True)
+
+        self.toolLayout.addWidget(self.cirlabButton)
+
         self.tabWidget.addTab(self.tooltab, "")
         self.icontab = QWidget()
         self.icontab.setObjectName(u"icontab")
@@ -307,6 +315,7 @@ class Ui_MainWindow(object):
         self.lineButton.setText("")
         self.rectButton.setText("")
         self.cirButton.setText("")
+        self.cirlabButton.setText(QCoreApplication.translate("MainWindow", u"circlewithlabel", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tooltab), QCoreApplication.translate("MainWindow", u"Tools", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.icontab), QCoreApplication.translate("MainWindow", u"Icons", None))
     # retranslateUi

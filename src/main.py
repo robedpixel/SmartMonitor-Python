@@ -317,6 +317,11 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.circle_button.clicked.connect(self.on_circle_button_clicked)
 
+        self.circle_label_button = self.findChild(QtWidgets.QPushButton, 'cirlabButton')
+        self.circle_label_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.circle_label_button.clicked.connect(self.on_circle_label_button_clicked)
+
         self.pan_button = self.findChild(QtWidgets.QPushButton, 'panButton')
         self.pan_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
@@ -375,6 +380,7 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.line_button)
         self.button_list.append(self.rect_button)
         self.button_list.append(self.circle_button)
+        self.button_list.append(self.circle_label_button)
         self.button_list.append(self.file_save_button)
         self.button_list.append(self.info_button)
         #self.button_list.append(self.burn_button)
@@ -389,6 +395,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.line_button)
         self.tool_list.append(self.rect_button)
         self.tool_list.append(self.circle_button)
+        self.tool_list.append(self.circle_label_button)
         self.tool_list.append(self.eraser_button)
         #self.tool_list.append(self.burn_button)
         #self.tool_list.append(self.dodge_button)
@@ -685,6 +692,9 @@ class Ui(QtWidgets.QMainWindow):
     def on_circle_button_clicked(self):
         self.select_tool(self.circle_button, self.circle_tool_setup)
 
+    def on_circle_label_button_clicked(self):
+        self.select_tool(self.circle_label_button, self.circle_label_tool_setup)
+
     def on_burn_button_clicked(self):
         self.select_tool(self.burn_button, self.burn_tool_setup)
 
@@ -785,6 +795,16 @@ class Ui(QtWidgets.QMainWindow):
 
     def circle_tool_setup(self) -> CircleTool:
         new_tool = CircleTool()
+        new_tool.set_button(self.circle_button)
+        new_tool.set_image(self.current_image)
+        new_tool.set_color(self.current_brush_color)
+        new_tool.set_scale(self.scale_factor)
+        new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
+        new_tool.set_action_list(self.actions, self.current_action)
+        return new_tool
+
+    def circle_label_tool_setup(self) -> CircleWithLabelTool:
+        new_tool = CircleWithLabelTool()
         new_tool.set_button(self.circle_button)
         new_tool.set_image(self.current_image)
         new_tool.set_color(self.current_brush_color)
