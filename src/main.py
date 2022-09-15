@@ -249,9 +249,9 @@ class Ui(QtWidgets.QMainWindow):
         self.help_text = self.findChild(QtWidgets.QPlainTextEdit, "helpEdit")
         self.zoom_display_label = self.findChild(QtWidgets.QLabel, "zoomdisplaylabel")
         self.zoom_display_label.setVisible(False)
-        self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
-        self.crop_button.setVisible(False)
-        self.crop_button.clicked.connect(self.on_crop_button_clicked)
+        #self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
+        #self.crop_button.setVisible(False)
+        #self.crop_button.clicked.connect(self.on_crop_button_clicked)
 
         self.zoom_bar = self.findChild(QtWidgets.QScrollBar, 'zoomBar')
         self.zoom_bar.setVisible(False)
@@ -297,10 +297,10 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.eraser_button.clicked.connect(self.on_eraser_button_clicked)
 
-        self.select_button = self.findChild(QtWidgets.QPushButton, 'selectButton')
-        self.select_button.setStyleSheet(
-            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        self.select_button.clicked.connect(self.on_select_button_clicked)
+        #self.select_button = self.findChild(QtWidgets.QPushButton, 'selectButton')
+        #self.select_button.setStyleSheet(
+        #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        #self.select_button.clicked.connect(self.on_select_button_clicked)
 
         self.line_button = self.findChild(QtWidgets.QPushButton, 'lineButton')
         self.line_button.setStyleSheet(
@@ -317,10 +317,10 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.circle_button.clicked.connect(self.on_circle_button_clicked)
 
-        self.circle_label_button = self.findChild(QtWidgets.QPushButton, 'cirlabButton')
-        self.circle_label_button.setStyleSheet(
-            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        self.circle_label_button.clicked.connect(self.on_circle_label_button_clicked)
+        #self.circle_label_button = self.findChild(QtWidgets.QPushButton, 'cirlabButton')
+        #self.circle_label_button.setStyleSheet(
+        #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        #self.circle_label_button.clicked.connect(self.on_circle_label_button_clicked)
 
         self.pan_button = self.findChild(QtWidgets.QPushButton, 'panButton')
         self.pan_button.setStyleSheet(
@@ -376,29 +376,29 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.zoom_button)
         # self.button_list.append(self.color_picker_button)
         self.button_list.append(self.eraser_button)
-        self.button_list.append(self.select_button)
+        # self.button_list.append(self.select_button)
         self.button_list.append(self.line_button)
         self.button_list.append(self.rect_button)
         self.button_list.append(self.circle_button)
-        self.button_list.append(self.circle_label_button)
+        # self.button_list.append(self.circle_label_button)
         self.button_list.append(self.file_save_button)
         self.button_list.append(self.info_button)
-        #self.button_list.append(self.burn_button)
-        #self.button_list.append(self.dodge_button)
+        # self.button_list.append(self.burn_button)
+        # self.button_list.append(self.dodge_button)
 
         self.tool_list = list()
         self.tool_list.append(self.zoom_button)
         self.tool_list.append(self.pan_button)
         self.tool_list.append(self.brush_button)
         # self.tool_list.append(self.color_picker_button)
-        self.tool_list.append(self.select_button)
+        # self.tool_list.append(self.select_button)
         self.tool_list.append(self.line_button)
         self.tool_list.append(self.rect_button)
         self.tool_list.append(self.circle_button)
-        self.tool_list.append(self.circle_label_button)
+        # self.tool_list.append(self.circle_label_button)
         self.tool_list.append(self.eraser_button)
-        #self.tool_list.append(self.burn_button)
-        #self.tool_list.append(self.dodge_button)
+        # self.tool_list.append(self.burn_button)
+        # self.tool_list.append(self.dodge_button)
 
         self.burn_label_1 = DragDropImageLabel()
         self.burn_label_2 = DragDropImageLabel()
@@ -407,22 +407,32 @@ class Ui(QtWidgets.QMainWindow):
         self.dodge_label_2 = DragDropImageLabel()
         self.dodge_label_3 = DragDropImageLabel()
 
-        self.label_text_drag_list = list()
-        self.label_text_drag_list.append((self.burn_label_1, "Burn +1"))
-        self.label_text_drag_list.append((self.burn_label_2, "Burn +2"))
-        self.label_text_drag_list.append((self.burn_label_3, "Burn +3"))
-        self.label_text_drag_list.append((self.dodge_label_1, "Dodge -1"))
-        self.label_text_drag_list.append((self.dodge_label_2, "Dodge -2"))
-        self.label_text_drag_list.append((self.dodge_label_3, "Dodge -3"))
+        self.burn_label_drag_list = list()
+        self.burn_label_drag_list.append((self.burn_label_1, "+1"))
+        self.burn_label_drag_list.append((self.burn_label_2, "+2"))
+        self.burn_label_drag_list.append((self.burn_label_3, "+3"))
+        self.dodge_label_drag_list = list()
+        self.dodge_label_drag_list.append((self.dodge_label_1, "-1"))
+        self.dodge_label_drag_list.append((self.dodge_label_2, "-2"))
+        self.dodge_label_drag_list.append((self.dodge_label_3, "-3"))
 
-        for label in self.label_text_drag_list:
+        for label in self.burn_label_drag_list:
             label[0].setMinimumSize(QtCore.QSize(0, 51))
             label[0].setMaximumSize(QtCore.QSize(147, 51))
             label[0].setAlignment(QtCore.Qt.AlignCenter)
             label[0].setStyleSheet("border: 1px solid black;")
-            label[0].update_image(self.get_qimage_from_text(label[1]))
+            label[0].update_image(self.get_qimage_from_text(QtCore.Qt.red, label[1]))
             self.icon_layout.addWidget(label[0])
 
+        for label in self.dodge_label_drag_list:
+            label[0].setMinimumSize(QtCore.QSize(0, 51))
+            label[0].setMaximumSize(QtCore.QSize(147, 51))
+            label[0].setAlignment(QtCore.Qt.AlignCenter)
+            label[0].setStyleSheet("border: 1px solid black;")
+            label[0].update_image(self.get_qimage_from_text(QtCore.Qt.blue,label[1]))
+            self.icon_layout.addWidget(label[0])
+
+        """
         self.accept_label = DragDropImageLabel()
         self.accept_label.setMinimumSize(QtCore.QSize(0, 51))
         self.accept_label.setMaximumSize(QtCore.QSize(147, 51))
@@ -437,6 +447,7 @@ class Ui(QtWidgets.QMainWindow):
         self.cross_label.setStyleSheet("border: 1px solid black;")
         self.cross_label.update_image(QtGui.QImage("resources/cross.png"))
         self.icon_layout.addWidget(self.cross_label)
+        """
 
         # TODO: set icon
         # for button in self.image_button_list:
@@ -652,8 +663,8 @@ class Ui(QtWidgets.QMainWindow):
         self.current_brush_color[0] = QtWidgets.QColorDialog.getColor()
         set_button_color(self.current_brush_color[0], self.brush_color_button)
         self.brush_color_button.update()
-        for label in self.label_text_drag_list:
-            label[0].update_image(self.get_qimage_from_text(label[1]))
+        #for label in self.label_text_drag_list:
+        #    label[0].update_image(self.get_qimage_from_text(label[1]))
 
     def on_zoom_button_clicked(self):
         self.select_tool(self.zoom_button, self.zoom_tool_setup)
@@ -805,7 +816,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def circle_label_tool_setup(self) -> CircleWithLabelTool:
         new_tool = CircleWithLabelTool()
-        new_tool.set_button(self.circle_button)
+        new_tool.set_button(self.circle_label_button)
         new_tool.set_image(self.current_image)
         new_tool.set_color(self.current_brush_color)
         new_tool.set_scale(self.scale_factor)
@@ -932,19 +943,19 @@ class Ui(QtWidgets.QMainWindow):
             pass
     """
 
-    def get_qimage_from_text(self, text: str):
+    def get_qimage_from_text(self, color, text: str):
         font = QtGui.QFont()
         font.setPixelSize(24)
         fm = QtGui.QFontMetrics(font)
         pixelsWide = fm.horizontalAdvance(text)
         pixelsHigh = fm.height()
-        image = QtGui.QImage(QtCore.QSize(100, 35), QtGui.QImage.Format_ARGB32)
+        image = QtGui.QImage(QtCore.QSize(30, 35), QtGui.QImage.Format_ARGB32)
         image.fill(QtGui.qRgba(0, 0, 0, 0))
         painter = QtGui.QPainter(image)
-        painter.setBrush(QtGui.QBrush(self.current_brush_color[0]))
-        painter.setPen(QtGui.QPen(self.current_brush_color[0]))
+        painter.setBrush(QtGui.QBrush(color))
+        painter.setPen(QtGui.QPen(color))
         painter.setFont(font)
-        painter.drawText(QtCore.QRect(0, 0, 100, 35), QtCore.Qt.TextFlag.TextSingleLine, text)
+        painter.drawText(QtCore.QRect(0, 0, 30, 35), QtCore.Qt.TextFlag.TextSingleLine, text)
         painter.end()
         return image
 
