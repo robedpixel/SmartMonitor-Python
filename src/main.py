@@ -302,10 +302,10 @@ class Ui(QtWidgets.QMainWindow):
         #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         #self.select_button.clicked.connect(self.on_select_button_clicked)
 
-        self.line_button = self.findChild(QtWidgets.QPushButton, 'lineButton')
-        self.line_button.setStyleSheet(
+        self.arrow_button = self.findChild(QtWidgets.QPushButton, 'arrowButton')
+        self.arrow_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        self.line_button.clicked.connect(self.on_line_button_clicked)
+        self.arrow_button.clicked.connect(self.on_arrow_button_clicked)
 
         self.rect_button = self.findChild(QtWidgets.QPushButton, 'rectButton')
         self.rect_button.setStyleSheet(
@@ -377,7 +377,7 @@ class Ui(QtWidgets.QMainWindow):
         # self.button_list.append(self.color_picker_button)
         self.button_list.append(self.eraser_button)
         # self.button_list.append(self.select_button)
-        self.button_list.append(self.line_button)
+        self.button_list.append(self.arrow_button)
         self.button_list.append(self.rect_button)
         self.button_list.append(self.circle_button)
         # self.button_list.append(self.circle_label_button)
@@ -392,7 +392,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.brush_button)
         # self.tool_list.append(self.color_picker_button)
         # self.tool_list.append(self.select_button)
-        self.tool_list.append(self.line_button)
+        self.tool_list.append(self.arrow_button)
         self.tool_list.append(self.rect_button)
         self.tool_list.append(self.circle_button)
         # self.tool_list.append(self.circle_label_button)
@@ -694,8 +694,8 @@ class Ui(QtWidgets.QMainWindow):
     def on_select_button_clicked(self):
         self.select_tool(self.select_button, self.select_tool_setup)
 
-    def on_line_button_clicked(self):
-        self.select_tool(self.line_button, self.line_tool_setup)
+    def on_arrow_button_clicked(self):
+        self.select_tool(self.arrow_button, self.arrow_tool_setup)
 
     def on_rect_button_clicked(self):
         self.select_tool(self.rect_button, self.rect_tool_setup)
@@ -784,9 +784,9 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
 
-    def line_tool_setup(self) -> LineTool:
-        new_tool = LineTool()
-        new_tool.set_button(self.line_button)
+    def arrow_tool_setup(self) -> ArrowTool:
+        new_tool = ArrowTool()
+        new_tool.set_button(self.arrow_button)
         new_tool.set_image(self.current_image)
         new_tool.set_color(self.current_brush_color)
         new_tool.set_scale(self.scale_factor)

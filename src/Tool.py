@@ -3,6 +3,7 @@ from collections import deque
 from Effect import *
 from Action import Action, PaintAction, EffectType
 from BurnDodgeWindow import *
+import math
 
 
 # TODO: use QPainter to draw a dotted line for rect selection after normal drawing functions
@@ -563,7 +564,9 @@ class LineTool(Tool):
         self.current_effect = None
         self.image_copy = None
         self.image_copy_two = None
-        self.help_str = "Line Tool:\nTap and drag draw a straight line on the canvas"
+        self._arrow_height = 10
+        self._arrow_width = 10
+        self.help_str = "Line Tool:\nTap and drag draw an arrow on the canvas"
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -631,10 +634,85 @@ class LineTool(Tool):
                 start_point = effect.pos
                 first = False
             else:
+                arrowhead = self.arrow_calc(start_point, effect.pos)
                 painter.drawLine(start_point, effect.pos)
 
     def get_effect_type(self):
         return EffectType.RGB
+
+
+class ArrowTool(LineTool):
+
+    def __init__(self):
+        LineTool.__init__(self)
+        self._arrow_height = 10
+        self._arrow_width = 10
+        self.help_str = "Arrow Tool:\nTap and drag draw an arrow on the canvas"
+
+    def on_drag(self, pos: QtCore.QPoint, effects: deque):
+        if self.drawing:
+            self.image_copy_two = QtGui.QImage(self.image_copy)
+            painter = QtGui.QPainter(self.image_copy_two)
+            painter.setPen(QtGui.QPen(self.color[0], int(self.paint_sizes[self.paint_radius[0]]),
+                                      QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
+            new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
+            arrowhead = self.arrow_calc(self.startPoint, new_pos)
+            painter.drawLine(self.startPoint, new_pos)
+            if arrowhead is not None:
+                painter.drawPolyline(arrowhead)
+            self.image[0] = self.image_copy_two
+
+    def apply_effect(self, action, image: [QtGui.QImage]):
+        first = True
+        painter = QtGui.QPainter(image[0])
+        start_point = QtCore.QPoint()
+        painter.setPen(QtGui.QPen(action.color, action.radius,
+                                  QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
+        for effect in action.effects:
+            if first:
+                start_point = effect.pos
+                first = False
+            else:
+                arrowhead = self.arrow_calc(start_point, effect.pos)
+                painter.drawLine(start_point, effect.pos)
+                painter.drawPolyline(arrowhead)
+
+    def get_effect_type(self):
+        return EffectType.RGB
+
+    def arrow_calc(self, start_point=None, end_point=None):  # calculates the point where the arrow should be drawn
+
+        try:
+            startPoint, endPoint = start_point, end_point
+
+            if start_point is None:
+                startPoint = self._sourcePoint
+
+            if endPoint is None:
+                endPoint = self._destinationPoint
+
+            dx, dy = startPoint.x() - endPoint.x(), startPoint.y() - endPoint.y()
+
+            leng = math.sqrt(dx ** 2 + dy ** 2)
+            normX, normY = dx / leng, dy / leng  # normalize
+
+            # perpendicular vector
+            perpX = -normY
+            perpY = normX
+
+            leftX = endPoint.x() + self._arrow_height * normX + self._arrow_width * perpX
+            leftY = endPoint.y() + self._arrow_height * normY + self._arrow_width * perpY
+
+            rightX = endPoint.x() + self._arrow_height * normX - self._arrow_width * perpX
+            rightY = endPoint.y() + self._arrow_height * normY - self._arrow_width * perpY
+
+            point2 = QtCore.QPointF(leftX, leftY)
+            point3 = QtCore.QPointF(rightX, rightY)
+
+            return QtGui.QPolygonF([point2, endPoint, point3])
+
+        except (ZeroDivisionError, Exception) as e:
+            return None
 
 
 class RectTool(Tool):
@@ -829,6 +907,7 @@ class CircleTool(Tool):
         return EffectType.RGB
 
 
+# UNUSED
 class CircleWithLabelTool(Tool):
 
     def __init__(self):
@@ -925,7 +1004,6 @@ class CircleWithLabelTool(Tool):
     def get_effect_type(self):
         return EffectType.RGB
 
-    # TODO: EXPERIMENTAL
     def add_label(self, pos):
         window = BurnDodgeWindow()
         if window.exec_():

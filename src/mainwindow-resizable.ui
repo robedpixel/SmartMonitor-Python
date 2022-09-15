@@ -397,7 +397,7 @@ Comments</string>
           </widget>
          </item>
          <item>
-          <widget class="QPushButton" name="lineButton">
+          <widget class="QPushButton" name="arrowButton">
            <property name="enabled">
             <bool>false</bool>
            </property>
@@ -418,7 +418,7 @@ Comments</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>resources/line-tool.png</normaloff>resources/line-tool.png</iconset>
+             <normaloff>resources/arrow.png</normaloff>resources/arrow.png</iconset>
            </property>
            <property name="checkable">
             <bool>true</bool>
