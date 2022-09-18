@@ -249,9 +249,9 @@ class Ui(QtWidgets.QMainWindow):
         self.help_text = self.findChild(QtWidgets.QPlainTextEdit, "helpEdit")
         self.zoom_display_label = self.findChild(QtWidgets.QLabel, "zoomdisplaylabel")
         self.zoom_display_label.setVisible(False)
-        #self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
-        #self.crop_button.setVisible(False)
-        #self.crop_button.clicked.connect(self.on_crop_button_clicked)
+        # self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
+        # self.crop_button.setVisible(False)
+        # self.crop_button.clicked.connect(self.on_crop_button_clicked)
 
         self.zoom_bar = self.findChild(QtWidgets.QScrollBar, 'zoomBar')
         self.zoom_bar.setVisible(False)
@@ -297,10 +297,10 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.eraser_button.clicked.connect(self.on_eraser_button_clicked)
 
-        #self.select_button = self.findChild(QtWidgets.QPushButton, 'selectButton')
-        #self.select_button.setStyleSheet(
+        # self.select_button = self.findChild(QtWidgets.QPushButton, 'selectButton')
+        # self.select_button.setStyleSheet(
         #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        #self.select_button.clicked.connect(self.on_select_button_clicked)
+        # self.select_button.clicked.connect(self.on_select_button_clicked)
 
         self.arrow_button = self.findChild(QtWidgets.QPushButton, 'arrowButton')
         self.arrow_button.setStyleSheet(
@@ -317,10 +317,10 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.circle_button.clicked.connect(self.on_circle_button_clicked)
 
-        #self.circle_label_button = self.findChild(QtWidgets.QPushButton, 'cirlabButton')
-        #self.circle_label_button.setStyleSheet(
+        # self.circle_label_button = self.findChild(QtWidgets.QPushButton, 'cirlabButton')
+        # self.circle_label_button.setStyleSheet(
         #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        #self.circle_label_button.clicked.connect(self.on_circle_label_button_clicked)
+        # self.circle_label_button.clicked.connect(self.on_circle_label_button_clicked)
 
         self.pan_button = self.findChild(QtWidgets.QPushButton, 'panButton')
         self.pan_button.setStyleSheet(
@@ -333,15 +333,15 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.zoom_button.clicked.connect(self.on_zoom_button_clicked)
 
-        #self.burn_button = self.findChild(QtWidgets.QWidget, 'burnButton')
-        #self.burn_button.setStyleSheet(
+        # self.burn_button = self.findChild(QtWidgets.QWidget, 'burnButton')
+        # self.burn_button.setStyleSheet(
         #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        #self.burn_button.clicked.connect(self.on_burn_button_clicked)
+        # self.burn_button.clicked.connect(self.on_burn_button_clicked)
 
-        #self.dodge_button = self.findChild(QtWidgets.QWidget, 'dodgeButton')
-        #self.dodge_button.setStyleSheet(
+        # self.dodge_button = self.findChild(QtWidgets.QWidget, 'dodgeButton')
+        # self.dodge_button.setStyleSheet(
         #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        #self.dodge_button.clicked.connect(self.on_dodge_button_clicked)
+        # self.dodge_button.clicked.connect(self.on_dodge_button_clicked)
 
         self.brush_color_button = self.findChild(QtWidgets.QWidget, 'brushcolorButton')
         self.brush_color_button.clicked.connect(self.on_brush_color_button_clicked)
@@ -364,6 +364,18 @@ class Ui(QtWidgets.QMainWindow):
         self.brush_size_icon = QtGui.QIcon(self.brush_size_pixmap)
         self.brush_size_button.setIcon(self.brush_size_icon)
         self.brush_size_button.setIconSize(self.brush_size_pixmap.rect().size())
+
+        self.label_button_ints = self.findChild(QtWidgets.QWidget, 'labelButton_ints')
+        self.label_button_ints.clicked.connect(self.on_label_button_ints_clicked)
+
+        self.label_button_halfs = self.findChild(QtWidgets.QWidget, 'labelButton_halfs')
+        self.label_button_halfs.clicked.connect(self.on_label_button_halfs_clicked)
+
+        self.label_button_thirds = self.findChild(QtWidgets.QWidget, 'labelButton_thirds')
+        self.label_button_thirds.clicked.connect(self.on_label_button_thirds_clicked)
+
+        self.label_button_fourths = self.findChild(QtWidgets.QWidget, 'labelButton_fourths')
+        self.label_button_fourths.clicked.connect(self.on_label_button_fourths_clicked)
 
         horizontal_layout = self.findChild(QtWidgets.QHBoxLayout, 'horizontalLayout')
         horizontal_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
@@ -400,37 +412,40 @@ class Ui(QtWidgets.QMainWindow):
         # self.tool_list.append(self.burn_button)
         # self.tool_list.append(self.dodge_button)
 
-        self.burn_label_1 = DragDropImageLabel()
-        self.burn_label_2 = DragDropImageLabel()
-        self.burn_label_3 = DragDropImageLabel()
-        self.dodge_label_1 = DragDropImageLabel()
-        self.dodge_label_2 = DragDropImageLabel()
-        self.dodge_label_3 = DragDropImageLabel()
+        self.ints_label_drag_list = list()
+        self.ints_label_drag_list.append(("+1", QtCore.Qt.red))
+        self.ints_label_drag_list.append(("+2", QtCore.Qt.red))
+        self.ints_label_drag_list.append(("+3", QtCore.Qt.red))
+        self.ints_label_drag_list.append(("-1", QtCore.Qt.blue))
+        self.ints_label_drag_list.append(("-2", QtCore.Qt.blue))
+        self.ints_label_drag_list.append(("-3", QtCore.Qt.blue))
 
-        self.burn_label_drag_list = list()
-        self.burn_label_drag_list.append((self.burn_label_1, "+1"))
-        self.burn_label_drag_list.append((self.burn_label_2, "+2"))
-        self.burn_label_drag_list.append((self.burn_label_3, "+3"))
-        self.dodge_label_drag_list = list()
-        self.dodge_label_drag_list.append((self.dodge_label_1, "-1"))
-        self.dodge_label_drag_list.append((self.dodge_label_2, "-2"))
-        self.dodge_label_drag_list.append((self.dodge_label_3, "-3"))
+        self.halfs_label_drag_list = list()
+        self.halfs_label_drag_list.append(("+1/2", QtCore.Qt.red))
+        self.halfs_label_drag_list.append(("-1/2", QtCore.Qt.blue))
 
-        for label in self.burn_label_drag_list:
-            label[0].setMinimumSize(QtCore.QSize(0, 51))
-            label[0].setMaximumSize(QtCore.QSize(147, 51))
-            label[0].setAlignment(QtCore.Qt.AlignCenter)
-            label[0].setStyleSheet("border: 1px solid black;")
-            label[0].update_image(self.get_qimage_from_text(QtCore.Qt.red, label[1]))
-            self.icon_layout.addWidget(label[0])
+        self.thirds_label_drag_list = list()
+        self.thirds_label_drag_list.append(("+1/3", QtCore.Qt.red))
+        self.thirds_label_drag_list.append(("+2/3", QtCore.Qt.red))
+        self.thirds_label_drag_list.append(("-1/3", QtCore.Qt.blue))
+        self.thirds_label_drag_list.append(("-2/3", QtCore.Qt.blue))
 
-        for label in self.dodge_label_drag_list:
-            label[0].setMinimumSize(QtCore.QSize(0, 51))
-            label[0].setMaximumSize(QtCore.QSize(147, 51))
-            label[0].setAlignment(QtCore.Qt.AlignCenter)
-            label[0].setStyleSheet("border: 1px solid black;")
-            label[0].update_image(self.get_qimage_from_text(QtCore.Qt.blue,label[1]))
-            self.icon_layout.addWidget(label[0])
+        self.fourths_label_drag_list = list()
+        self.fourths_label_drag_list.append(("+1/4", QtCore.Qt.red))
+        self.fourths_label_drag_list.append(("+2/4", QtCore.Qt.red))
+        self.fourths_label_drag_list.append(("+3/4", QtCore.Qt.red))
+        self.fourths_label_drag_list.append(("-1/4", QtCore.Qt.blue))
+        self.fourths_label_drag_list.append(("-2/4", QtCore.Qt.blue))
+        self.fourths_label_drag_list.append(("-3/4", QtCore.Qt.blue))
+
+        self.burn_label_1_3 = DragDropImageLabel()
+        self.burn_label_2_3 = DragDropImageLabel()
+        self.burn_label_3_3 = DragDropImageLabel()
+        self.dodge_label_1_3 = DragDropImageLabel()
+        self.dodge_label_2_3 = DragDropImageLabel()
+        self.dodge_label_3_3 = DragDropImageLabel()
+
+        self.display_labels_in_label_list(self.ints_label_drag_list)
 
         """
         self.accept_label = DragDropImageLabel()
@@ -592,7 +607,8 @@ class Ui(QtWidgets.QMainWindow):
             current_effect = []
             img.loadFromData(mimedata)
             painter = QtGui.QPainter(self.current_image[0])
-            new_pos = QtCore.QPoint(int(event.pos().x() / self.scale_factor[0]), int(event.pos().y() / self.scale_factor[0]))
+            new_pos = QtCore.QPoint(int(event.pos().x() / self.scale_factor[0]),
+                                    int(event.pos().y() / self.scale_factor[0]))
             painter.drawImage(new_pos, img)
 
             current_effect.append(Effect(new_pos))
@@ -663,7 +679,7 @@ class Ui(QtWidgets.QMainWindow):
         self.current_brush_color[0] = QtWidgets.QColorDialog.getColor()
         set_button_color(self.current_brush_color[0], self.brush_color_button)
         self.brush_color_button.update()
-        #for label in self.label_text_drag_list:
+        # for label in self.label_text_drag_list:
         #    label[0].update_image(self.get_qimage_from_text(label[1]))
 
     def on_zoom_button_clicked(self):
@@ -724,6 +740,18 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_info_button_clicked(self):
         self.show_image_exif_info(self.info_to_display)
+
+    def on_label_button_ints_clicked(self):
+        self.display_labels_in_label_list(self.ints_label_drag_list)
+
+    def on_label_button_halfs_clicked(self):
+        self.display_labels_in_label_list(self.halfs_label_drag_list)
+
+    def on_label_button_thirds_clicked(self):
+        self.display_labels_in_label_list(self.thirds_label_drag_list)
+
+    def on_label_button_fourths_clicked(self):
+        self.display_labels_in_label_list(self.fourths_label_drag_list)
 
     def on_camera_folder_button_clicked(self):
         directory = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory", "/")
@@ -949,15 +977,30 @@ class Ui(QtWidgets.QMainWindow):
         fm = QtGui.QFontMetrics(font)
         pixelsWide = fm.horizontalAdvance(text)
         pixelsHigh = fm.height()
-        image = QtGui.QImage(QtCore.QSize(30, 35), QtGui.QImage.Format_ARGB32)
+        image = QtGui.QImage(QtCore.QSize(pixelsWide, 35), QtGui.QImage.Format_ARGB32)
         image.fill(QtGui.qRgba(0, 0, 0, 0))
         painter = QtGui.QPainter(image)
         painter.setBrush(QtGui.QBrush(color))
         painter.setPen(QtGui.QPen(color))
         painter.setFont(font)
-        painter.drawText(QtCore.QRect(0, 0, 30, 35), QtCore.Qt.TextFlag.TextSingleLine, text)
+        painter.drawText(QtCore.QRect(0, 0, pixelsWide, 35), QtCore.Qt.TextFlag.TextSingleLine, text)
         painter.end()
         return image
+
+    def display_labels_in_label_list(self, label_list: list):
+        while self.icon_layout.count():
+            child = self.icon_layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+
+        for label in label_list:
+            new_label = DragDropImageLabel()
+            new_label.setMinimumSize(QtCore.QSize(0, 51))
+            new_label.setMaximumSize(QtCore.QSize(147, 51))
+            new_label.setAlignment(QtCore.Qt.AlignCenter)
+            new_label.setStyleSheet("border: 1px solid black;")
+            new_label.update_image(self.get_qimage_from_text(label[1], label[0]))
+            self.icon_layout.addWidget(new_label)
 
 
 app = QtWidgets.QApplication(sys.argv)
