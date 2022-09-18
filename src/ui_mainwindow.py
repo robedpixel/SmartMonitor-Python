@@ -162,7 +162,7 @@ class Ui_MainWindow(object):
         self.tooltab.setObjectName(u"tooltab")
         self.verticalLayoutWidget_2 = QWidget(self.tooltab)
         self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
-        self.verticalLayoutWidget_2.setGeometry(QRect(0, 0, 141, 631))
+        self.verticalLayoutWidget_2.setGeometry(QRect(0, 0, 121, 631))
         self.toolLayout = QVBoxLayout(self.verticalLayoutWidget_2)
         self.toolLayout.setObjectName(u"toolLayout")
         self.toolLayout.setContentsMargins(0, 0, 0, 0)

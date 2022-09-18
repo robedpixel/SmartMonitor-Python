@@ -411,6 +411,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.eraser_button)
         # self.tool_list.append(self.burn_button)
         # self.tool_list.append(self.dodge_button)
+        self.current_labels = list()
 
         self.ints_label_drag_list = list()
         self.ints_label_drag_list.append(("+1", QtCore.Qt.red))
@@ -438,12 +439,11 @@ class Ui(QtWidgets.QMainWindow):
         self.fourths_label_drag_list.append(("-2/4", QtCore.Qt.blue))
         self.fourths_label_drag_list.append(("-3/4", QtCore.Qt.blue))
 
-        self.burn_label_1_3 = DragDropImageLabel()
-        self.burn_label_2_3 = DragDropImageLabel()
-        self.burn_label_3_3 = DragDropImageLabel()
-        self.dodge_label_1_3 = DragDropImageLabel()
-        self.dodge_label_2_3 = DragDropImageLabel()
-        self.dodge_label_3_3 = DragDropImageLabel()
+        self.current_labels = self.ints_label_drag_list
+
+        self.arrow_label_drag_list = list()
+        self.arrow_label_drag_list.append(("Remove", QtCore.Qt.green))
+        self.arrow_label_drag_list.append(("Liquify", QtCore.Qt.green))
 
         self.display_labels_in_label_list(self.ints_label_drag_list)
 
@@ -695,6 +695,7 @@ class Ui(QtWidgets.QMainWindow):
         self.note_window.show()
 
     def on_brush_size_button_clicked(self):
+        self.display_labels_in_label_list(self.current_labels)
         self.current_brush_size[0] = (self.current_brush_size[0] % 4) + 1
         self.brush_size_pixmap = QtGui.QPixmap("resources/brush thickness " + str(self.current_brush_size[0]))
         self.brush_size_icon = QtGui.QIcon(self.brush_size_pixmap)
@@ -705,18 +706,23 @@ class Ui(QtWidgets.QMainWindow):
         self.select_tool(self.color_picker_button, self.color_picker_tool_setup)
 
     def on_eraser_button_clicked(self):
+        self.display_labels_in_label_list(self.current_labels)
         self.select_tool(self.eraser_button, self.eraser_tool_setup)
 
     def on_select_button_clicked(self):
+        self.display_labels_in_label_list(self.current_labels)
         self.select_tool(self.select_button, self.select_tool_setup)
 
     def on_arrow_button_clicked(self):
+        self.display_labels_in_label_list(self.arrow_label_drag_list)
         self.select_tool(self.arrow_button, self.arrow_tool_setup)
 
     def on_rect_button_clicked(self):
+        self.display_labels_in_label_list(self.current_labels)
         self.select_tool(self.rect_button, self.rect_tool_setup)
 
     def on_circle_button_clicked(self):
+        self.display_labels_in_label_list(self.current_labels)
         self.select_tool(self.circle_button, self.circle_tool_setup)
 
     def on_circle_label_button_clicked(self):
@@ -742,21 +748,28 @@ class Ui(QtWidgets.QMainWindow):
         self.show_image_exif_info(self.info_to_display)
 
     def on_label_button_ints_clicked(self):
-        self.display_labels_in_label_list(self.ints_label_drag_list)
+        self.current_labels = self.ints_label_drag_list
+        self.display_labels_in_label_list(self.current_labels)
 
     def on_label_button_halfs_clicked(self):
-        self.display_labels_in_label_list(self.halfs_label_drag_list)
+        self.current_labels = self.halfs_label_drag_list
+        self.display_labels_in_label_list(self.current_labels)
 
     def on_label_button_thirds_clicked(self):
-        self.display_labels_in_label_list(self.thirds_label_drag_list)
+        self.current_labels = self.thirds_label_drag_list
+        self.display_labels_in_label_list(self.current_labels)
 
     def on_label_button_fourths_clicked(self):
-        self.display_labels_in_label_list(self.fourths_label_drag_list)
+        self.current_labels = self.fourths_label_drag_list
+        self.display_labels_in_label_list(self.current_labels)
 
     def on_camera_folder_button_clicked(self):
-        directory = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory", "/")
+        directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory", "/")
         if directory:
-            self.file_watcher.monitor_directory(QtCore.QFileInfo(directory[0]).dir().absolutePath())
+            self.file_watcher.monitor_directory(directory)
+        #directory = QtWidgets.QFileDialog.getOpenFileName(self, "Select Directory", "/")
+        #if directory:
+        #    self.file_watcher.monitor_directory(QtCore.QFileInfo(directory[0]).dir().absolutePath())
 
     def on_zoom_bar_modified(self, position):
         self.scale_factor[0] = (position + 25) / 100
