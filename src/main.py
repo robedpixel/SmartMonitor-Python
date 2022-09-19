@@ -249,8 +249,9 @@ class Ui(QtWidgets.QMainWindow):
         self.help_text = self.findChild(QtWidgets.QPlainTextEdit, "helpEdit")
         self.zoom_display_label = self.findChild(QtWidgets.QLabel, "zoomdisplaylabel")
         self.zoom_display_label.setVisible(False)
-        # self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
-        # self.crop_button.setVisible(False)
+
+        self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
+        self.crop_button.setVisible(False)
         # self.crop_button.clicked.connect(self.on_crop_button_clicked)
 
         self.zoom_bar = self.findChild(QtWidgets.QScrollBar, 'zoomBar')
