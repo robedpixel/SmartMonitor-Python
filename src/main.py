@@ -445,6 +445,8 @@ class Ui(QtWidgets.QMainWindow):
         self.arrow_label_drag_list = list()
         self.arrow_label_drag_list.append(("Remove", QtCore.Qt.green))
         self.arrow_label_drag_list.append(("Liquify", QtCore.Qt.green))
+        self.arrow_label_drag_list.append(("Motion Blur", QtCore.Qt.green))
+        self.arrow_label_drag_list.append(("Gaussian Blur", QtCore.Qt.green))
 
         self.display_labels_in_label_list(self.ints_label_drag_list)
 
