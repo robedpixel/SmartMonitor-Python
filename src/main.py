@@ -448,7 +448,7 @@ class Ui(QtWidgets.QMainWindow):
         self.arrow_label_drag_list.append(("Motion Blur", QtCore.Qt.green))
         self.arrow_label_drag_list.append(("Gaussian Blur", QtCore.Qt.green))
 
-        self.display_labels_in_label_list(self.ints_label_drag_list)
+        self.restore_label_layout()
 
         """
         self.accept_label = DragDropImageLabel()
@@ -698,7 +698,6 @@ class Ui(QtWidgets.QMainWindow):
         self.note_window.show()
 
     def on_brush_size_button_clicked(self):
-        self.display_labels_in_label_list(self.current_labels)
         self.current_brush_size[0] = (self.current_brush_size[0] % 4) + 1
         self.brush_size_pixmap = QtGui.QPixmap("resources/brush thickness " + str(self.current_brush_size[0]))
         self.brush_size_icon = QtGui.QIcon(self.brush_size_pixmap)
@@ -709,11 +708,9 @@ class Ui(QtWidgets.QMainWindow):
         self.select_tool(self.color_picker_button, self.color_picker_tool_setup)
 
     def on_eraser_button_clicked(self):
-        self.display_labels_in_label_list(self.current_labels)
         self.select_tool(self.eraser_button, self.eraser_tool_setup)
 
     def on_select_button_clicked(self):
-        self.display_labels_in_label_list(self.current_labels)
         self.select_tool(self.select_button, self.select_tool_setup)
 
     def on_arrow_button_clicked(self):
@@ -721,11 +718,9 @@ class Ui(QtWidgets.QMainWindow):
         self.select_tool(self.arrow_button, self.arrow_tool_setup)
 
     def on_rect_button_clicked(self):
-        self.display_labels_in_label_list(self.current_labels)
         self.select_tool(self.rect_button, self.rect_tool_setup)
 
     def on_circle_button_clicked(self):
-        self.display_labels_in_label_list(self.current_labels)
         self.select_tool(self.circle_button, self.circle_tool_setup)
 
     def on_circle_label_button_clicked(self):
@@ -752,19 +747,31 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_label_button_ints_clicked(self):
         self.current_labels = self.ints_label_drag_list
-        self.display_labels_in_label_list(self.current_labels)
+        if self.arrow_button.isChecked():
+            self.arrow_button.animateClick()
+        else:
+            self.restore_label_layout()
 
     def on_label_button_halfs_clicked(self):
         self.current_labels = self.halfs_label_drag_list
-        self.display_labels_in_label_list(self.current_labels)
+        if self.arrow_button.isChecked():
+            self.arrow_button.animateClick()
+        else:
+            self.restore_label_layout()
 
     def on_label_button_thirds_clicked(self):
         self.current_labels = self.thirds_label_drag_list
-        self.display_labels_in_label_list(self.current_labels)
+        if self.arrow_button.isChecked():
+            self.arrow_button.animateClick()
+        else:
+            self.restore_label_layout()
 
     def on_label_button_fourths_clicked(self):
         self.current_labels = self.fourths_label_drag_list
-        self.display_labels_in_label_list(self.current_labels)
+        if self.arrow_button.isChecked():
+            self.arrow_button.animateClick()
+        else:
+            self.restore_label_layout()
 
     def on_camera_folder_button_clicked(self):
         directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory", "/")
@@ -834,6 +841,7 @@ class Ui(QtWidgets.QMainWindow):
         new_tool.set_image(self.current_image)
         new_tool.set_color(self.current_brush_color)
         new_tool.set_scale(self.scale_factor)
+        new_tool.set_label_layout_restore_func(self.restore_label_layout)
         new_tool.set_paint_radius(self.brush_sizes, self.current_brush_size)
         new_tool.set_action_list(self.actions, self.current_action)
         return new_tool
@@ -1017,6 +1025,9 @@ class Ui(QtWidgets.QMainWindow):
             new_label.setStyleSheet("border: 1px solid black;")
             new_label.update_image(self.get_qimage_from_text(label[1], label[0]))
             self.icon_layout.addWidget(new_label)
+
+    def restore_label_layout(self):
+        self.display_labels_in_label_list(self.current_labels)
 
 
 app = QtWidgets.QApplication(sys.argv)

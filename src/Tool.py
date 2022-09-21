@@ -648,6 +648,10 @@ class ArrowTool(LineTool):
         self._arrow_height = 10
         self._arrow_width = 10
         self.help_str = "Arrow Tool:\nTap and drag draw an arrow on the canvas"
+        self.restore_label_layout_func = None
+
+    def set_label_layout_restore_func(self, func):
+        self.restore_label_layout_func = func
 
     def on_drag(self, pos: QtCore.QPoint, effects: deque):
         if self.drawing:
@@ -679,6 +683,11 @@ class ArrowTool(LineTool):
 
     def get_effect_type(self):
         return EffectType.RGB
+
+    def on_deselect_tool(self):
+        self.help_text.clear()
+        self.restore_label_layout_func()
+        self.push_button.setChecked(False)
 
     def arrow_calc(self, start_point=None, end_point=None):  # calculates the point where the arrow should be drawn
 
