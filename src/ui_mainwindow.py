@@ -105,7 +105,7 @@ class Ui_MainWindow(object):
 
         self.tabWidget_2 = QTabWidget(self.centralwidget)
         self.tabWidget_2.setObjectName(u"tabWidget_2")
-        self.tabWidget_2.setStyleSheet(u"QTabBar::tab { height: 50px; width: 138px; }")
+        self.tabWidget_2.setStyleSheet(u"QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }")
         self.icontab = QWidget()
         self.icontab.setObjectName(u"icontab")
         self.verticalLayoutWidget = QWidget(self.icontab)
@@ -155,7 +155,7 @@ class Ui_MainWindow(object):
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setStyleSheet(u"QTabBar::tab { height: 50px; width: 100px; }")
+        self.tabWidget.setStyleSheet(u"QTabBar::tab { height: 50px;  font-size: 11px; width: 100px; }")
         self.tabWidget.setElideMode(Qt.ElideNone)
         self.tabWidget.setDocumentMode(False)
         self.tooltab = QWidget()

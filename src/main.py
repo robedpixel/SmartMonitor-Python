@@ -214,6 +214,10 @@ class Ui(QtWidgets.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setAttribute(Qt.WA_AcceptTouchEvents, False)
+        default_font = QtGui.QFont()
+        default_font.setFamily(default_font.defaultFamily())
+        default_font.setPointSize(8)
+        self.setFont(default_font)
 
         # Initialise variables
         self.scale_factor = [float(1)]
