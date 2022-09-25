@@ -566,7 +566,8 @@ class LineTool(Tool):
         self.image_copy_two = None
         self._arrow_height = 10
         self._arrow_width = 10
-        self.help_str = "Line Tool:\nTap and drag draw an arrow on the canvas"
+        self.help_str = "Line Tool:\nTap and drag draw an arrow on the canvas. The tapped point will be where the " \
+                        "arrow is pointing towards "
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -740,7 +741,7 @@ class RectTool(Tool):
         self.current_effect = None
         self.image_copy = None
         self.image_copy_two = None
-        self.help_str = "Rectangle Tool:\nTap and drag draw a rectangle on the canvas\nThe tapped location will be " \
+        self.help_str = "Rectangle Tool:\nTap and drag to draw a rectangle on the canvas\nThe tapped location will be " \
                         "the centre of the rectangle "
 
     def set_image(self, image: [QtGui.QImage]):
@@ -845,7 +846,8 @@ class CircleTool(Tool):
         self.current_effect = None
         self.image_copy = None
         self.image_copy_two = None
-        self.help_str = "Ellipse Tool:\nTap and drag draw an ellipse on the canvas"
+        self.help_str = "Ellipse Tool:\nTap and drag to draw an ellipse on the canvas\nThe tapped location will be " \
+                        "the centre of the ellipse."
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
