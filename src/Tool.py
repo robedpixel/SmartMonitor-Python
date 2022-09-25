@@ -660,7 +660,7 @@ class ArrowTool(LineTool):
             painter.setPen(QtGui.QPen(self.color[0], int(self.paint_sizes[self.paint_radius[0]]),
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
-            arrowhead = self.arrow_calc(self.startPoint, new_pos)
+            arrowhead = self.arrow_calc(new_pos, self.startPoint)
             painter.drawLine(self.startPoint, new_pos)
             if arrowhead is not None:
                 painter.drawPolyline(arrowhead)
@@ -677,7 +677,7 @@ class ArrowTool(LineTool):
                 start_point = effect.pos
                 first = False
             else:
-                arrowhead = self.arrow_calc(start_point, effect.pos)
+                arrowhead = self.arrow_calc(effect.pos, start_point)
                 painter.drawLine(start_point, effect.pos)
                 painter.drawPolyline(arrowhead)
 
@@ -740,7 +740,8 @@ class RectTool(Tool):
         self.current_effect = None
         self.image_copy = None
         self.image_copy_two = None
-        self.help_str = "Rectangle Tool:\nTap and drag draw a rectangle on the canvas"
+        self.help_str = "Rectangle Tool:\nTap and drag draw a rectangle on the canvas\nThe tapped location will be " \
+                        "the centre of the rectangle "
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
@@ -781,10 +782,12 @@ class RectTool(Tool):
             painter.setPen(QtGui.QPen(self.color[0], int(self.paint_sizes[self.paint_radius[0]]),
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
-            pos1 = QtCore.QPoint(self.startPoint.x(), new_pos.y())  # Bottom left point
-            pos2 = QtCore.QPoint(new_pos.x(), self.startPoint.y())  # Top right point
-            painter.drawLine(self.startPoint, pos2)  # top line
-            painter.drawLine(self.startPoint, pos1)  # left line
+            pos1 = QtCore.QPoint(2 * self.startPoint.x() - new_pos.x(), new_pos.y())  # Bottom left point
+            pos2 = QtCore.QPoint(new_pos.x(), 2 * self.startPoint.y() - new_pos.y())  # Top right point
+            pos3 = QtCore.QPoint(2 * self.startPoint.x() - new_pos.x(),
+                                 2 * self.startPoint.y() - new_pos.y())  # Top left point
+            painter.drawLine(pos3, pos2)  # top line
+            painter.drawLine(pos3, pos1)  # left line
             painter.drawLine(pos2, new_pos)  # right line
             painter.drawLine(pos1, new_pos)  # bottom line
             self.image[0] = self.image_copy_two
@@ -813,10 +816,12 @@ class RectTool(Tool):
                 start_point = effect.pos
                 first = False
             else:
-                pos1 = QtCore.QPoint(start_point.x(), effect.pos.y())  # Bottom left point
-                pos2 = QtCore.QPoint(effect.pos.x(), start_point.y())  # Top right point
-                painter.drawLine(start_point, pos2)  # top line
-                painter.drawLine(start_point, pos1)  # left line
+                pos1 = QtCore.QPoint(2 * start_point.x() - effect.pos.x(), effect.pos.y())  # Bottom left point
+                pos2 = QtCore.QPoint(effect.pos.x(), 2 * start_point.y() - effect.pos.y())  # Top right point
+                pos3 = QtCore.QPoint(2 * start_point.x() - effect.pos.x(),
+                                     2 * start_point.y() - effect.pos.y())  # Top left point
+                painter.drawLine(pos3, pos2)  # top line
+                painter.drawLine(pos3, pos1)  # left line
                 painter.drawLine(pos2, effect.pos)  # right line
                 painter.drawLine(pos1, effect.pos)  # bottom line
 
@@ -881,7 +886,10 @@ class CircleTool(Tool):
             painter.setPen(QtGui.QPen(self.color[0], int(self.paint_sizes[self.paint_radius[0]]),
                                       QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
             new_pos = QtCore.QPoint(int(pos.x() / self.scale[0]), int(pos.y() / self.scale[0]))
-            rect = QtCore.QRectF(QtCore.QPointF(self.startPoint), QtCore.QPointF(new_pos))
+            pos3 = QtCore.QPoint(2 * self.startPoint.x() - new_pos.x(),
+                                 2 * self.startPoint.y() - new_pos.y())  # Top left point
+            rect = QtCore.QRectF(QtCore.QPointF(pos3), QtCore.QPointF(new_pos))
+            # rect = QtCore.QRectF(QtCore.QPointF(self.startPoint), QtCore.QPointF(new_pos))
             painter.drawArc(rect, 0, 5760)
             self.image[0] = self.image_copy_two
 
@@ -909,7 +917,10 @@ class CircleTool(Tool):
                 start_point = effect.pos
                 first = False
             else:
-                rect = QtCore.QRectF(QtCore.QPointF(start_point), QtCore.QPointF(effect.pos))
+                pos3 = QtCore.QPoint(2 * start_point.x() - effect.pos.x(),
+                                     2 * start_point.y() - effect.pos.y())  # Top left point
+                rect = QtCore.QRectF(QtCore.QPointF(pos3), QtCore.QPointF(effect.pos))
+                # rect = QtCore.QRectF(QtCore.QPointF(start_point), QtCore.QPointF(effect.pos))
                 painter.drawArc(rect, 0, 5760)
 
     def get_effect_type(self):

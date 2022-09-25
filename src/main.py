@@ -297,10 +297,10 @@ class Ui(QtWidgets.QMainWindow):
         #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         # self.color_picker_button.clicked.connect(self.on_color_picker_button_clicked)
 
-        self.eraser_button = self.findChild(QtWidgets.QPushButton, 'eraserButton')
-        self.eraser_button.setStyleSheet(
-            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        self.eraser_button.clicked.connect(self.on_eraser_button_clicked)
+        #self.eraser_button = self.findChild(QtWidgets.QPushButton, 'eraserButton')
+        #self.eraser_button.setStyleSheet(
+        #    "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        #self.eraser_button.clicked.connect(self.on_eraser_button_clicked)
 
         # self.select_button = self.findChild(QtWidgets.QPushButton, 'selectButton')
         # self.select_button.setStyleSheet(
@@ -392,7 +392,7 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.pan_button)
         self.button_list.append(self.zoom_button)
         # self.button_list.append(self.color_picker_button)
-        self.button_list.append(self.eraser_button)
+        # self.button_list.append(self.eraser_button)
         # self.button_list.append(self.select_button)
         self.button_list.append(self.arrow_button)
         self.button_list.append(self.rect_button)
@@ -413,7 +413,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.rect_button)
         self.tool_list.append(self.circle_button)
         # self.tool_list.append(self.circle_label_button)
-        self.tool_list.append(self.eraser_button)
+        # self.tool_list.append(self.eraser_button)
         # self.tool_list.append(self.burn_button)
         # self.tool_list.append(self.dodge_button)
         self.current_labels = list()
@@ -449,8 +449,7 @@ class Ui(QtWidgets.QMainWindow):
         self.arrow_label_drag_list = list()
         self.arrow_label_drag_list.append(("Remove", QtCore.Qt.green))
         self.arrow_label_drag_list.append(("Liquify", QtCore.Qt.green))
-        self.arrow_label_drag_list.append(("Motion Blur", QtCore.Qt.green))
-        self.arrow_label_drag_list.append(("Gaussian Blur", QtCore.Qt.green))
+        self.arrow_label_drag_list.append(("Lens Blur", QtCore.Qt.green))
 
         self.restore_label_layout()
 
