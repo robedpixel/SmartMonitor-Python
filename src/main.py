@@ -254,8 +254,8 @@ class Ui(QtWidgets.QMainWindow):
         self.zoom_display_label = self.findChild(QtWidgets.QLabel, "zoomdisplaylabel")
         self.zoom_display_label.setVisible(False)
 
-        self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
-        self.crop_button.setVisible(False)
+        # self.crop_button = self.findChild(QtWidgets.QPushButton, 'cropButton')
+        # self.crop_button.setVisible(False)
         # self.crop_button.clicked.connect(self.on_crop_button_clicked)
 
         self.zoom_bar = self.findChild(QtWidgets.QScrollBar, 'zoomBar')
@@ -374,18 +374,6 @@ class Ui(QtWidgets.QMainWindow):
         self.brush_size_button.setIcon(self.brush_size_icon)
         self.brush_size_button.setIconSize(self.brush_size_pixmap.rect().size())
 
-        self.label_button_ints = self.findChild(QtWidgets.QWidget, 'labelButton_ints')
-        self.label_button_ints.clicked.connect(self.on_label_button_ints_clicked)
-
-        self.label_button_halfs = self.findChild(QtWidgets.QWidget, 'labelButton_halfs')
-        self.label_button_halfs.clicked.connect(self.on_label_button_halfs_clicked)
-
-        self.label_button_thirds = self.findChild(QtWidgets.QWidget, 'labelButton_thirds')
-        self.label_button_thirds.clicked.connect(self.on_label_button_thirds_clicked)
-
-        self.label_button_fourths = self.findChild(QtWidgets.QWidget, 'labelButton_fourths')
-        self.label_button_fourths.clicked.connect(self.on_label_button_fourths_clicked)
-
         self.burn_option_button = self.findChild(QtWidgets.QPushButton, 'burnButton')
         self.burn_option_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
@@ -395,6 +383,21 @@ class Ui(QtWidgets.QMainWindow):
         self.dodge_option_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.dodge_option_button.clicked.connect(self.on_dodge_option_button_clicked)
+
+        self.remove_option_button = self.findChild(QtWidgets.QPushButton, 'removeButton')
+        self.remove_option_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.remove_option_button.clicked.connect(self.on_remove_option_button_clicked)
+
+        self.liquify_option_button = self.findChild(QtWidgets.QPushButton, 'liquifyButton')
+        self.liquify_option_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.liquify_option_button.clicked.connect(self.on_liquify_option_button_clicked)
+
+        self.lensblur_option_button = self.findChild(QtWidgets.QPushButton, 'lensblurButton')
+        self.lensblur_option_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.lensblur_option_button.clicked.connect(self.on_lensblur_option_button_clicked)
 
         horizontal_layout = self.findChild(QtWidgets.QHBoxLayout, 'horizontalLayout')
         horizontal_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
@@ -423,6 +426,9 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.info_button)
         self.button_list.append(self.burn_option_button)
         self.button_list.append(self.dodge_option_button)
+        self.button_list.append(self.remove_option_button)
+        self.button_list.append(self.liquify_option_button)
+        self.button_list.append(self.lensblur_option_button)
         # self.button_list.append(self.burn_button)
         # self.button_list.append(self.dodge_button)
 
@@ -437,6 +443,9 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.circle_button)
         self.tool_list.append(self.burn_option_button)
         self.tool_list.append(self.dodge_option_button)
+        self.tool_list.append(self.remove_option_button)
+        self.tool_list.append(self.liquify_option_button)
+        self.tool_list.append(self.lensblur_option_button)
         # self.tool_list.append(self.circle_label_button)
         # self.tool_list.append(self.eraser_button)
         # self.tool_list.append(self.burn_button)
@@ -447,6 +456,9 @@ class Ui(QtWidgets.QMainWindow):
         self.option_list.append(self.pan_button)
         self.option_list.append(self.burn_option_button)
         self.option_list.append(self.dodge_option_button)
+        self.option_list.append(self.remove_option_button)
+        self.option_list.append(self.liquify_option_button)
+        self.option_list.append(self.lensblur_option_button)
 
         self.selection_list = list()
         self.selection_list.append(self.brush_button)
@@ -478,36 +490,15 @@ class Ui(QtWidgets.QMainWindow):
         self.dodge_label_drag_list.append(("-2", QtCore.Qt.blue))
         self.dodge_label_drag_list.append(("-3", QtCore.Qt.blue))
 
-        self.ints_label_drag_list = list()
-        self.ints_label_drag_list.append(("+1", QtCore.Qt.red))
-        self.ints_label_drag_list.append(("+2", QtCore.Qt.red))
-        self.ints_label_drag_list.append(("+3", QtCore.Qt.red))
-        self.ints_label_drag_list.append(("-1", QtCore.Qt.blue))
-        self.ints_label_drag_list.append(("-2", QtCore.Qt.blue))
-        self.ints_label_drag_list.append(("-3", QtCore.Qt.blue))
+        self.remove_label_drag_list = list()
+        self.remove_label_drag_list.append(("Remove", QtGui.QColor("orange")))
 
-        self.halfs_label_drag_list = list()
-        self.halfs_label_drag_list.append(("+1/2", QtCore.Qt.red))
-        self.halfs_label_drag_list.append(("-1/2", QtCore.Qt.blue))
+        self.liquify_label_drag_list = list()
+        self.liquify_label_drag_list.append(("Liquify", QtGui.QColor(QtCore.Qt.cyan)))
 
-        self.thirds_label_drag_list = list()
-        self.thirds_label_drag_list.append(("+1/3", QtCore.Qt.red))
-        self.thirds_label_drag_list.append(("+2/3", QtCore.Qt.red))
-        self.thirds_label_drag_list.append(("-1/3", QtCore.Qt.blue))
-        self.thirds_label_drag_list.append(("-2/3", QtCore.Qt.blue))
+        self.lensblur_label_drag_list = list()
+        self.lensblur_label_drag_list.append(("Lens Blur", QtGui.QColor(QtCore.Qt.darkYellow)))
 
-        self.fourths_label_drag_list = list()
-        self.fourths_label_drag_list.append(("+1/4", QtCore.Qt.red))
-        self.fourths_label_drag_list.append(("+2/4", QtCore.Qt.red))
-        self.fourths_label_drag_list.append(("+3/4", QtCore.Qt.red))
-        self.fourths_label_drag_list.append(("-1/4", QtCore.Qt.blue))
-        self.fourths_label_drag_list.append(("-2/4", QtCore.Qt.blue))
-        self.fourths_label_drag_list.append(("-3/4", QtCore.Qt.blue))
-
-        self.arrow_label_drag_list = list()
-        self.arrow_label_drag_list.append(("Remove", QtCore.Qt.green))
-        self.arrow_label_drag_list.append(("Liquify", QtCore.Qt.green))
-        self.arrow_label_drag_list.append(("Lens Blur", QtCore.Qt.green))
 
         """
         self.accept_label = DragDropImageLabel()
@@ -780,7 +771,6 @@ class Ui(QtWidgets.QMainWindow):
         self.select_tool(self.select_button, self.select_tool_setup)
 
     def on_arrow_button_clicked(self):
-        self.display_labels_in_label_list(self.arrow_label_drag_list)
         self.select_tool(self.arrow_button, self.arrow_tool_setup)
 
     def on_rect_button_clicked(self):
@@ -861,6 +851,76 @@ class Ui(QtWidgets.QMainWindow):
             self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
 
+    def on_remove_option_button_clicked(self):
+        self.current_labels = list()
+        self.restore_label_layout()
+        self.deselect_current_tool()
+        while self.selection_layout.count():
+            child = self.selection_layout.takeAt(0)
+            if child.widget():
+                child.widget().setParent(self)
+                child.widget().setVisible(False)
+        if self.remove_option_button.isChecked():
+            for button in self.option_list:
+                if button != self.remove_option_button:
+                    button.setChecked(False)
+            self.current_brush_color[0] = QtGui.QColor("orange")
+            set_button_color(self.current_brush_color[0], self.brush_color_button)
+            self.brush_color_button.update()
+            self.current_labels = self.remove_label_drag_list
+            self.restore_label_layout()
+            self.selection_layout.addWidget(self.brush_button, 0, 0)
+            self.brush_button.setVisible(True)
+            self.selection_layout.addWidget(self.rect_button, 0, 1)
+            self.rect_button.setVisible(True)
+            self.selection_layout.addWidget(self.circle_button, 1, 0)
+            self.circle_button.setVisible(True)
+
+    def on_liquify_option_button_clicked(self):
+        self.current_labels = list()
+        self.restore_label_layout()
+        self.deselect_current_tool()
+        while self.selection_layout.count():
+            child = self.selection_layout.takeAt(0)
+            if child.widget():
+                child.widget().setParent(self)
+                child.widget().setVisible(False)
+        if self.liquify_option_button.isChecked():
+            for button in self.option_list:
+                if button != self.liquify_option_button:
+                    button.setChecked(False)
+            self.current_brush_color[0] = QtGui.QColor(QtCore.Qt.cyan)
+            set_button_color(self.current_brush_color[0], self.brush_color_button)
+            self.brush_color_button.update()
+            self.current_labels = self.liquify_label_drag_list
+            self.restore_label_layout()
+            self.selection_layout.addWidget(self.brush_button, 0, 0)
+            self.brush_button.setVisible(True)
+            self.selection_layout.addWidget(self.arrow_button, 0, 1)
+            self.arrow_button.setVisible(True)
+
+    def on_lensblur_option_button_clicked(self):
+        self.current_labels = list()
+        self.restore_label_layout()
+        self.deselect_current_tool()
+        while self.selection_layout.count():
+            child = self.selection_layout.takeAt(0)
+            if child.widget():
+                child.widget().setParent(self)
+                child.widget().setVisible(False)
+        if self.lensblur_option_button.isChecked():
+            for button in self.option_list:
+                if button != self.lensblur_option_button:
+                    button.setChecked(False)
+            self.current_brush_color[0] = QtGui.QColor(QtCore.Qt.darkYellow)
+            set_button_color(self.current_brush_color[0], self.brush_color_button)
+            self.brush_color_button.update()
+            self.current_labels = self.lensblur_label_drag_list
+            self.restore_label_layout()
+            self.selection_layout.addWidget(self.rect_button, 0, 0)
+            self.rect_button.setVisible(True)
+            self.selection_layout.addWidget(self.circle_button, 0, 1)
+            self.circle_button.setVisible(True)
     def on_label_button_ints_clicked(self):
         self.current_labels = self.ints_label_drag_list
         if self.arrow_button.isChecked():
@@ -1139,7 +1199,7 @@ class Ui(QtWidgets.QMainWindow):
             new_label.setMaximumSize(QtCore.QSize(147, 40))
             new_label.setAlignment(QtCore.Qt.AlignCenter)
             new_label.setStyleSheet("border: 1px solid black;")
-            #new_label.update_image(self.get_qimage_from_text(label[1], label[0]))
+            # new_label.update_image(self.get_qimage_from_text(label[1], label[0]))
             new_label.update_image(self.get_qimage_from_text(self.current_brush_color[0], label[0]))
             self.icon_layout.addWidget(new_label)
 

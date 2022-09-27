@@ -22,36 +22,6 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout_3 = QGridLayout(self.centralwidget)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.brushcolorlabel = QLabel(self.centralwidget)
-        self.brushcolorlabel.setObjectName(u"brushcolorlabel")
-        self.brushcolorlabel.setMaximumSize(QSize(51, 16777215))
-        self.brushcolorlabel.setAlignment(Qt.AlignCenter)
-
-        self.gridLayout_3.addWidget(self.brushcolorlabel, 0, 20, 1, 1)
-
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_3.addItem(self.horizontalSpacer, 0, 6, 1, 1)
-
-        self.resetZoomButton = QPushButton(self.centralwidget)
-        self.resetZoomButton.setObjectName(u"resetZoomButton")
-        self.resetZoomButton.setEnabled(True)
-        self.resetZoomButton.setMaximumSize(QSize(71, 51))
-
-        self.gridLayout_3.addWidget(self.resetZoomButton, 0, 2, 1, 1)
-
-        self.fileopenButton = QPushButton(self.centralwidget)
-        self.fileopenButton.setObjectName(u"fileopenButton")
-        self.fileopenButton.setMaximumSize(QSize(81, 51))
-        self.fileopenButton.setTabletTracking(False)
-
-        self.gridLayout_3.addWidget(self.fileopenButton, 0, 25, 1, 1)
-
-        self.label = QLabel(self.centralwidget)
-        self.label.setObjectName(u"label")
-
-        self.gridLayout_3.addWidget(self.label, 0, 7, 1, 1)
-
         self.LabelTab = QTabWidget(self.centralwidget)
         self.LabelTab.setObjectName(u"LabelTab")
         self.LabelTab.setStyleSheet(u"QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }")
@@ -67,105 +37,22 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.LabelTab, 2, 2, 1, 2)
 
-        self.folderButton = QPushButton(self.centralwidget)
-        self.folderButton.setObjectName(u"folderButton")
-        self.folderButton.setMaximumSize(QSize(91, 51))
-
-        self.gridLayout_3.addWidget(self.folderButton, 0, 17, 1, 1)
-
-        self.filesaveButton = QPushButton(self.centralwidget)
-        self.filesaveButton.setObjectName(u"filesaveButton")
-        self.filesaveButton.setEnabled(False)
-        self.filesaveButton.setMaximumSize(QSize(81, 51))
-
-        self.gridLayout_3.addWidget(self.filesaveButton, 0, 24, 1, 1)
-
-        self.redoButton = QPushButton(self.centralwidget)
-        self.redoButton.setObjectName(u"redoButton")
-        self.redoButton.setMaximumSize(QSize(81, 51))
-
-        self.gridLayout_3.addWidget(self.redoButton, 0, 5, 1, 1)
-
-        self.brushsizelabel = QLabel(self.centralwidget)
-        self.brushsizelabel.setObjectName(u"brushsizelabel")
-        self.brushsizelabel.setMaximumSize(QSize(51, 16777215))
-        self.brushsizelabel.setWordWrap(True)
-
-        self.gridLayout_3.addWidget(self.brushsizelabel, 0, 18, 1, 1)
-
-        self.zoomButton = QPushButton(self.centralwidget)
-        self.zoomButton.setObjectName(u"zoomButton")
-        self.zoomButton.setEnabled(False)
-        self.zoomButton.setMaximumSize(QSize(71, 51))
+        self.panButton = QPushButton(self.centralwidget)
+        self.panButton.setObjectName(u"panButton")
+        self.panButton.setEnabled(False)
+        self.panButton.setMaximumSize(QSize(71, 51))
         icon = QIcon()
-        icon.addFile(u"resources/zoom icon.ico", QSize(), QIcon.Normal, QIcon.Off)
-        self.zoomButton.setIcon(icon)
-        self.zoomButton.setCheckable(True)
+        icon.addFile(u"resources/panningicon.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.panButton.setIcon(icon)
+        self.panButton.setCheckable(True)
 
-        self.gridLayout_3.addWidget(self.zoomButton, 0, 1, 1, 1)
-
-        self.noteButton = QPushButton(self.centralwidget)
-        self.noteButton.setObjectName(u"noteButton")
-        self.noteButton.setMaximumSize(QSize(81, 51))
-
-        self.gridLayout_3.addWidget(self.noteButton, 0, 22, 1, 1)
-
-        self.infoButton = QPushButton(self.centralwidget)
-        self.infoButton.setObjectName(u"infoButton")
-        self.infoButton.setEnabled(False)
-        self.infoButton.setMaximumSize(QSize(81, 51))
-
-        self.gridLayout_3.addWidget(self.infoButton, 0, 23, 1, 1)
-
-        self.horizontalSpacer_2 = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-
-        self.gridLayout_3.addItem(self.horizontalSpacer_2, 0, 12, 1, 1)
-
-        self.labelButton_thirds = QPushButton(self.centralwidget)
-        self.labelButton_thirds.setObjectName(u"labelButton_thirds")
-        self.labelButton_thirds.setEnabled(True)
-        self.labelButton_thirds.setMaximumSize(QSize(71, 51))
-        self.labelButton_thirds.setCheckable(False)
-
-        self.gridLayout_3.addWidget(self.labelButton_thirds, 0, 9, 1, 1)
-
-        self.undoButton = QPushButton(self.centralwidget)
-        self.undoButton.setObjectName(u"undoButton")
-        self.undoButton.setMaximumSize(QSize(71, 51))
-
-        self.gridLayout_3.addWidget(self.undoButton, 0, 3, 1, 1)
+        self.gridLayout_3.addWidget(self.panButton, 0, 0, 1, 1)
 
         self.brushSizeButton = QPushButton(self.centralwidget)
         self.brushSizeButton.setObjectName(u"brushSizeButton")
         self.brushSizeButton.setMaximumSize(QSize(51, 51))
 
-        self.gridLayout_3.addWidget(self.brushSizeButton, 0, 19, 1, 1)
-
-        self.labelButton_ints = QPushButton(self.centralwidget)
-        self.labelButton_ints.setObjectName(u"labelButton_ints")
-        self.labelButton_ints.setEnabled(True)
-        self.labelButton_ints.setMaximumSize(QSize(71, 51))
-        self.labelButton_ints.setCheckable(False)
-
-        self.gridLayout_3.addWidget(self.labelButton_ints, 0, 11, 1, 1)
-
-        self.brushcolorButton = QPushButton(self.centralwidget)
-        self.brushcolorButton.setObjectName(u"brushcolorButton")
-        self.brushcolorButton.setMinimumSize(QSize(50, 0))
-        self.brushcolorButton.setMaximumSize(QSize(51, 51))
-
-        self.gridLayout_3.addWidget(self.brushcolorButton, 0, 21, 1, 1)
-
-        self.panButton = QPushButton(self.centralwidget)
-        self.panButton.setObjectName(u"panButton")
-        self.panButton.setEnabled(False)
-        self.panButton.setMaximumSize(QSize(71, 51))
-        icon1 = QIcon()
-        icon1.addFile(u"resources/panningicon.png", QSize(), QIcon.Normal, QIcon.Off)
-        self.panButton.setIcon(icon1)
-        self.panButton.setCheckable(True)
-
-        self.gridLayout_3.addWidget(self.panButton, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.brushSizeButton, 0, 12, 1, 1)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setObjectName(u"horizontalLayout")
@@ -178,18 +65,6 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addWidget(self.zoomBar)
 
-        self.cropButton = QPushButton(self.centralwidget)
-        self.cropButton.setObjectName(u"cropButton")
-        self.cropButton.setEnabled(False)
-        sizePolicy = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.cropButton.sizePolicy().hasHeightForWidth())
-        self.cropButton.setSizePolicy(sizePolicy)
-        self.cropButton.setMaximumSize(QSize(81, 51))
-
-        self.horizontalLayout.addWidget(self.cropButton)
-
         self.zoomdisplaylabel = QLabel(self.centralwidget)
         self.zoomdisplaylabel.setObjectName(u"zoomdisplaylabel")
         self.zoomdisplaylabel.setEnabled(False)
@@ -197,23 +72,99 @@ class Ui_MainWindow(object):
         self.horizontalLayout.addWidget(self.zoomdisplaylabel)
 
 
-        self.gridLayout_3.addLayout(self.horizontalLayout, 0, 13, 1, 2)
+        self.gridLayout_3.addLayout(self.horizontalLayout, 0, 6, 1, 2)
 
-        self.labelButton_fourths = QPushButton(self.centralwidget)
-        self.labelButton_fourths.setObjectName(u"labelButton_fourths")
-        self.labelButton_fourths.setEnabled(True)
-        self.labelButton_fourths.setMaximumSize(QSize(71, 51))
-        self.labelButton_fourths.setCheckable(False)
+        self.undoButton = QPushButton(self.centralwidget)
+        self.undoButton.setObjectName(u"undoButton")
+        self.undoButton.setMaximumSize(QSize(71, 51))
 
-        self.gridLayout_3.addWidget(self.labelButton_fourths, 0, 8, 1, 1)
+        self.gridLayout_3.addWidget(self.undoButton, 0, 3, 1, 1)
 
-        self.labelButton_halfs = QPushButton(self.centralwidget)
-        self.labelButton_halfs.setObjectName(u"labelButton_halfs")
-        self.labelButton_halfs.setEnabled(True)
-        self.labelButton_halfs.setMaximumSize(QSize(71, 51))
-        self.labelButton_halfs.setCheckable(False)
+        self.resetZoomButton = QPushButton(self.centralwidget)
+        self.resetZoomButton.setObjectName(u"resetZoomButton")
+        self.resetZoomButton.setEnabled(True)
+        self.resetZoomButton.setMaximumSize(QSize(71, 51))
 
-        self.gridLayout_3.addWidget(self.labelButton_halfs, 0, 10, 1, 1)
+        self.gridLayout_3.addWidget(self.resetZoomButton, 0, 2, 1, 1)
+
+        self.scrollArea = QScrollArea(self.centralwidget)
+        self.scrollArea.setObjectName(u"scrollArea")
+        self.scrollArea.setWidgetResizable(False)
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 639, 499))
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+
+        self.gridLayout_3.addWidget(self.scrollArea, 1, 5, 2, 12)
+
+        self.brushsizelabel = QLabel(self.centralwidget)
+        self.brushsizelabel.setObjectName(u"brushsizelabel")
+        self.brushsizelabel.setMaximumSize(QSize(51, 16777215))
+        self.brushsizelabel.setWordWrap(True)
+
+        self.gridLayout_3.addWidget(self.brushsizelabel, 0, 11, 1, 1)
+
+        self.helpEdit = QPlainTextEdit(self.centralwidget)
+        self.helpEdit.setObjectName(u"helpEdit")
+
+        self.gridLayout_3.addWidget(self.helpEdit, 1, 17, 2, 2)
+
+        self.folderButton = QPushButton(self.centralwidget)
+        self.folderButton.setObjectName(u"folderButton")
+        self.folderButton.setMaximumSize(QSize(91, 51))
+
+        self.gridLayout_3.addWidget(self.folderButton, 0, 10, 1, 1)
+
+        self.noteButton = QPushButton(self.centralwidget)
+        self.noteButton.setObjectName(u"noteButton")
+        self.noteButton.setMaximumSize(QSize(81, 51))
+
+        self.gridLayout_3.addWidget(self.noteButton, 0, 15, 1, 1)
+
+        self.fileopenButton = QPushButton(self.centralwidget)
+        self.fileopenButton.setObjectName(u"fileopenButton")
+        self.fileopenButton.setMaximumSize(QSize(81, 51))
+        self.fileopenButton.setTabletTracking(False)
+
+        self.gridLayout_3.addWidget(self.fileopenButton, 0, 18, 1, 1)
+
+        self.brushcolorlabel = QLabel(self.centralwidget)
+        self.brushcolorlabel.setObjectName(u"brushcolorlabel")
+        self.brushcolorlabel.setMaximumSize(QSize(51, 16777215))
+        self.brushcolorlabel.setAlignment(Qt.AlignCenter)
+
+        self.gridLayout_3.addWidget(self.brushcolorlabel, 0, 13, 1, 1)
+
+        self.redoButton = QPushButton(self.centralwidget)
+        self.redoButton.setObjectName(u"redoButton")
+        self.redoButton.setMaximumSize(QSize(81, 51))
+
+        self.gridLayout_3.addWidget(self.redoButton, 0, 5, 1, 1)
+
+        self.filesaveButton = QPushButton(self.centralwidget)
+        self.filesaveButton.setObjectName(u"filesaveButton")
+        self.filesaveButton.setEnabled(False)
+        self.filesaveButton.setMaximumSize(QSize(81, 51))
+
+        self.gridLayout_3.addWidget(self.filesaveButton, 0, 17, 1, 1)
+
+        self.infoButton = QPushButton(self.centralwidget)
+        self.infoButton.setObjectName(u"infoButton")
+        self.infoButton.setEnabled(False)
+        self.infoButton.setMaximumSize(QSize(81, 51))
+
+        self.gridLayout_3.addWidget(self.infoButton, 0, 16, 1, 1)
+
+        self.zoomButton = QPushButton(self.centralwidget)
+        self.zoomButton.setObjectName(u"zoomButton")
+        self.zoomButton.setEnabled(False)
+        self.zoomButton.setMaximumSize(QSize(71, 51))
+        icon1 = QIcon()
+        icon1.addFile(u"resources/zoom icon.ico", QSize(), QIcon.Normal, QIcon.Off)
+        self.zoomButton.setIcon(icon1)
+        self.zoomButton.setCheckable(True)
+
+        self.gridLayout_3.addWidget(self.zoomButton, 0, 1, 1, 1)
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
@@ -224,7 +175,7 @@ class Ui_MainWindow(object):
         self.tooltab.setObjectName(u"tooltab")
         self.verticalLayoutWidget_2 = QWidget(self.tooltab)
         self.verticalLayoutWidget_2.setObjectName(u"verticalLayoutWidget_2")
-        self.verticalLayoutWidget_2.setGeometry(QRect(0, 0, 121, 631))
+        self.verticalLayoutWidget_2.setGeometry(QRect(0, 0, 141, 631))
         self.toolLayout = QVBoxLayout(self.verticalLayoutWidget_2)
         self.toolLayout.setObjectName(u"toolLayout")
         self.toolLayout.setContentsMargins(0, 0, 0, 0)
@@ -246,19 +197,36 @@ class Ui_MainWindow(object):
 
         self.toolLayout.addWidget(self.dodgeButton)
 
+        self.removeButton = QPushButton(self.verticalLayoutWidget_2)
+        self.removeButton.setObjectName(u"removeButton")
+        self.removeButton.setEnabled(False)
+        self.removeButton.setMinimumSize(QSize(0, 51))
+        self.removeButton.setMaximumSize(QSize(147, 16777215))
+        self.removeButton.setCheckable(True)
+
+        self.toolLayout.addWidget(self.removeButton)
+
+        self.liquifyButton = QPushButton(self.verticalLayoutWidget_2)
+        self.liquifyButton.setObjectName(u"liquifyButton")
+        self.liquifyButton.setEnabled(False)
+        self.liquifyButton.setMinimumSize(QSize(0, 51))
+        self.liquifyButton.setMaximumSize(QSize(147, 16777215))
+        self.liquifyButton.setCheckable(True)
+
+        self.toolLayout.addWidget(self.liquifyButton)
+
+        self.lensblurButton = QPushButton(self.verticalLayoutWidget_2)
+        self.lensblurButton.setObjectName(u"lensblurButton")
+        self.lensblurButton.setEnabled(False)
+        self.lensblurButton.setMinimumSize(QSize(0, 51))
+        self.lensblurButton.setMaximumSize(QSize(147, 16777215))
+        self.lensblurButton.setCheckable(True)
+
+        self.toolLayout.addWidget(self.lensblurButton)
+
         self.tabWidget.addTab(self.tooltab, "")
 
         self.gridLayout_3.addWidget(self.tabWidget, 1, 0, 2, 2)
-
-        self.scrollArea = QScrollArea(self.centralwidget)
-        self.scrollArea.setObjectName(u"scrollArea")
-        self.scrollArea.setWidgetResizable(False)
-        self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 639, 499))
-        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
-
-        self.gridLayout_3.addWidget(self.scrollArea, 1, 5, 2, 19)
 
         self.AreaTab = QTabWidget(self.centralwidget)
         self.AreaTab.setObjectName(u"AreaTab")
@@ -312,10 +280,12 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.AreaTab, 1, 2, 1, 2)
 
-        self.helpEdit = QPlainTextEdit(self.centralwidget)
-        self.helpEdit.setObjectName(u"helpEdit")
+        self.brushcolorButton = QPushButton(self.centralwidget)
+        self.brushcolorButton.setObjectName(u"brushcolorButton")
+        self.brushcolorButton.setMinimumSize(QSize(50, 0))
+        self.brushcolorButton.setMaximumSize(QSize(51, 51))
 
-        self.gridLayout_3.addWidget(self.helpEdit, 1, 24, 2, 2)
+        self.gridLayout_3.addWidget(self.brushcolorButton, 0, 14, 1, 1)
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
@@ -338,38 +308,35 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
-        self.brushcolorlabel.setText(QCoreApplication.translate("MainWindow", u"Color:", None))
-        self.resetZoomButton.setText(QCoreApplication.translate("MainWindow", u"Reset zoom", None))
-        self.fileopenButton.setText(QCoreApplication.translate("MainWindow", u"Open File", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"label increments:", None))
         self.LabelTab.setTabText(self.LabelTab.indexOf(self.icontab), QCoreApplication.translate("MainWindow", u"Drag-and-drop Labels", None))
+        self.panButton.setText("")
+        self.brushSizeButton.setText("")
+        self.zoomdisplaylabel.setText(QCoreApplication.translate("MainWindow", u"zoom:", None))
+        self.undoButton.setText(QCoreApplication.translate("MainWindow", u"Undo", None))
+        self.resetZoomButton.setText(QCoreApplication.translate("MainWindow", u"Reset zoom", None))
+        self.brushsizelabel.setText(QCoreApplication.translate("MainWindow", u"Brush Size:", None))
         self.folderButton.setText(QCoreApplication.translate("MainWindow", u"Change\n"
 " camera folder", None))
-        self.filesaveButton.setText(QCoreApplication.translate("MainWindow", u"Save File", None))
-        self.redoButton.setText(QCoreApplication.translate("MainWindow", u"Redo", None))
-        self.brushsizelabel.setText(QCoreApplication.translate("MainWindow", u"Brush Size:", None))
-        self.zoomButton.setText("")
         self.noteButton.setText(QCoreApplication.translate("MainWindow", u"Exif\n"
 "Comments", None))
+        self.fileopenButton.setText(QCoreApplication.translate("MainWindow", u"Open File", None))
+        self.brushcolorlabel.setText(QCoreApplication.translate("MainWindow", u"Color:", None))
+        self.redoButton.setText(QCoreApplication.translate("MainWindow", u"Redo", None))
+        self.filesaveButton.setText(QCoreApplication.translate("MainWindow", u"Save File", None))
         self.infoButton.setText(QCoreApplication.translate("MainWindow", u"Image\n"
 "Info", None))
-        self.labelButton_thirds.setText(QCoreApplication.translate("MainWindow", u"1/3", None))
-        self.undoButton.setText(QCoreApplication.translate("MainWindow", u"Undo", None))
-        self.brushSizeButton.setText("")
-        self.labelButton_ints.setText(QCoreApplication.translate("MainWindow", u"1", None))
-        self.brushcolorButton.setText("")
-        self.panButton.setText("")
-        self.cropButton.setText(QCoreApplication.translate("MainWindow", u"Crop", None))
-        self.zoomdisplaylabel.setText(QCoreApplication.translate("MainWindow", u"zoom:", None))
-        self.labelButton_fourths.setText(QCoreApplication.translate("MainWindow", u"1/4", None))
-        self.labelButton_halfs.setText(QCoreApplication.translate("MainWindow", u"1/2", None))
+        self.zoomButton.setText("")
         self.burnButton.setText(QCoreApplication.translate("MainWindow", u"Burn", None))
         self.dodgeButton.setText(QCoreApplication.translate("MainWindow", u"Dodge", None))
+        self.removeButton.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
+        self.liquifyButton.setText(QCoreApplication.translate("MainWindow", u"Liquify", None))
+        self.lensblurButton.setText(QCoreApplication.translate("MainWindow", u"Lens Blur", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tooltab), QCoreApplication.translate("MainWindow", u"Action", None))
         self.cirButton.setText(QCoreApplication.translate("MainWindow", u"Ellipse", None))
         self.brushButton.setText(QCoreApplication.translate("MainWindow", u"Freehand", None))
         self.rectButton.setText(QCoreApplication.translate("MainWindow", u"Rectangle", None))
         self.arrowButton.setText(QCoreApplication.translate("MainWindow", u"Point", None))
         self.AreaTab.setTabText(self.AreaTab.indexOf(self.Areatab), QCoreApplication.translate("MainWindow", u"Area Selection", None))
+        self.brushcolorButton.setText("")
     # retranslateUi
 
