@@ -917,9 +917,11 @@ class Ui(QtWidgets.QMainWindow):
             self.brush_color_button.update()
             self.current_labels = self.lensblur_label_drag_list
             self.restore_label_layout()
-            self.selection_layout.addWidget(self.rect_button, 0, 0)
+            self.selection_layout.addWidget(self.arrow_button, 0, 0)
+            self.arrow_button.setVisible(True)
+            self.selection_layout.addWidget(self.rect_button, 0, 1)
             self.rect_button.setVisible(True)
-            self.selection_layout.addWidget(self.circle_button, 0, 1)
+            self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
     def on_label_button_ints_clicked(self):
         self.current_labels = self.ints_label_drag_list
