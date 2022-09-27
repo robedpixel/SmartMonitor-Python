@@ -399,6 +399,11 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.lensblur_option_button.clicked.connect(self.on_lensblur_option_button_clicked)
 
+        self.area_tab = self.findChild(QtWidgets.QTabWidget, 'AreaTab')
+        self.label_tab = self.findChild(QtWidgets.QTabWidget, 'LabelTab')
+        self.area_tab.setVisible(False)
+        self.label_tab.setVisible(False)
+
         horizontal_layout = self.findChild(QtWidgets.QHBoxLayout, 'horizontalLayout')
         horizontal_layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignLeft)
 
@@ -452,8 +457,6 @@ class Ui(QtWidgets.QMainWindow):
         # self.tool_list.append(self.dodge_button)
 
         self.option_list = list()
-        self.option_list.append(self.zoom_button)
-        self.option_list.append(self.pan_button)
         self.option_list.append(self.burn_option_button)
         self.option_list.append(self.dodge_option_button)
         self.option_list.append(self.remove_option_button)
@@ -498,7 +501,6 @@ class Ui(QtWidgets.QMainWindow):
 
         self.lensblur_label_drag_list = list()
         self.lensblur_label_drag_list.append(("Lens Blur", QtGui.QColor(QtCore.Qt.darkYellow)))
-
 
         """
         self.accept_label = DragDropImageLabel()
@@ -724,9 +726,10 @@ class Ui(QtWidgets.QMainWindow):
 
     def deselect_current_tool(self):
         if self.selected_tool:
-            self.selected_tool.on_deselect_tool()
-            self.selected_tool = None
-            self.selected_button = None
+            if not (isinstance(self.selected_tool, ScaleTool) or isinstance(self.selected_tool, PanTool)) :
+                self.selected_tool.on_deselect_tool()
+                self.selected_tool = None
+                self.selected_button = None
 
     def on_brush_button_clicked(self):
         self.select_tool(self.brush_button, self.brush_tool_setup)
@@ -802,8 +805,6 @@ class Ui(QtWidgets.QMainWindow):
         self.show_image_exif_info(self.info_to_display)
 
     def on_burn_option_button_clicked(self):
-        self.current_labels = list()
-        self.restore_label_layout()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -825,10 +826,15 @@ class Ui(QtWidgets.QMainWindow):
             self.rect_button.setVisible(True)
             self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
+            self.area_tab.setVisible(True)
+            self.label_tab.setVisible(True)
+        else:
+            self.current_labels = list()
+            self.restore_label_layout()
+            self.area_tab.setVisible(False)
+            self.label_tab.setVisible(False)
 
     def on_dodge_option_button_clicked(self):
-        self.current_labels = list()
-        self.restore_label_layout()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -850,10 +856,15 @@ class Ui(QtWidgets.QMainWindow):
             self.rect_button.setVisible(True)
             self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
+            self.area_tab.setVisible(True)
+            self.label_tab.setVisible(True)
+        else:
+            self.current_labels = list()
+            self.restore_label_layout()
+            self.area_tab.setVisible(False)
+            self.label_tab.setVisible(False)
 
     def on_remove_option_button_clicked(self):
-        self.current_labels = list()
-        self.restore_label_layout()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -875,10 +886,15 @@ class Ui(QtWidgets.QMainWindow):
             self.rect_button.setVisible(True)
             self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
+            self.area_tab.setVisible(True)
+            self.label_tab.setVisible(True)
+        else:
+            self.current_labels = list()
+            self.restore_label_layout()
+            self.area_tab.setVisible(False)
+            self.label_tab.setVisible(False)
 
     def on_liquify_option_button_clicked(self):
-        self.current_labels = list()
-        self.restore_label_layout()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -898,10 +914,15 @@ class Ui(QtWidgets.QMainWindow):
             self.brush_button.setVisible(True)
             self.selection_layout.addWidget(self.arrow_button, 0, 1)
             self.arrow_button.setVisible(True)
+            self.area_tab.setVisible(True)
+            self.label_tab.setVisible(True)
+        else:
+            self.current_labels = list()
+            self.restore_label_layout()
+            self.area_tab.setVisible(False)
+            self.label_tab.setVisible(False)
 
     def on_lensblur_option_button_clicked(self):
-        self.current_labels = list()
-        self.restore_label_layout()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -923,6 +944,14 @@ class Ui(QtWidgets.QMainWindow):
             self.rect_button.setVisible(True)
             self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
+            self.area_tab.setVisible(True)
+            self.label_tab.setVisible(True)
+        else:
+            self.current_labels = list()
+            self.restore_label_layout()
+            self.area_tab.setVisible(False)
+            self.label_tab.setVisible(False)
+
     def on_label_button_ints_clicked(self):
         self.current_labels = self.ints_label_drag_list
         if self.arrow_button.isChecked():
