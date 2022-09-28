@@ -332,9 +332,11 @@ class Ui_MainWindow(object):
         self.liquifyButton.setText(QCoreApplication.translate("MainWindow", u"Liquify", None))
         self.lensblurButton.setText(QCoreApplication.translate("MainWindow", u"Lens Blur", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tooltab), QCoreApplication.translate("MainWindow", u"Action", None))
-        self.cirButton.setText(QCoreApplication.translate("MainWindow", u"Ellipse", None))
+        self.cirButton.setText(QCoreApplication.translate("MainWindow", u"Area/\n"
+"Ellipse", None))
         self.brushButton.setText(QCoreApplication.translate("MainWindow", u"Freehand", None))
-        self.rectButton.setText(QCoreApplication.translate("MainWindow", u"Rectangle", None))
+        self.rectButton.setText(QCoreApplication.translate("MainWindow", u"Area/\n"
+"Rectangle", None))
         self.arrowButton.setText(QCoreApplication.translate("MainWindow", u"Point", None))
         self.AreaTab.setTabText(self.AreaTab.indexOf(self.Areatab), QCoreApplication.translate("MainWindow", u"Area Selection", None))
         self.brushcolorButton.setText("")

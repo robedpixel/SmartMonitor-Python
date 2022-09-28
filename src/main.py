@@ -726,7 +726,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def deselect_current_tool(self):
         if self.selected_tool:
-            if not (isinstance(self.selected_tool, ScaleTool) or isinstance(self.selected_tool, PanTool)) :
+            if not (isinstance(self.selected_tool, ScaleTool) or isinstance(self.selected_tool, PanTool)):
                 self.selected_tool.on_deselect_tool()
                 self.selected_tool = None
                 self.selected_button = None
