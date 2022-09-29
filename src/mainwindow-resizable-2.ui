@@ -353,7 +353,7 @@ Info</string>
             </size>
            </property>
            <property name="text">
-            <string>Burn</string>
+            <string>Brighten</string>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -378,7 +378,7 @@ Info</string>
             </size>
            </property>
            <property name="text">
-            <string>Dodge</string>
+            <string>Darken</string>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -627,7 +627,7 @@ Rectangle</string>
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>22</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>
