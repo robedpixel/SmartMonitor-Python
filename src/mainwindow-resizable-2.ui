@@ -510,6 +510,9 @@ Info</string>
              <height>16777215</height>
             </size>
            </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
            <property name="text">
             <string>Area/
 Ellipse</string>
@@ -536,6 +539,9 @@ Ellipse</string>
              <height>16777215</height>
             </size>
            </property>
+           <property name="styleSheet">
+            <string notr="true"/>
+           </property>
            <property name="text">
             <string>Freehand</string>
            </property>
@@ -560,6 +566,9 @@ Ellipse</string>
              <width>60</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>Area/
@@ -586,6 +595,9 @@ Rectangle</string>
              <width>60</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
            </property>
            <property name="text">
             <string>Point</string>

@@ -205,7 +205,7 @@ class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
     TEMP_DIRECTORY = "temp"
     MAX_UNDO_SIZE = 5
-    MAX_IMAGE_VIEW_SIZE_BYTES = 100000
+    MAX_IMAGE_VIEW_SIZE_BYTES = 1000000
 
     def __init__(self):
         super(Ui, self).__init__()  # Call the inherited classes __init__ method
@@ -291,6 +291,7 @@ class Ui(QtWidgets.QMainWindow):
         self.brush_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.brush_button.clicked.connect(self.on_brush_button_clicked)
+        self.brush_button.setFont(default_font)
         # self.brush_button.setVisible(False)
 
         # self.color_picker_button = self.findChild(QtWidgets.QPushButton, 'pickerButton')
@@ -312,18 +313,21 @@ class Ui(QtWidgets.QMainWindow):
         self.arrow_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.arrow_button.clicked.connect(self.on_arrow_button_clicked)
+        self.arrow_button.setFont(default_font)
         # self.arrow_button.setVisible(False)
 
         self.rect_button = self.findChild(QtWidgets.QPushButton, 'rectButton')
         self.rect_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.rect_button.clicked.connect(self.on_rect_button_clicked)
+        self.rect_button.setFont(default_font)
         # self.rect_button.setVisible(False)
 
         self.circle_button = self.findChild(QtWidgets.QPushButton, 'cirButton')
         self.circle_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.circle_button.clicked.connect(self.on_circle_button_clicked)
+        self.circle_button.setFont(default_font)
         # self.circle_button.setVisible(False)
 
         # self.circle_label_button = self.findChild(QtWidgets.QPushButton, 'cirlabButton')
@@ -336,11 +340,13 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
 
         self.pan_button.clicked.connect(self.on_pan_button_clicked)
+        self.pan_button.setFont(default_font)
 
         self.zoom_button = self.findChild(QtWidgets.QWidget, 'zoomButton')
         self.zoom_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.zoom_button.clicked.connect(self.on_zoom_button_clicked)
+        self.zoom_button.setFont(default_font)
 
         # self.burn_button = self.findChild(QtWidgets.QWidget, 'burnButton')
         # self.burn_button.setStyleSheet(

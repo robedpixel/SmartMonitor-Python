@@ -245,6 +245,7 @@ class Ui_MainWindow(object):
         self.cirButton.setEnabled(False)
         self.cirButton.setMinimumSize(QSize(0, 50))
         self.cirButton.setMaximumSize(QSize(60, 16777215))
+        self.cirButton.setStyleSheet(u"")
         self.cirButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.cirButton, 1, 0, 1, 1)
@@ -254,6 +255,7 @@ class Ui_MainWindow(object):
         self.brushButton.setEnabled(False)
         self.brushButton.setMinimumSize(QSize(0, 50))
         self.brushButton.setMaximumSize(QSize(60, 16777215))
+        self.brushButton.setStyleSheet(u"")
         self.brushButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.brushButton, 0, 0, 1, 1)
@@ -263,6 +265,7 @@ class Ui_MainWindow(object):
         self.rectButton.setEnabled(False)
         self.rectButton.setMinimumSize(QSize(0, 50))
         self.rectButton.setMaximumSize(QSize(60, 16777215))
+        self.rectButton.setStyleSheet(u"")
         self.rectButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.rectButton, 1, 1, 1, 1)
@@ -272,6 +275,7 @@ class Ui_MainWindow(object):
         self.arrowButton.setEnabled(False)
         self.arrowButton.setMinimumSize(QSize(0, 50))
         self.arrowButton.setMaximumSize(QSize(60, 16777215))
+        self.arrowButton.setStyleSheet(u"")
         self.arrowButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.arrowButton, 0, 1, 1, 1)
