@@ -246,6 +246,10 @@ class Ui_MainWindow(object):
         self.cirButton.setMinimumSize(QSize(0, 50))
         self.cirButton.setMaximumSize(QSize(60, 16777215))
         self.cirButton.setStyleSheet(u"")
+        icon2 = QIcon()
+        icon2.addFile(u"resources/ellipsefinger.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.cirButton.setIcon(icon2)
+        self.cirButton.setIconSize(QSize(32, 32))
         self.cirButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.cirButton, 1, 0, 1, 1)
@@ -256,6 +260,10 @@ class Ui_MainWindow(object):
         self.brushButton.setMinimumSize(QSize(0, 50))
         self.brushButton.setMaximumSize(QSize(60, 16777215))
         self.brushButton.setStyleSheet(u"")
+        icon3 = QIcon()
+        icon3.addFile(u"resources/easefinger.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.brushButton.setIcon(icon3)
+        self.brushButton.setIconSize(QSize(32, 32))
         self.brushButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.brushButton, 0, 0, 1, 1)
@@ -266,6 +274,10 @@ class Ui_MainWindow(object):
         self.rectButton.setMinimumSize(QSize(0, 50))
         self.rectButton.setMaximumSize(QSize(60, 16777215))
         self.rectButton.setStyleSheet(u"")
+        icon4 = QIcon()
+        icon4.addFile(u"resources/rectanglefinger.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.rectButton.setIcon(icon4)
+        self.rectButton.setIconSize(QSize(32, 32))
         self.rectButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.rectButton, 1, 1, 1, 1)
@@ -276,6 +288,10 @@ class Ui_MainWindow(object):
         self.arrowButton.setMinimumSize(QSize(0, 50))
         self.arrowButton.setMaximumSize(QSize(60, 16777215))
         self.arrowButton.setStyleSheet(u"")
+        icon5 = QIcon()
+        icon5.addFile(u"resources/arrowfinger.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.arrowButton.setIcon(icon5)
+        self.arrowButton.setIconSize(QSize(32, 32))
         self.arrowButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.arrowButton, 0, 1, 1, 1)
@@ -336,12 +352,10 @@ class Ui_MainWindow(object):
         self.liquifyButton.setText(QCoreApplication.translate("MainWindow", u"Liquify", None))
         self.lensblurButton.setText(QCoreApplication.translate("MainWindow", u"Lens Blur", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tooltab), QCoreApplication.translate("MainWindow", u"Action", None))
-        self.cirButton.setText(QCoreApplication.translate("MainWindow", u"Area/\n"
-"Ellipse", None))
-        self.brushButton.setText(QCoreApplication.translate("MainWindow", u"Freehand", None))
-        self.rectButton.setText(QCoreApplication.translate("MainWindow", u"Area/\n"
-"Rectangle", None))
-        self.arrowButton.setText(QCoreApplication.translate("MainWindow", u"Point", None))
+        self.cirButton.setText("")
+        self.brushButton.setText("")
+        self.rectButton.setText("")
+        self.arrowButton.setText("")
         self.AreaTab.setTabText(self.AreaTab.indexOf(self.Areatab), QCoreApplication.translate("MainWindow", u"Area Selection", None))
         self.brushcolorButton.setText("")
     # retranslateUi

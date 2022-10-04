@@ -514,8 +514,17 @@ Info</string>
             <string notr="true"/>
            </property>
            <property name="text">
-            <string>Area/
-Ellipse</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>resources/ellipsefinger.png</normaloff>resources/ellipsefinger.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -543,7 +552,17 @@ Ellipse</string>
             <string notr="true"/>
            </property>
            <property name="text">
-            <string>Freehand</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>resources/easefinger.png</normaloff>resources/easefinger.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -571,8 +590,17 @@ Ellipse</string>
             <string notr="true"/>
            </property>
            <property name="text">
-            <string>Area/
-Rectangle</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>resources/rectanglefinger.png</normaloff>resources/rectanglefinger.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -600,7 +628,17 @@ Rectangle</string>
             <string notr="true"/>
            </property>
            <property name="text">
-            <string>Point</string>
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>resources/arrowfinger.png</normaloff>resources/arrowfinger.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>32</width>
+             <height>32</height>
+            </size>
            </property>
            <property name="checkable">
             <bool>true</bool>
