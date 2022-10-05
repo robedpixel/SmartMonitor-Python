@@ -668,8 +668,8 @@ class Ui(QtWidgets.QMainWindow):
             current_effect = []
             img.loadFromData(mimedata)
             painter = QtGui.QPainter(self.current_image[0])
-            new_pos = QtCore.QPoint(int(event.pos().x() / self.scale_factor[0]),
-                                    int(event.pos().y() / self.scale_factor[0]))
+            new_pos = QtCore.QPoint(int((event.pos().x() - (img.width() / 2)) / self.scale_factor[0]),
+                                    int((event.pos().y() - (img.height() / 2)) / self.scale_factor[0]))
             painter.drawImage(new_pos, img)
 
             current_effect.append(Effect(new_pos))
