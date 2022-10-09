@@ -557,7 +557,7 @@ class Ui(QtWidgets.QMainWindow):
         self.show()  # Show the GUI
 
     def closeEvent(self, *args, **kwargs):
-        super(QtGui.QMainWindow, self).closeEvent(*args, **kwargs)
+        super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
         if self.camera_mounted:
             print("unmounting camera...")
             p = subprocess.run(["fusermount", "-u", os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY)])
