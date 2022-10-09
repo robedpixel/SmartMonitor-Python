@@ -8,6 +8,7 @@ import os
 import subprocess
 import sys
 import time
+import platform
 from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QImageReader
@@ -535,6 +536,12 @@ class Ui(QtWidgets.QMainWindow):
             button.animateClick()
 
         # TODO:Start airnef
+        self.camera_mounted = False
+        if platform.system() == "Linux":
+            p = subprocess.run(["gphotofs", os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY)])
+            if p.returncode == 0:
+                print("camera filesystem mounted!")
+                self.camera_mounted = True
         # Make sure airnef picture folder and temp folder exists
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
@@ -548,6 +555,16 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher.monitor_directory(Ui.AIRNEF_PICTURE_DIRECTORY)
         self.file_watcher.register_callback(self.on_folder_changed_event)
         self.show()  # Show the GUI
+
+    def closeEvent(self, *args, **kwargs):
+        super(QtGui.QMainWindow, self).closeEvent(*args, **kwargs)
+        if self.camera_mounted:
+            print("unmounting camera...")
+            p = subprocess.run(["fusermount", "-u", os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY)])
+            if p.returncode == 0:
+                print("camera filesystem unmounted!")
+                self.camera_mounted = False
+
 
     def show_open_dialog(self):
         self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', '/')
