@@ -9,3 +9,4 @@ dependencies:
   - pip
   - pyside2
   - exifread
+  #python3-gphoto on linux

@@ -538,10 +538,13 @@ class Ui(QtWidgets.QMainWindow):
         # TODO:Start airnef
         self.camera_mounted = False
         if platform.system() == "Linux":
-            p = subprocess.run(["gphotofs", os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY)])
-            if p.returncode == 0:
-                print("camera filesystem mounted!")
-                self.camera_mounted = True
+            import gphoto2 as gp
+            cameras = gp.gp_camera_autodetect()
+            if cameras[0] > 0:
+                p = subprocess.run(["gphotofs", os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY)])
+                if p.returncode == 0:
+                    print("camera filesystem mounted!")
+                    self.camera_mounted = True
         # Make sure airnef picture folder and temp folder exists
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
@@ -558,6 +561,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def closeEvent(self, *args, **kwargs):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
+        self.file_watcher.shutdown()
         if self.camera_mounted:
             print("unmounting camera...")
             p = subprocess.run(["fusermount", "-u", os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY)])

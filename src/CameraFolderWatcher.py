@@ -20,6 +20,13 @@ class CameraFolderWatcher:
             self.folder_watcher.addPath(folder_url)
             self.monitored_directory = folder_url
 
+    def shutdown(self):
+        if self.activated:
+            self.folder_watcher.removePath(self.monitored_directory)
+            self.callback_list.clear()
+            self.folder_watcher.directoryChanged.disconnect()
+            self.activated = False
+
     # Callback function takes in 1 argument, which is the file url of the new camera picture
     def register_callback(self, callback_function):
         self.callback_list.append(callback_function)
