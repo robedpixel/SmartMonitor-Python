@@ -535,6 +535,10 @@ class Ui(QtWidgets.QMainWindow):
         for button in self.tool_list:
             button.animateClick()
 
+        # Make sure airnef picture folder and temp folder exists
+        os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
+        os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
+
         # TODO:Start airnef
         self.camera_mounted = False
         if platform.system() == "Linux":
@@ -545,9 +549,7 @@ class Ui(QtWidgets.QMainWindow):
                 if p.returncode == 0:
                     print("camera filesystem mounted!")
                     self.camera_mounted = True
-        # Make sure airnef picture folder and temp folder exists
-        os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
-        os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
+
         self.image_file_list = [join(Ui.AIRNEF_PICTURE_DIRECTORY, f) for f in listdir(Ui.AIRNEF_PICTURE_DIRECTORY) if
                                 isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
         # subprocess.run(["python", "airnef/airnefcmd.py","--outputdir", Ui.AIRNEF_PICTURE_DIRECTORY , "--realtimedownload",
