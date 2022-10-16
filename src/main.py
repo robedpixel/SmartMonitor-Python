@@ -1234,7 +1234,7 @@ class Ui(QtWidgets.QMainWindow):
     def get_qimage_from_text(self, color, text: str):
         font = QtGui.QFont()
         font.setPixelSize(24)
-        font.setWeight(50)
+        font.setWeight(QtGui.QFont.ExtraBold)
         fm = QtGui.QFontMetrics(font)
         pixelsWide = fm.horizontalAdvance(text)
         pixelsHigh = fm.height()
