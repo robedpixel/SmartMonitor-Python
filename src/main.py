@@ -1255,8 +1255,8 @@ class Ui(QtWidgets.QMainWindow):
 
         for label in label_list:
             new_label = DragDropImageLabel()
-            new_label.setMinimumSize(QtCore.QSize(0, 40))
-            new_label.setMaximumSize(QtCore.QSize(147, 40))
+            new_label.setMinimumSize(QtCore.QSize(0, 30))
+            new_label.setMaximumSize(QtCore.QSize(147, 30))
             new_label.setAlignment(QtCore.Qt.AlignCenter)
             new_label.setStyleSheet("border: 1px solid black;")
             # new_label.update_image(self.get_qimage_from_text(label[1], label[0]))
