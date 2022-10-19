@@ -401,13 +401,14 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.liquify_option_button.clicked.connect(self.on_liquify_option_button_clicked)
 
-        self.lensblur_option_button = self.findChild(QtWidgets.QPushButton, 'lensblurButton')
-        self.lensblur_option_button.setStyleSheet(
+        self.blur_option_button = self.findChild(QtWidgets.QPushButton, 'blurButton')
+        self.blur_option_button.setStyleSheet(
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
-        self.lensblur_option_button.clicked.connect(self.on_lensblur_option_button_clicked)
+        self.blur_option_button.clicked.connect(self.on_blur_option_button_clicked)
 
         self.area_tab = self.findChild(QtWidgets.QTabWidget, 'AreaTab')
         self.label_tab = self.findChild(QtWidgets.QTabWidget, 'LabelTab')
+        self.label_tab.setTabText(0, "Annotation Labels\n(Drag-and-Drop)")
         self.area_tab.setVisible(False)
         self.label_tab.setVisible(False)
 
@@ -440,7 +441,7 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.dodge_option_button)
         self.button_list.append(self.remove_option_button)
         self.button_list.append(self.liquify_option_button)
-        self.button_list.append(self.lensblur_option_button)
+        self.button_list.append(self.blur_option_button)
         # self.button_list.append(self.burn_button)
         # self.button_list.append(self.dodge_button)
 
@@ -457,7 +458,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.dodge_option_button)
         self.tool_list.append(self.remove_option_button)
         self.tool_list.append(self.liquify_option_button)
-        self.tool_list.append(self.lensblur_option_button)
+        self.tool_list.append(self.blur_option_button)
         # self.tool_list.append(self.circle_label_button)
         # self.tool_list.append(self.eraser_button)
         # self.tool_list.append(self.burn_button)
@@ -468,7 +469,7 @@ class Ui(QtWidgets.QMainWindow):
         self.option_list.append(self.dodge_option_button)
         self.option_list.append(self.remove_option_button)
         self.option_list.append(self.liquify_option_button)
-        self.option_list.append(self.lensblur_option_button)
+        self.option_list.append(self.blur_option_button)
 
         self.selection_list = list()
         self.selection_list.append(self.brush_button)
@@ -479,6 +480,7 @@ class Ui(QtWidgets.QMainWindow):
         self.current_labels = list()
 
         self.burn_label_drag_list = list()
+        self.burn_label_drag_list.append(("Here", QtCore.Qt.red))
         self.burn_label_drag_list.append(("+1/4", QtCore.Qt.red))
         self.burn_label_drag_list.append(("+2/4", QtCore.Qt.red))
         self.burn_label_drag_list.append(("+3/4", QtCore.Qt.red))
@@ -490,6 +492,7 @@ class Ui(QtWidgets.QMainWindow):
         self.burn_label_drag_list.append(("+3", QtCore.Qt.red))
 
         self.dodge_label_drag_list = list()
+        self.dodge_label_drag_list.append(("Here", QtCore.Qt.blue))
         self.dodge_label_drag_list.append(("-1/4", QtCore.Qt.blue))
         self.dodge_label_drag_list.append(("-2/4", QtCore.Qt.blue))
         self.dodge_label_drag_list.append(("-3/4", QtCore.Qt.blue))
@@ -506,8 +509,8 @@ class Ui(QtWidgets.QMainWindow):
         self.liquify_label_drag_list = list()
         self.liquify_label_drag_list.append(("Liquify", QtGui.QColor(QtCore.Qt.cyan)))
 
-        self.lensblur_label_drag_list = list()
-        self.lensblur_label_drag_list.append(("Lens Blur", QtGui.QColor(QtCore.Qt.darkYellow)))
+        self.blur_label_drag_list = list()
+        self.blur_label_drag_list.append(("Blur", QtGui.QColor(QtCore.Qt.darkYellow)))
 
         """
         self.accept_label = DragDropImageLabel()
@@ -951,21 +954,21 @@ class Ui(QtWidgets.QMainWindow):
             self.area_tab.setVisible(False)
             self.label_tab.setVisible(False)
 
-    def on_lensblur_option_button_clicked(self):
+    def on_blur_option_button_clicked(self):
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
             if child.widget():
                 child.widget().setParent(self)
                 child.widget().setVisible(False)
-        if self.lensblur_option_button.isChecked():
+        if self.blur_option_button.isChecked():
             for button in self.option_list:
-                if button != self.lensblur_option_button:
+                if button != self.blur_option_button:
                     button.setChecked(False)
             self.current_brush_color[0] = QtGui.QColor(QtCore.Qt.darkYellow)
             set_button_color(self.current_brush_color[0], self.brush_color_button)
             self.brush_color_button.update()
-            self.current_labels = self.lensblur_label_drag_list
+            self.current_labels = self.blur_label_drag_list
             self.restore_label_layout()
             self.selection_layout.addWidget(self.arrow_button, 0, 0)
             self.arrow_button.setVisible(True)

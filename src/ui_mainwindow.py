@@ -49,23 +49,24 @@ class Ui_MainWindow(object):
         self.UndoTab.setStyleSheet(u"QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }")
         self.UndoTab_2 = QWidget()
         self.UndoTab_2.setObjectName(u"UndoTab_2")
-        self.horizontalLayoutWidget = QWidget(self.UndoTab_2)
-        self.horizontalLayoutWidget.setObjectName(u"horizontalLayoutWidget")
-        self.horizontalLayoutWidget.setGeometry(QRect(2, -1, 141, 51))
-        self.horizontalLayout_3 = QHBoxLayout(self.horizontalLayoutWidget)
+        self.gridLayout_2 = QGridLayout(self.UndoTab_2)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.undoButton = QPushButton(self.horizontalLayoutWidget)
+        self.undoButton = QPushButton(self.UndoTab_2)
         self.undoButton.setObjectName(u"undoButton")
         self.undoButton.setMaximumSize(QSize(71, 51))
 
         self.horizontalLayout_3.addWidget(self.undoButton)
 
-        self.redoButton = QPushButton(self.horizontalLayoutWidget)
+        self.redoButton = QPushButton(self.UndoTab_2)
         self.redoButton.setObjectName(u"redoButton")
         self.redoButton.setMaximumSize(QSize(81, 51))
 
         self.horizontalLayout_3.addWidget(self.redoButton)
+
+
+        self.gridLayout_2.addLayout(self.horizontalLayout_3, 0, 0, 1, 1)
 
         self.UndoTab.addTab(self.UndoTab_2, "")
 
@@ -78,13 +79,11 @@ class Ui_MainWindow(object):
         self.AreaTab.setStyleSheet(u"QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }")
         self.Areatab = QWidget()
         self.Areatab.setObjectName(u"Areatab")
-        self.gridLayoutWidget = QWidget(self.Areatab)
-        self.gridLayoutWidget.setObjectName(u"gridLayoutWidget")
-        self.gridLayoutWidget.setGeometry(QRect(0, 0, 141, 121))
-        self.selectionLayout = QGridLayout(self.gridLayoutWidget)
+        self.gridLayout_4 = QGridLayout(self.Areatab)
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.selectionLayout = QGridLayout()
         self.selectionLayout.setObjectName(u"selectionLayout")
-        self.selectionLayout.setContentsMargins(0, 0, 0, 0)
-        self.cirButton = QPushButton(self.gridLayoutWidget)
+        self.cirButton = QPushButton(self.Areatab)
         self.cirButton.setObjectName(u"cirButton")
         self.cirButton.setEnabled(False)
         self.cirButton.setMinimumSize(QSize(0, 50))
@@ -98,21 +97,21 @@ class Ui_MainWindow(object):
 
         self.selectionLayout.addWidget(self.cirButton, 1, 0, 1, 1)
 
-        self.brushButton = QPushButton(self.gridLayoutWidget)
+        self.brushButton = QPushButton(self.Areatab)
         self.brushButton.setObjectName(u"brushButton")
         self.brushButton.setEnabled(False)
         self.brushButton.setMinimumSize(QSize(0, 50))
         self.brushButton.setMaximumSize(QSize(60, 16777215))
         self.brushButton.setStyleSheet(u"")
         icon1 = QIcon()
-        icon1.addFile(u"resources/easefinger.png", QSize(), QIcon.Normal, QIcon.Off)
+        icon1.addFile(u"resources/squigglefinger.png", QSize(), QIcon.Normal, QIcon.Off)
         self.brushButton.setIcon(icon1)
         self.brushButton.setIconSize(QSize(32, 32))
         self.brushButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.brushButton, 0, 0, 1, 1)
 
-        self.rectButton = QPushButton(self.gridLayoutWidget)
+        self.rectButton = QPushButton(self.Areatab)
         self.rectButton.setObjectName(u"rectButton")
         self.rectButton.setEnabled(False)
         self.rectButton.setMinimumSize(QSize(0, 50))
@@ -126,7 +125,7 @@ class Ui_MainWindow(object):
 
         self.selectionLayout.addWidget(self.rectButton, 1, 1, 1, 1)
 
-        self.arrowButton = QPushButton(self.gridLayoutWidget)
+        self.arrowButton = QPushButton(self.Areatab)
         self.arrowButton.setObjectName(u"arrowButton")
         self.arrowButton.setEnabled(False)
         self.arrowButton.setMinimumSize(QSize(0, 50))
@@ -139,6 +138,9 @@ class Ui_MainWindow(object):
         self.arrowButton.setCheckable(True)
 
         self.selectionLayout.addWidget(self.arrowButton, 0, 1, 1, 1)
+
+
+        self.gridLayout_4.addLayout(self.selectionLayout, 0, 0, 1, 1)
 
         self.AreaTab.addTab(self.Areatab, "")
 
@@ -175,12 +177,13 @@ class Ui_MainWindow(object):
         self.LabelTab.setStyleSheet(u"QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }")
         self.icontab = QWidget()
         self.icontab.setObjectName(u"icontab")
-        self.gridLayoutWidget_2 = QWidget(self.icontab)
-        self.gridLayoutWidget_2.setObjectName(u"gridLayoutWidget_2")
-        self.gridLayoutWidget_2.setGeometry(QRect(0, 0, 141, 341))
-        self.iconLayout = QGridLayout(self.gridLayoutWidget_2)
+        self.gridLayout = QGridLayout(self.icontab)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.iconLayout = QGridLayout()
         self.iconLayout.setObjectName(u"iconLayout")
-        self.iconLayout.setContentsMargins(0, 0, 0, 0)
+
+        self.gridLayout.addLayout(self.iconLayout, 0, 0, 1, 1)
+
         self.LabelTab.addTab(self.icontab, "")
 
         self.gridLayout_3.addWidget(self.LabelTab, 4, 10, 1, 1)
@@ -320,14 +323,14 @@ class Ui_MainWindow(object):
 
         self.toolLayout.addWidget(self.liquifyButton)
 
-        self.lensblurButton = QPushButton(self.verticalLayoutWidget_2)
-        self.lensblurButton.setObjectName(u"lensblurButton")
-        self.lensblurButton.setEnabled(False)
-        self.lensblurButton.setMinimumSize(QSize(0, 51))
-        self.lensblurButton.setMaximumSize(QSize(147, 16777215))
-        self.lensblurButton.setCheckable(True)
+        self.blurButton = QPushButton(self.verticalLayoutWidget_2)
+        self.blurButton.setObjectName(u"blurButton")
+        self.blurButton.setEnabled(False)
+        self.blurButton.setMinimumSize(QSize(0, 51))
+        self.blurButton.setMaximumSize(QSize(147, 16777215))
+        self.blurButton.setCheckable(True)
 
-        self.toolLayout.addWidget(self.lensblurButton)
+        self.toolLayout.addWidget(self.blurButton)
 
         self.tabWidget.addTab(self.tooltab, "")
 
@@ -370,7 +373,7 @@ class Ui_MainWindow(object):
         self.AreaTab.setTabText(self.AreaTab.indexOf(self.Areatab), QCoreApplication.translate("MainWindow", u"Area Selection", None))
         self.resetZoomButton.setText(QCoreApplication.translate("MainWindow", u"Reset zoom", None))
         self.fileopenButton.setText(QCoreApplication.translate("MainWindow", u"Open File", None))
-        self.LabelTab.setTabText(self.LabelTab.indexOf(self.icontab), QCoreApplication.translate("MainWindow", u"Drag-and-drop Labels", None))
+        self.LabelTab.setTabText(self.LabelTab.indexOf(self.icontab), QCoreApplication.translate("MainWindow", u"Annotation Labels", None))
         self.brushsizelabel.setText(QCoreApplication.translate("MainWindow", u"Brush Size:", None))
         self.brushcolorButton.setText("")
         self.folderButton.setText(QCoreApplication.translate("MainWindow", u"Change\n"
@@ -384,7 +387,7 @@ class Ui_MainWindow(object):
         self.dodgeButton.setText(QCoreApplication.translate("MainWindow", u"Darken", None))
         self.removeButton.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.liquifyButton.setText(QCoreApplication.translate("MainWindow", u"Liquify", None))
-        self.lensblurButton.setText(QCoreApplication.translate("MainWindow", u"Lens Blur", None))
+        self.blurButton.setText(QCoreApplication.translate("MainWindow", u"Blur", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tooltab), QCoreApplication.translate("MainWindow", u"Action", None))
     # retranslateUi
 
