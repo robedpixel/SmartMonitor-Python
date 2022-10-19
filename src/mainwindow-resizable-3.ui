@@ -15,89 +15,6 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
-    <item row="0" column="26">
-     <widget class="QPushButton" name="fileopenButton">
-      <property name="maximumSize">
-       <size>
-        <width>81</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="tabletTracking">
-       <bool>false</bool>
-      </property>
-      <property name="text">
-       <string>Open File</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="4">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QPushButton" name="panButton">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>71</width>
-          <height>51</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>resources/panningicon.png</normaloff>resources/panningicon.png</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="zoomButton">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>71</width>
-          <height>51</height>
-         </size>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>resources/zoom icon.ico</normaloff>resources/zoom icon.ico</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="12" rowspan="7" colspan="13">
-     <widget class="QScrollArea" name="scrollArea">
-      <property name="widgetResizable">
-       <bool>false</bool>
-      </property>
-      <widget class="QWidget" name="scrollAreaWidgetContents">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>639</width>
-         <height>499</height>
-        </rect>
-       </property>
-      </widget>
-     </widget>
-    </item>
     <item row="0" column="10">
      <widget class="QPushButton" name="resetZoomButton">
       <property name="enabled">
@@ -114,8 +31,66 @@
       </property>
      </widget>
     </item>
+    <item row="0" column="21">
+     <widget class="QLabel" name="brushcolorlabel">
+      <property name="maximumSize">
+       <size>
+        <width>51</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Color:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="25">
+     <widget class="QPushButton" name="filesaveButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>81</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Save File</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="12" rowspan="5" colspan="13">
+     <widget class="QScrollArea" name="scrollArea">
+      <property name="widgetResizable">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>639</width>
+         <height>499</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+    </item>
+    <item row="1" column="25" rowspan="5" colspan="2">
+     <widget class="QPlainTextEdit" name="helpEdit"/>
+    </item>
     <item row="3" column="10">
      <widget class="QTabWidget" name="AreaTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>150</width>
@@ -141,82 +116,6 @@
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="0" column="0">
          <layout class="QGridLayout" name="selectionLayout">
-          <item row="1" column="0">
-           <widget class="QPushButton" name="cirButton">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>60</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>resources/ellipsefinger.png</normaloff>resources/ellipsefinger.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="0">
-           <widget class="QPushButton" name="brushButton">
-            <property name="enabled">
-             <bool>false</bool>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>50</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>60</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true"/>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>resources/squigglefinger.png</normaloff>resources/squigglefinger.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>32</height>
-             </size>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="1">
            <widget class="QPushButton" name="rectButton">
             <property name="enabled">
@@ -243,6 +142,44 @@
             <property name="icon">
              <iconset>
               <normaloff>resources/rectanglefinger.png</normaloff>resources/rectanglefinger.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QPushButton" name="cirButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>resources/ellipsefinger.png</normaloff>resources/ellipsefinger.png</iconset>
             </property>
             <property name="iconSize">
              <size>
@@ -293,49 +230,207 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="brushButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>resources/squigglefinger.png</normaloff>resources/squigglefinger.png</iconset>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="2">
+           <widget class="QPushButton" name="labelButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>50</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true"/>
+            </property>
+            <property name="text">
+             <string>Labels</string>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>32</width>
+              <height>32</height>
+             </size>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
        </layout>
       </widget>
      </widget>
     </item>
-    <item row="0" column="12">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QScrollBar" name="zoomBar">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>300</width>
-          <height>41</height>
-         </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>300</width>
-          <height>41</height>
-         </size>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="zoomdisplaylabel">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="text">
-         <string>zoom:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+    <item row="0" column="20">
+     <widget class="QPushButton" name="brushSizeButton">
+      <property name="maximumSize">
+       <size>
+        <width>51</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
     </item>
-    <item row="1" column="4" rowspan="7">
+    <item row="0" column="18">
+     <widget class="QPushButton" name="folderButton">
+      <property name="maximumSize">
+       <size>
+        <width>91</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Change
+ camera folder</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="10" alignment="Qt::AlignTop">
+     <widget class="QTabWidget" name="UndoTab">
+      <property name="minimumSize">
+       <size>
+        <width>150</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>100</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }</string>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="UndoTab_2">
+       <attribute name="title">
+        <string>Undo/Redo</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QPushButton" name="undoButton">
+            <property name="maximumSize">
+             <size>
+              <width>71</width>
+              <height>51</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Undo</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="redoButton">
+            <property name="maximumSize">
+             <size>
+              <width>81</width>
+              <height>51</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Redo</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+    <item row="0" column="22">
+     <widget class="QPushButton" name="brushcolorButton">
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>51</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="24">
+     <widget class="QPushButton" name="infoButton">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>81</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Image
+Info</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="4" rowspan="5">
      <widget class="QTabWidget" name="tabWidget">
       <property name="maximumSize">
        <size>
@@ -499,19 +594,119 @@
       </widget>
      </widget>
     </item>
-    <item row="0" column="21">
-     <widget class="QLabel" name="brushcolorlabel">
+    <item row="0" column="4">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="panButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>resources/panningicon.png</normaloff>resources/panningicon.png</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="zoomButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>71</width>
+          <height>51</height>
+         </size>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>resources/zoom icon.ico</normaloff>resources/zoom icon.ico</iconset>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="26">
+     <widget class="QPushButton" name="fileopenButton">
       <property name="maximumSize">
        <size>
-        <width>51</width>
-        <height>16777215</height>
+        <width>81</width>
+        <height>51</height>
+       </size>
+      </property>
+      <property name="tabletTracking">
+       <bool>false</bool>
+      </property>
+      <property name="text">
+       <string>Open File</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="12">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QScrollBar" name="zoomBar">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>300</width>
+          <height>41</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>300</width>
+          <height>41</height>
+         </size>
+        </property>
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="zoomdisplaylabel">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>zoom:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="23">
+     <widget class="QPushButton" name="noteButton">
+      <property name="maximumSize">
+       <size>
+        <width>81</width>
+        <height>51</height>
        </size>
       </property>
       <property name="text">
-       <string>Color:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
+       <string>Exif
+Comments</string>
       </property>
      </widget>
     </item>
@@ -533,6 +728,12 @@
     </item>
     <item row="4" column="10">
      <widget class="QTabWidget" name="LabelTab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>150</width>
@@ -563,160 +764,12 @@
       </widget>
      </widget>
     </item>
-    <item row="0" column="22">
-     <widget class="QPushButton" name="brushcolorButton">
-      <property name="minimumSize">
-       <size>
-        <width>50</width>
-        <height>0</height>
-       </size>
+    <item row="5" column="10">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetMinimumSize</enum>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>51</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="18">
-     <widget class="QPushButton" name="folderButton">
-      <property name="maximumSize">
-       <size>
-        <width>91</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Change
- camera folder</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="24">
-     <widget class="QPushButton" name="infoButton">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>81</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Image
-Info</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="20">
-     <widget class="QPushButton" name="brushSizeButton">
-      <property name="maximumSize">
-       <size>
-        <width>51</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="10">
-     <widget class="QTabWidget" name="UndoTab">
-      <property name="minimumSize">
-       <size>
-        <width>150</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>100</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }</string>
-      </property>
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="UndoTab_2">
-       <attribute name="title">
-        <string>Undo/Redo</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <widget class="QPushButton" name="undoButton">
-            <property name="maximumSize">
-             <size>
-              <width>71</width>
-              <height>51</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Undo</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="redoButton">
-            <property name="maximumSize">
-             <size>
-              <width>81</width>
-              <height>51</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>Redo</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-    <item row="0" column="25">
-     <widget class="QPushButton" name="filesaveButton">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>81</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Save File</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="23">
-     <widget class="QPushButton" name="noteButton">
-      <property name="maximumSize">
-       <size>
-        <width>81</width>
-        <height>51</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Exif
-Comments</string>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="25" rowspan="7" colspan="2">
-     <widget class="QPlainTextEdit" name="helpEdit"/>
+     </layout>
     </item>
    </layout>
   </widget>
