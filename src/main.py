@@ -329,6 +329,12 @@ class Ui(QtWidgets.QMainWindow):
             "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
         self.circle_button.clicked.connect(self.on_circle_button_clicked)
         self.circle_button.setFont(default_font)
+
+        self.label_button = self.findChild(QtWidgets.QPushButton, 'labelButton')
+        self.label_button.setStyleSheet(
+            "QPushButton{background-color:lightGray;}QPushButton:checked{background-color:cyan;}")
+        self.label_button.clicked.connect(self.on_label_button_clicked)
+        self.label_button.setFont(default_font)
         # self.circle_button.setVisible(False)
 
         # self.circle_label_button = self.findChild(QtWidgets.QPushButton, 'cirlabButton')
@@ -409,6 +415,9 @@ class Ui(QtWidgets.QMainWindow):
         self.area_tab = self.findChild(QtWidgets.QTabWidget, 'AreaTab')
         self.label_tab = self.findChild(QtWidgets.QTabWidget, 'LabelTab')
         self.label_tab.setTabText(0, "Annotation Labels\n(Drag-and-Drop)")
+        size_policy = self.label_tab.sizePolicy()
+        size_policy.setRetainSizeWhenHidden(True)
+        self.label_tab.setSizePolicy(size_policy)
         self.area_tab.setVisible(False)
         self.label_tab.setVisible(False)
 
@@ -434,6 +443,7 @@ class Ui(QtWidgets.QMainWindow):
         self.button_list.append(self.arrow_button)
         self.button_list.append(self.rect_button)
         self.button_list.append(self.circle_button)
+        self.button_list.append(self.label_button)
         # self.button_list.append(self.circle_label_button)
         self.button_list.append(self.file_save_button)
         self.button_list.append(self.info_button)
@@ -454,6 +464,7 @@ class Ui(QtWidgets.QMainWindow):
         self.tool_list.append(self.arrow_button)
         self.tool_list.append(self.rect_button)
         self.tool_list.append(self.circle_button)
+        self.tool_list.append(self.label_button)
         self.tool_list.append(self.burn_option_button)
         self.tool_list.append(self.dodge_option_button)
         self.tool_list.append(self.remove_option_button)
@@ -476,6 +487,7 @@ class Ui(QtWidgets.QMainWindow):
         self.selection_list.append(self.arrow_button)
         self.selection_list.append(self.circle_button)
         self.selection_list.append(self.rect_button)
+        self.selection_list.append(self.label_button)
 
         self.current_labels = list()
 
@@ -837,6 +849,8 @@ class Ui(QtWidgets.QMainWindow):
         self.show_image_exif_info(self.info_to_display)
 
     def on_burn_option_button_clicked(self):
+        if self.label_button.isChecked():
+            self.label_button.animateClick()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -858,15 +872,17 @@ class Ui(QtWidgets.QMainWindow):
             self.rect_button.setVisible(True)
             self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
+            self.selection_layout.addWidget(self.label_button, 1, 1)
+            self.label_button.setVisible(True)
             self.area_tab.setVisible(True)
-            self.label_tab.setVisible(True)
         else:
             self.current_labels = list()
             self.restore_label_layout()
             self.area_tab.setVisible(False)
-            self.label_tab.setVisible(False)
 
     def on_dodge_option_button_clicked(self):
+        if self.label_button.isChecked():
+            self.label_button.animateClick()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -888,15 +904,17 @@ class Ui(QtWidgets.QMainWindow):
             self.rect_button.setVisible(True)
             self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
+            self.selection_layout.addWidget(self.label_button, 1, 1)
+            self.label_button.setVisible(True)
             self.area_tab.setVisible(True)
-            self.label_tab.setVisible(True)
         else:
             self.current_labels = list()
             self.restore_label_layout()
             self.area_tab.setVisible(False)
-            self.label_tab.setVisible(False)
 
     def on_remove_option_button_clicked(self):
+        if self.label_button.isChecked():
+            self.label_button.animateClick()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -918,15 +936,17 @@ class Ui(QtWidgets.QMainWindow):
             self.rect_button.setVisible(True)
             self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
+            self.selection_layout.addWidget(self.label_button, 1, 1)
+            self.label_button.setVisible(True)
             self.area_tab.setVisible(True)
-            self.label_tab.setVisible(True)
         else:
             self.current_labels = list()
             self.restore_label_layout()
             self.area_tab.setVisible(False)
-            self.label_tab.setVisible(False)
 
     def on_liquify_option_button_clicked(self):
+        if self.label_button.isChecked():
+            self.label_button.animateClick()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -946,15 +966,17 @@ class Ui(QtWidgets.QMainWindow):
             self.brush_button.setVisible(True)
             self.selection_layout.addWidget(self.arrow_button, 0, 1)
             self.arrow_button.setVisible(True)
+            self.selection_layout.addWidget(self.label_button, 1, 0)
+            self.label_button.setVisible(True)
             self.area_tab.setVisible(True)
-            self.label_tab.setVisible(True)
         else:
             self.current_labels = list()
             self.restore_label_layout()
             self.area_tab.setVisible(False)
-            self.label_tab.setVisible(False)
 
     def on_blur_option_button_clicked(self):
+        if self.label_button.isChecked():
+            self.label_button.animateClick()
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -976,13 +998,13 @@ class Ui(QtWidgets.QMainWindow):
             self.rect_button.setVisible(True)
             self.selection_layout.addWidget(self.circle_button, 1, 0)
             self.circle_button.setVisible(True)
+            self.selection_layout.addWidget(self.label_button, 1, 1)
+            self.label_button.setVisible(True)
             self.area_tab.setVisible(True)
-            self.label_tab.setVisible(True)
         else:
             self.current_labels = list()
             self.restore_label_layout()
             self.area_tab.setVisible(False)
-            self.label_tab.setVisible(False)
 
     def on_label_button_ints_clicked(self):
         self.current_labels = self.ints_label_drag_list
@@ -1011,6 +1033,13 @@ class Ui(QtWidgets.QMainWindow):
             self.arrow_button.animateClick()
         else:
             self.restore_label_layout()
+
+    def on_label_button_clicked(self):
+        if self.label_button.isChecked():
+            self.label_tab.setVisible(True)
+        else:
+            self.label_tab.setVisible(False)
+
 
     def on_camera_folder_button_clicked(self):
         directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory", "/")

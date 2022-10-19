@@ -764,13 +764,6 @@ Comments</string>
       </widget>
      </widget>
     </item>
-    <item row="5" column="10">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetMinimumSize</enum>
-      </property>
-     </layout>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
