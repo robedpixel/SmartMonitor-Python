@@ -854,7 +854,9 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_burn_option_button_clicked(self):
         if self.label_button.isChecked():
-            self.label_button.animateClick()
+            self.help_text.setPlainText("")
+            self.label_tab.setVisible(False)
+            self.label_button.setChecked(False)
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -886,7 +888,9 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_dodge_option_button_clicked(self):
         if self.label_button.isChecked():
-            self.label_button.animateClick()
+            self.help_text.setPlainText("")
+            self.label_tab.setVisible(False)
+            self.label_button.setChecked(False)
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -918,7 +922,9 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_remove_option_button_clicked(self):
         if self.label_button.isChecked():
-            self.label_button.animateClick()
+            self.help_text.setPlainText("")
+            self.label_tab.setVisible(False)
+            self.label_button.setChecked(False)
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -950,7 +956,9 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_liquify_option_button_clicked(self):
         if self.label_button.isChecked():
-            self.label_button.animateClick()
+            self.help_text.setPlainText("")
+            self.label_tab.setVisible(False)
+            self.label_button.setChecked(False)
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
@@ -980,7 +988,9 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_blur_option_button_clicked(self):
         if self.label_button.isChecked():
-            self.label_button.animateClick()
+            self.help_text.setPlainText("")
+            self.label_tab.setVisible(False)
+            self.label_button.setChecked(False)
         self.deselect_current_tool()
         while self.selection_layout.count():
             child = self.selection_layout.takeAt(0)
