@@ -753,6 +753,10 @@ class Ui(QtWidgets.QMainWindow):
     # Method to do setup on buttons that are linked to selecting tools, tool_button is the button associated with the
     # tool, new_tool_setup_func is the function to call for extra tool setup code
     def select_tool(self, tool_button: QtWidgets.QPushButton, new_tool_setup_func):
+        if self.label_button.isChecked():
+            self.help_text.setPlainText("")
+            self.label_tab.setVisible(False)
+            self.label_button.setChecked(False)
         if tool_button.isEnabled():
             if self.selected_button == tool_button:
                 self.selected_tool.on_deselect_tool()
@@ -1036,8 +1040,14 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_label_button_clicked(self):
         if self.label_button.isChecked():
+            if self.selected_button:
+                self.selected_tool.on_deselect_tool()
+                self.selected_tool = None
+                self.selected_button = None
+            self.help_text.setPlainText("Labels:\n Tap and hold to drag and drop the labels onto the canvas")
             self.label_tab.setVisible(True)
         else:
+            self.help_text.setPlainText("")
             self.label_tab.setVisible(False)
 
 
