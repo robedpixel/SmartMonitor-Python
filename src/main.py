@@ -226,7 +226,7 @@ class Ui(QtWidgets.QMainWindow):
         self.note_module = ExifNoteModule()
         self.selected_tool = None
         self.selected_button = None
-        self.brush_sizes = {1: '3', 2: '5', 3: '7', 4: '10'}
+        self.brush_sizes = {1: '5', 2: '7', 3: '10', 4: '14'}
         self.current_brush_size = [1]
         self.file_dialog = None
         self.selection = [QtCore.QRect()]
