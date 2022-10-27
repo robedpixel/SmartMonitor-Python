@@ -289,7 +289,11 @@
              <string notr="true"/>
             </property>
             <property name="text">
-             <string>Labels</string>
+             <string/>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>resources/draglabel.png</normaloff>resources/draglabel.png</iconset>
             </property>
             <property name="iconSize">
              <size>
