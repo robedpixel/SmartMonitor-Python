@@ -1054,7 +1054,7 @@ class Ui(QtWidgets.QMainWindow):
                 self.selected_tool.on_deselect_tool()
                 self.selected_tool = None
                 self.selected_button = None
-            self.help_text.setPlainText("Labels:\n Tap and hold to drag and drop the labels onto the canvas")
+            self.help_text.setPlainText("Labels:\nTap and hold to drag and drop the labels onto the canvas")
             self.label_tab.setVisible(True)
         else:
             self.help_text.setPlainText("")

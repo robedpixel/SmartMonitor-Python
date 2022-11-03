@@ -81,7 +81,13 @@
      </widget>
     </item>
     <item row="1" column="25" rowspan="5" colspan="2">
-     <widget class="QPlainTextEdit" name="helpEdit"/>
+     <widget class="QPlainTextEdit" name="helpEdit">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+     </widget>
     </item>
     <item row="3" column="10">
      <widget class="QTabWidget" name="AreaTab">
@@ -776,7 +782,7 @@ Comments</string>
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>22</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>

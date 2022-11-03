@@ -55,6 +55,9 @@ class Ui_MainWindow(object):
 
         self.helpEdit = QPlainTextEdit(self.centralwidget)
         self.helpEdit.setObjectName(u"helpEdit")
+        font = QFont()
+        font.setPointSize(12)
+        self.helpEdit.setFont(font)
 
         self.gridLayout_3.addWidget(self.helpEdit, 1, 25, 5, 2)
 
@@ -363,7 +366,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1920, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1920, 17))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
