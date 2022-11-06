@@ -346,9 +346,6 @@ class Ui_MainWindow(object):
         self.resetZoomButton.setObjectName(u"resetZoomButton")
         self.resetZoomButton.setEnabled(True)
         self.resetZoomButton.setMaximumSize(QSize(71, 51))
-        font1 = QFont()
-        font1.setPointSize(9)
-        self.resetZoomButton.setFont(font1)
 
         self.gridLayout_3.addWidget(self.resetZoomButton, 0, 10, 1, 1)
 
@@ -370,9 +367,9 @@ class Ui_MainWindow(object):
         self.helpEdit = QPlainTextEdit(self.centralwidget)
         self.helpEdit.setObjectName(u"helpEdit")
         self.helpEdit.setMaximumSize(QSize(16777215, 250))
-        font2 = QFont()
-        font2.setPointSize(12)
-        self.helpEdit.setFont(font2)
+        font1 = QFont()
+        font1.setPointSize(12)
+        self.helpEdit.setFont(font1)
 
         self.helpLayout.addWidget(self.helpEdit)
 

@@ -755,11 +755,6 @@ Info</string>
         <height>51</height>
        </size>
       </property>
-      <property name="font">
-       <font>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
       <property name="text">
        <string>Reset zoom</string>
       </property>
