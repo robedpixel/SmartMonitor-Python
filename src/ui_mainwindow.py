@@ -84,6 +84,9 @@ class Ui_MainWindow(object):
         self.burnButton.setEnabled(False)
         self.burnButton.setMinimumSize(QSize(0, 51))
         self.burnButton.setMaximumSize(QSize(147, 16777215))
+        font = QFont()
+        font.setPointSize(10)
+        self.burnButton.setFont(font)
         self.burnButton.setCheckable(True)
 
         self.toolLayout.addWidget(self.burnButton)
@@ -93,6 +96,7 @@ class Ui_MainWindow(object):
         self.dodgeButton.setEnabled(False)
         self.dodgeButton.setMinimumSize(QSize(0, 51))
         self.dodgeButton.setMaximumSize(QSize(147, 16777215))
+        self.dodgeButton.setFont(font)
         self.dodgeButton.setCheckable(True)
 
         self.toolLayout.addWidget(self.dodgeButton)
@@ -102,6 +106,7 @@ class Ui_MainWindow(object):
         self.removeButton.setEnabled(False)
         self.removeButton.setMinimumSize(QSize(0, 51))
         self.removeButton.setMaximumSize(QSize(147, 16777215))
+        self.removeButton.setFont(font)
         self.removeButton.setCheckable(True)
 
         self.toolLayout.addWidget(self.removeButton)
@@ -111,6 +116,7 @@ class Ui_MainWindow(object):
         self.liquifyButton.setEnabled(False)
         self.liquifyButton.setMinimumSize(QSize(0, 51))
         self.liquifyButton.setMaximumSize(QSize(147, 16777215))
+        self.liquifyButton.setFont(font)
         self.liquifyButton.setCheckable(True)
 
         self.toolLayout.addWidget(self.liquifyButton)
@@ -120,6 +126,7 @@ class Ui_MainWindow(object):
         self.blurButton.setEnabled(False)
         self.blurButton.setMinimumSize(QSize(0, 51))
         self.blurButton.setMaximumSize(QSize(147, 16777215))
+        self.blurButton.setFont(font)
         self.blurButton.setCheckable(True)
 
         self.toolLayout.addWidget(self.blurButton)
@@ -339,6 +346,9 @@ class Ui_MainWindow(object):
         self.resetZoomButton.setObjectName(u"resetZoomButton")
         self.resetZoomButton.setEnabled(True)
         self.resetZoomButton.setMaximumSize(QSize(71, 51))
+        font1 = QFont()
+        font1.setPointSize(9)
+        self.resetZoomButton.setFont(font1)
 
         self.gridLayout_3.addWidget(self.resetZoomButton, 0, 10, 1, 1)
 
@@ -360,9 +370,9 @@ class Ui_MainWindow(object):
         self.helpEdit = QPlainTextEdit(self.centralwidget)
         self.helpEdit.setObjectName(u"helpEdit")
         self.helpEdit.setMaximumSize(QSize(16777215, 250))
-        font = QFont()
-        font.setPointSize(12)
-        self.helpEdit.setFont(font)
+        font2 = QFont()
+        font2.setPointSize(12)
+        self.helpEdit.setFont(font2)
 
         self.helpLayout.addWidget(self.helpEdit)
 
