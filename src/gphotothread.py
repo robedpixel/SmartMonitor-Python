@@ -23,8 +23,8 @@ class GPhotoThread(threading.Thread):
             if cameras[0] > 0:
                 self.connected_camera = gp.Camera()
                 self.connected_camera.init()
-                #p = subprocess.run(["gphotofs", os.path.abspath(mount_point)])
-                #if p.returncode == 0:
+                # p = subprocess.run(["gphotofs", os.path.abspath(mount_point)])
+                # if p.returncode == 0:
                 print("camera filesystem mounted!")
                 self.cFH = self.count_files_optimised(self.connected_camera)
                 return True
@@ -36,19 +36,26 @@ class GPhotoThread(threading.Thread):
             if self.cF != self.cFH:
                 # TODO: try to convert to using gphoto2 --get-files if possible
                 print("New files have been taken")
-                #uM = subprocess.Popen(['fusermount', "-u", os.path.abspath(mount_point)])
-                #m = subprocess.Popen(['gphotofs', os.path.abspath(mount_point)])
-                #result = [y for x in os.walk(os.path.abspath(mount_point)) for y in glob(os.path.join(x[0], '*.JPG'))]
+                # uM = subprocess.Popen(['fusermount', "-u", os.path.abspath(mount_point)])
+                # m = subprocess.Popen(['gphotofs', os.path.abspath(mount_point)])
+                # result = [y for x in os.walk(os.path.abspath(mount_point)) for y in glob(os.path.join(x[0], '*.JPG'))]
                 raw_result = self.list_files(self.connected_camera)
-                result = [x for x in raw_result if x.endswith(".JPG")]
-                latest_file = max(result, key=self.get_file_time)
+                result = list()
+                for id, row in enumerate(raw_result):
+                    if row.endswith(".JPG"):
+                        list.append((row, id))
+                latest_file = max(result, key=lambda item: self.get_file_time(item[0]))
                 print(latest_file)
-                #shutil.copy(latest_file, self.copy_point + "/" + Path(latest_file).name)
+                # get file from latest_file[1] id
+                connect = subprocess.Popen(
+                    ['gphoto2', '--filename', self.copy_point + "/temp.JPG", '--get-file', latest_file[1]],
+                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                # shutil.copy(latest_file, self.copy_point + "/" + Path(latest_file).name)
                 self.cFH = self.cF
         print("unmounting camera...")
         self.connected_camera.exit()
-        #p = subprocess.run(["fusermount", "-u", os.path.abspath(mount_point)])
-        #if p.returncode == 0:
+        # p = subprocess.run(["fusermount", "-u", os.path.abspath(mount_point)])
+        # if p.returncode == 0:
         print("camera filesystem unmounted!")
 
     def stop(self):
@@ -94,7 +101,7 @@ class GPhotoThread(threading.Thread):
         return camera.file_get_info(folder, name)
 
     def get_file_time(self, path):
-        info = self.get_file_info(self.connected_camera,path)
+        info = self.get_file_info(self.connected_camera, path)
         return info.file.mtime
 
     def count_files_optimised(self, camera):
