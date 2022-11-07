@@ -36,21 +36,22 @@ class GPhotoThread(threading.Thread):
             if self.cF != self.cFH:
                 # TODO: try to convert to using gphoto2 --get-files if possible
                 print("New files have been taken")
-                # uM = subprocess.Popen(['fusermount', "-u", os.path.abspath(mount_point)])
-                # m = subprocess.Popen(['gphotofs', os.path.abspath(mount_point)])
-                # result = [y for x in os.walk(os.path.abspath(mount_point)) for y in glob(os.path.join(x[0], '*.JPG'))]
-                raw_result = self.list_files(self.connected_camera)
-                result = list()
-                for id, row in enumerate(raw_result):
-                    if row.endswith(".JPG"):
-                        list.append((row, id))
-                latest_file = max(result, key=lambda item: self.get_file_time(item[0]))
-                print(latest_file)
-                # get file from latest_file[1] id
-                connect = subprocess.Popen(
-                    ['gphoto2', '--filename', self.copy_point + "/temp.JPG", '--get-file', latest_file[1]],
-                    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                # shutil.copy(latest_file, self.copy_point + "/" + Path(latest_file).name)
+                if self.cF > self.cFH:
+                    # uM = subprocess.Popen(['fusermount', "-u", os.path.abspath(mount_point)])
+                    # m = subprocess.Popen(['gphotofs', os.path.abspath(mount_point)])
+                    # result = [y for x in os.walk(os.path.abspath(mount_point)) for y in glob(os.path.join(x[0], '*.JPG'))]
+                    raw_result = self.list_files(self.connected_camera)
+                    result = list()
+                    for id, row in enumerate(raw_result):
+                        if row.endswith(".JPG"):
+                            list.append((row, id))
+                    latest_file = max(result, key=lambda item: self.get_file_time(item[0]))
+                    print(latest_file)
+                    # get file from latest_file[1] id
+                    connect = subprocess.Popen(
+                        ['gphoto2', '--filename', self.copy_point + "/temp.JPG", '--get-file', latest_file[1]],
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    # shutil.copy(latest_file, self.copy_point + "/" + Path(latest_file).name)
                 self.cFH = self.cF
         print("unmounting camera...")
         self.connected_camera.exit()
