@@ -20,6 +20,7 @@ from CameraFolderWatcher import CameraFolderWatcher
 from ImageDisplay import ImageDisplay
 from NoteModule import ExifNoteModule, AppendedDataNoteModule
 from NoteWindow import NoteWindow
+from gphotothread import GPhotoThread
 from Tool import *
 from ui_mainwindow import Ui_MainWindow
 from os import listdir
@@ -183,6 +184,10 @@ def clear_temp_folder():
     [f.unlink() for f in Path(Ui.TEMP_DIRECTORY).glob("*") if f.is_file()]
 
 
+def clear_gphoto_folder():
+    [f.unlink() for f in Path(Ui.GPHOTO_DIRECTORY).glob("*") if f.is_file()]
+
+
 class InfoWindow(QtWidgets.QWidget):
     """
     This "window" is a QWidget. If it has no parent, it
@@ -206,6 +211,7 @@ class InfoWindow(QtWidgets.QWidget):
 class Ui(QtWidgets.QMainWindow):
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
     TEMP_DIRECTORY = "temp"
+    GPHOTO_DIRECTORY = "gphotofs"
     MAX_UNDO_SIZE = 5
     MAX_IMAGE_VIEW_SIZE_BYTES = 1000000
 
@@ -554,17 +560,14 @@ class Ui(QtWidgets.QMainWindow):
         # Make sure airnef picture folder and temp folder exists
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
+        os.makedirs(Ui.GPHOTO_DIRECTORY, exist_ok=True)
+        clear_gphoto_folder()
 
         # TODO:Start airnef
         self.camera_mounted = False
-        if platform.system() == "Linux":
-            import gphoto2 as gp
-            cameras = gp.gp_camera_autodetect()
-            if cameras[0] > 0:
-                p = subprocess.run(["gphotofs", os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY)])
-                if p.returncode == 0:
-                    print("camera filesystem mounted!")
-                    self.camera_mounted = True
+        self.gphoto_thread = GPhotoThread()
+        self.camera_mounted = self.gphoto_thread.connect_to_camera(os.path.abspath(Ui.GPHOTO_DIRECTORY),
+                                                                   os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY))
 
         self.image_file_list = [join(Ui.AIRNEF_PICTURE_DIRECTORY, f) for f in listdir(Ui.AIRNEF_PICTURE_DIRECTORY) if
                                 isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
@@ -586,7 +589,6 @@ class Ui(QtWidgets.QMainWindow):
             if p.returncode == 0:
                 print("camera filesystem unmounted!")
                 self.camera_mounted = False
-
 
     def show_open_dialog(self):
         self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', '/')
@@ -707,8 +709,9 @@ class Ui(QtWidgets.QMainWindow):
             current_effect = []
             img.loadFromData(mimedata)
             painter = QtGui.QPainter(self.current_image[0])
-            new_pos = QtCore.QPoint(int((event.pos().x() - (img.width() / (2/self.scale_factor[0]))) / self.scale_factor[0]),
-                                    int((event.pos().y() - (img.height() / (2/self.scale_factor[0]))) / self.scale_factor[0]))
+            new_pos = QtCore.QPoint(
+                int((event.pos().x() - (img.width() / (2 / self.scale_factor[0]))) / self.scale_factor[0]),
+                int((event.pos().y() - (img.height() / (2 / self.scale_factor[0]))) / self.scale_factor[0]))
             painter.drawImage(new_pos, img)
 
             current_effect.append(Effect(new_pos))
@@ -1060,7 +1063,6 @@ class Ui(QtWidgets.QMainWindow):
         else:
             self.help_text.setPlainText("")
             self.label_tab.setVisible(False)
-
 
     def on_camera_folder_button_clicked(self):
         directory = QtWidgets.QFileDialog.getExistingDirectory(self, "Select Directory", "/")

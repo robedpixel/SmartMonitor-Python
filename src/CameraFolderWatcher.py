@@ -14,8 +14,6 @@ class CameraFolderWatcher:
     def monitor_directory(self, folder_url: str):
         if not self.activated:
             self.folder_watcher.addPath(folder_url)
-            subdirectories = [x[0] for x in os.walk(folder_url)]
-            self.folder_watcher.addPaths(subdirectories)
             self.monitored_directory = folder_url
             self.folder_watcher.directoryChanged.connect(self._on_folder_changed_event)
             self.activated = True
@@ -50,3 +48,5 @@ class CameraFolderWatcher:
             self.optimised = True
         for object in self.callback_list:
             object(folder_changed_url)
+
+
