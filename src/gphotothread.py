@@ -4,6 +4,7 @@ import shutil
 import platform
 import subprocess
 from glob import glob
+from pathlib import Path
 
 
 class GPhotoThread(threading.Thread):
@@ -41,7 +42,7 @@ class GPhotoThread(threading.Thread):
                 raw_result = self.list_files(self.connected_camera)
                 result = [x for x in raw_result if x.endswith(".JPG")]
                 latest_file = max(result, key=os.path.getctime)
-                shutil.copy(latest_file, self.copy_point + "/" + latest_file.name())
+                shutil.copy(latest_file, self.copy_point + "/" + Path(latest_file).name)
                 self.cFH = self.cF
         print("unmounting camera...")
         self.connected_camera.exit()
