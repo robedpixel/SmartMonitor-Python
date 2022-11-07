@@ -568,7 +568,8 @@ class Ui(QtWidgets.QMainWindow):
         self.gphoto_thread = GPhotoThread()
         self.camera_mounted = self.gphoto_thread.connect_to_camera(os.path.abspath(Ui.GPHOTO_DIRECTORY),
                                                                    os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY))
-
+        if self.camera_mounted:
+            self.gphoto_thread.start()
         self.image_file_list = [join(Ui.AIRNEF_PICTURE_DIRECTORY, f) for f in listdir(Ui.AIRNEF_PICTURE_DIRECTORY) if
                                 isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
         # subprocess.run(["python", "airnef/airnefcmd.py","--outputdir", Ui.AIRNEF_PICTURE_DIRECTORY , "--realtimedownload",
@@ -582,13 +583,10 @@ class Ui(QtWidgets.QMainWindow):
 
     def closeEvent(self, *args, **kwargs):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
-        self.file_watcher.shutdown()
         if self.camera_mounted:
-            print("unmounting camera...")
-            p = subprocess.run(["fusermount", "-u", os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY)])
-            if p.returncode == 0:
-                print("camera filesystem unmounted!")
-                self.camera_mounted = False
+            self.gphoto_thread.stop()
+            self.join()
+        self.file_watcher.shutdown()
 
     def show_open_dialog(self):
         self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', '/')

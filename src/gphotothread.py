@@ -9,6 +9,7 @@ class GPhotoThread(threading.Thread):
     def __init__(self):
         self.cFH = 0
         self.copy_point = ""
+        self.stopped = False
 
     def connect_to_camera(self, mount_point, copy_point):
         self.copy_point = copy_point
@@ -24,15 +25,24 @@ class GPhotoThread(threading.Thread):
         return False
 
     def run(self):
-        self.cF = self.countFiles()
-        if self.cF != self.cFH:
-            print("New files have been taken")
-            uM = subprocess.Popen(['fusermount', "-u", os.path.abspath(mount_point)])
-            m = subprocess.Popen(['gphotofs', os.path.abspath(mount_point)])
-            result = [y for x in os.walk(os.path.abspath(mount_point)) for y in glob(os.path.join(x[0], '*.JPG'))]
-            latest_file = max(result, key=os.path.getctime)
-            shutil.copy(latest_file, self.copy_point+"/"+latest_file.name())
-            self.cFH = self.cF
+        while not self.stopped:
+            self.cF = self.countFiles()
+            if self.cF != self.cFH:
+                print("New files have been taken")
+                uM = subprocess.Popen(['fusermount', "-u", os.path.abspath(mount_point)])
+                m = subprocess.Popen(['gphotofs', os.path.abspath(mount_point)])
+                result = [y for x in os.walk(os.path.abspath(mount_point)) for y in glob(os.path.join(x[0], '*.JPG'))]
+                latest_file = max(result, key=os.path.getctime)
+                shutil.copy(latest_file, self.copy_point+"/"+latest_file.name())
+                self.cFH = self.cF
+        print("unmounting camera...")
+        p = subprocess.run(["fusermount", "-u", os.path.abspath(mount_point)])
+        if p.returncode == 0:
+            print("camera filesystem unmounted!")
+            self.camera_mounted = False
+
+    def stop(self):
+        self.stopped = True
 
     def openConnect(self):
         cExist = 0
