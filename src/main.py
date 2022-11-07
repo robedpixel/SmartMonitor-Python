@@ -184,8 +184,8 @@ def clear_temp_folder():
     [f.unlink() for f in Path(Ui.TEMP_DIRECTORY).glob("*") if f.is_file()]
 
 
-def clear_gphoto_folder():
-    [f.unlink() for f in Path(Ui.GPHOTO_DIRECTORY).glob("*") if f.is_file()]
+def clear_airnef_folder():
+    [f.unlink() for f in Path(Ui.AIRNEF_PICTURE_DIRECTORY).glob("*") if f.is_file()]
 
 
 class InfoWindow(QtWidgets.QWidget):
@@ -561,7 +561,7 @@ class Ui(QtWidgets.QMainWindow):
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.GPHOTO_DIRECTORY, exist_ok=True)
-        clear_gphoto_folder()
+        clear_airnef_folder()
 
         # TODO:Start airnef
         self.camera_mounted = False
