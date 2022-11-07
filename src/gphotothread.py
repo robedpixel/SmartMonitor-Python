@@ -41,8 +41,9 @@ class GPhotoThread(threading.Thread):
                 #result = [y for x in os.walk(os.path.abspath(mount_point)) for y in glob(os.path.join(x[0], '*.JPG'))]
                 raw_result = self.list_files(self.connected_camera)
                 result = [x for x in raw_result if x.endswith(".JPG")]
-                latest_file = max(result, key=os.path.getctime)
-                shutil.copy(latest_file, self.copy_point + "/" + Path(latest_file).name)
+                latest_file = max(result, key=self.get_file_time)
+                print(latest_file)
+                #shutil.copy(latest_file, self.copy_point + "/" + Path(latest_file).name)
                 self.cFH = self.cF
         print("unmounting camera...")
         self.connected_camera.exit()
@@ -85,8 +86,16 @@ class GPhotoThread(threading.Thread):
             folders.append(name)
         # recurse over subfolders
         for name in folders:
-            result.extend(list_files(camera, os.path.join(path, name)))
+            result.extend(self.list_files(camera, os.path.join(path, name)))
         return result
+
+    def get_file_info(self, camera, path):
+        folder, name = os.path.split(path)
+        return camera.file_get_info(folder, name)
+
+    def get_file_time(self, path):
+        info = self.get_file_info(self.connected_camera,path)
+        return info.file.mtime
 
     def count_files_optimised(self, camera):
         return len(self.list_files(camera))
