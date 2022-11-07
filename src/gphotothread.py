@@ -28,6 +28,7 @@ class GPhotoThread(threading.Thread):
         while not self.stopped:
             self.cF = self.countFiles()
             if self.cF != self.cFH:
+                #TODO: try to convert to using gphoto2 --get-files if possible
                 print("New files have been taken")
                 uM = subprocess.Popen(['fusermount', "-u", os.path.abspath(mount_point)])
                 m = subprocess.Popen(['gphotofs', os.path.abspath(mount_point)])
