@@ -85,7 +85,7 @@ class Ui_MainWindow(object):
         self.burnButton.setMinimumSize(QSize(0, 51))
         self.burnButton.setMaximumSize(QSize(147, 16777215))
         font = QFont()
-        font.setPointSize(10)
+        font.setPointSize(12)
         self.burnButton.setFont(font)
         self.burnButton.setCheckable(True)
 
@@ -367,9 +367,7 @@ class Ui_MainWindow(object):
         self.helpEdit = QPlainTextEdit(self.centralwidget)
         self.helpEdit.setObjectName(u"helpEdit")
         self.helpEdit.setMaximumSize(QSize(16777215, 250))
-        font1 = QFont()
-        font1.setPointSize(12)
-        self.helpEdit.setFont(font1)
+        self.helpEdit.setFont(font)
 
         self.helpLayout.addWidget(self.helpEdit)
 

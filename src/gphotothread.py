@@ -3,6 +3,7 @@ import os
 import shutil
 import platform
 import subprocess
+from datetime import datetime
 from glob import glob
 from pathlib import Path
 
@@ -87,7 +88,7 @@ class GPhotoThread(threading.Thread):
 
     def get_file_time(self, path):
         info = self.get_file_info(self.connected_camera, path)
-        return info.file.mtime
+        return datetime.fromtimestamp(info.file.mtime)
 
     def count_files_optimised(self, camera):
         return len(self.list_files(camera))
