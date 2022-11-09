@@ -585,7 +585,7 @@ class Ui(QtWidgets.QMainWindow):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
         if self.camera_mounted:
             self.gphoto_thread.stop()
-            self.join()
+            self.gphoto_thread.join()
         self.file_watcher.shutdown()
 
     def show_open_dialog(self):

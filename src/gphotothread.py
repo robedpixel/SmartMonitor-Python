@@ -6,9 +6,12 @@ import subprocess
 from glob import glob
 from pathlib import Path
 
+if platform.system() == "Linux":
+    import gphoto2 as gp
 
 class GPhotoThread(threading.Thread):
     def __init__(self):
+        super(GPhotoThread, self).__init__()
         self.cF = 0
         self.cFH = 0
         self.copy_point = ""
@@ -18,7 +21,6 @@ class GPhotoThread(threading.Thread):
     def connect_to_camera(self, mount_point, copy_point):
         self.copy_point = copy_point
         if platform.system() == "Linux":
-            import gphoto2 as gp
             cameras = gp.gp_camera_autodetect()
             if cameras[0] > 0:
                 self.connected_camera = gp.Camera()
@@ -29,9 +31,14 @@ class GPhotoThread(threading.Thread):
                 self.cFH = self.count_files_optimised(self.connected_camera)
                 return True
         return False
+    def get_updated_camera(self):
+        self.connected_camera.exit()
+        self.connected_camera = gp.Camera()
+        self.connected_camera.init()
 
     def run(self):
         while not self.stopped:
+            self.get_updated_camera()
             self.cF = self.count_files_optimised(self.connected_camera)
             if self.cF != self.cFH:
                 # TODO: try to convert to using gphoto2 --get-files if possible
@@ -44,13 +51,16 @@ class GPhotoThread(threading.Thread):
                     result = list()
                     for id, row in enumerate(raw_result):
                         if row.endswith(".JPG"):
-                            list.append((row, id))
-                    latest_file = max(result, key=lambda item: self.get_file_time(item[0]))
+                            result.append(row)
+                    latest_file = min(result, key=lambda item: self.get_file_time(item))
                     print(latest_file)
                     # get file from latest_file[1] id
-                    connect = subprocess.Popen(
-                        ['gphoto2', '--filename', self.copy_point + "/temp.JPG", '--get-file', latest_file[1]],
-                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    #connect = subprocess.Popen(
+                    #    ['gphoto2', '--filename', "airnefpictures/temp.JPG", '--get-file', str(latest_file[1]+1)],
+                    #    stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    folder, name = os.path.split(latest_file)
+                    camera_file = gp.check_result(gp.gp_camera_file_get(self.connected_camera, folder, name, gp.GP_FILE_TYPE_NORMAL))
+                    gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/temp.JPG"))
                     # shutil.copy(latest_file, self.copy_point + "/" + Path(latest_file).name)
                 self.cFH = self.cF
         print("unmounting camera...")
