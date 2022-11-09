@@ -44,12 +44,11 @@ class GPhotoThread(threading.Thread):
             self.get_updated_camera()
             self.cF = self.count_files_optimised(self.connected_camera)
             if self.cF != self.cFH:
-                # TODO: try to convert to using gphoto2 --get-files if possible
                 print("New files have been taken")
                 if self.cF > self.cFH:
                     raw_result = self.list_files(self.connected_camera)
                     result = list()
-                    for id, row in enumerate(raw_result):
+                    for row in raw_result:
                         if row.endswith(".JPG"):
                             result.append(row)
                     latest_file = max(result, key=lambda item: self.get_file_time(item))
