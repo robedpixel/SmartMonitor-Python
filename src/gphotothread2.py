@@ -13,7 +13,7 @@ if platform.system() == "Linux":
     import gphoto2 as gp
 
 
-class GPhotoThread(threading.Thread):
+class GPhotoThread2(threading.Thread):
     def __init__(self):
         super(GPhotoThread, self).__init__()
         self.cF = 0
@@ -38,11 +38,6 @@ class GPhotoThread(threading.Thread):
             else:
                 self.camera_is_connected = False
                 return False
-
-    def check_camera(self):
-        cameras = gp.gp_camera_autodetect()
-            if cameras[0] < 1:
-                self.camera_is_connected = False
     
     def initialize(self, mount_point, copy_point):
         self.copy_point = copy_point
@@ -56,15 +51,20 @@ class GPhotoThread(threading.Thread):
         intialize(mount_point, copy_point)
     
     def get_updated_camera(self):
-        self.connected_camera.exit()
-        self.connected_camera = gp.Camera()
-        self.connected_camera.init()
+        if self.camera_is_connected:
+            #add try catch block for camera
+            if gp.check_result(self.connected_camera.exit())
+                self.connected_camera = gp.Camera()
+                self.connected_camera.init()
+            else:
+                self.mount_camera()
+        else:
+            self.mount_camera()
 
     def run(self):
         while not self.stopped:
-            self.check_camera()
+            self.get_updated_camera()
             if self.camera_is_connected:
-                self.get_updated_camera()
                 self.cF = self.count_files_optimised(self.connected_camera)
                 if self.cF != self.cFH:
                     print("New files have been taken")
@@ -83,8 +83,6 @@ class GPhotoThread(threading.Thread):
                             gp.gp_camera_file_get(self.connected_camera, folder, name, gp.GP_FILE_TYPE_NORMAL))
                         gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/temp.JPG"))
                     self.cFH = self.cF
-            else:
-                self.mount_camera()
         if self.camera_is_connected:
             print("unmounting camera...")
             self.connected_camera.exit()
