@@ -143,7 +143,7 @@ class PanTool(Tool):
         self.scroll_area = None
         self.horizontal_scroll_bar = None
         self.vertical_scroll_bar = None
-        self.help_str = "Panning:\nTap and drag on the canvas to pan the image"
+        self.help_str = "Panning:\nCanvas Option:\n -Tap finger and drag on the canvas to pan the image\nSlider Option:\n -Tap and drag on the sliders of the edge of the canvas to pan the image."
 
     def set_scroll_area(self, area: QtWidgets.QScrollArea):
         self.scroll_area = area
@@ -191,8 +191,8 @@ class ScaleTool(Tool):
         self.lastPoint = QtCore.QPoint()
         self.scaling = [float(1)]
         self.lastScale = self.scaling[0]
-        self.help_str = "Zoom:\nTap and drag left to zoom out, Tap and drag right to zoom in.\n You can also use the " \
-                        "slider to zoom in and out "
+        self.help_str = "Zoom:\nCanvas Option\n-Tap finger and drag left to zoom out, Tap finger and drag right to zoom in.\n" \
+                        "Slider Option:\n- Drag slider left to zoom out, drag slider right to zoom in "
 
     def __init__(self, scale: list[float], zoom_bar, zoom_bar_display):
         Tool.__init__(self)
@@ -211,8 +211,8 @@ class ScaleTool(Tool):
         self.zoom_bar.setEnabled(True)
         self.zoom_bar_display.setVisible(True)
         self.zoom_bar_display.setEnabled(True)
-        self.help_str = "Zoom:\nTap and drag left to zoom out, Tap and drag right to zoom in.\n You can also use the " \
-                        "slider to zoom in and out "
+        self.help_str = "Zoom:\nCanvas Option\n-Tap finger and drag left to zoom out, Tap finger and drag right to zoom in.\n" \
+                        "Slider Option:\n- Drag slider left to zoom out, drag slider right to zoom in "
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
