@@ -1320,6 +1320,7 @@ class Ui(QtWidgets.QMainWindow):
     def restore_label_layout(self):
         self.display_labels_in_label_list(self.current_labels)
 
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
 

@@ -1067,7 +1067,7 @@ class ImageTool(Tool):
         self.image_to_insert = None
         self.image_copy = None
         self.image_copy_two = None
-        # self.help_str = "Ellipse Tool:\nTap and drag draw an ellipse on the canvas"
+        # self.help_str = "Ellipse Tool:\nTap and drag to put an image on the canvas"
 
     def set_image(self, image: [QtGui.QImage]):
         self.image = image
