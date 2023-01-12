@@ -50,7 +50,7 @@ Comments</string>
       </property>
       <property name="maximumSize">
        <size>
-        <width>150</width>
+        <width>170</width>
         <height>100</height>
        </size>
       </property>
@@ -115,7 +115,7 @@ Comments</string>
       </property>
       <property name="maximumSize">
        <size>
-        <width>150</width>
+        <width>170</width>
         <height>180</height>
        </size>
       </property>
@@ -344,7 +344,7 @@ Comments</string>
       </property>
       <property name="maximumSize">
        <size>
-        <width>150</width>
+        <width>170</width>
         <height>16777215</height>
        </size>
       </property>
@@ -476,38 +476,6 @@ Info</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="35" rowspan="4" colspan="2">
-     <layout class="QVBoxLayout" name="helpLayout">
-      <item>
-       <widget class="QPlainTextEdit" name="helpEdit">
-        <property name="maximumSize">
-         <size>
-          <width>140</width>
-          <height>250</height>
-         </size>
-        </property>
-        <property name="font">
-         <font>
-          <pointsize>12</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <spacer name="verticalSpacer">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </item>
     <item row="0" column="28">
      <widget class="QPushButton" name="folderButton">
       <property name="minimumSize">
@@ -518,7 +486,7 @@ Info</string>
       </property>
       <property name="maximumSize">
        <size>
-        <width>91</width>
+        <width>130</width>
         <height>51</height>
        </size>
       </property>
@@ -592,7 +560,7 @@ Info</string>
         </property>
         <property name="maximumSize">
          <size>
-          <width>71</width>
+          <width>81</width>
           <height>51</height>
          </size>
         </property>
@@ -622,7 +590,7 @@ Info</string>
         </property>
         <property name="maximumSize">
          <size>
-          <width>71</width>
+          <width>81</width>
           <height>51</height>
          </size>
         </property>
@@ -642,7 +610,7 @@ Info</string>
      <widget class="QTabWidget" name="tabWidget">
       <property name="maximumSize">
        <size>
-        <width>150</width>
+        <width>160</width>
         <height>16777215</height>
        </size>
       </property>
@@ -949,7 +917,7 @@ Info</string>
         </property>
         <property name="maximumSize">
          <size>
-          <width>71</width>
+          <width>100</width>
           <height>51</height>
          </size>
         </property>
@@ -965,6 +933,38 @@ Info</string>
       </item>
      </layout>
     </item>
+    <item row="1" column="35" rowspan="4">
+     <layout class="QVBoxLayout" name="helpLayout">
+      <item>
+       <widget class="QPlainTextEdit" name="helpEdit">
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>250</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -973,7 +973,7 @@ Info</string>
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>17</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

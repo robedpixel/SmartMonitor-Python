@@ -589,7 +589,7 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher.shutdown()
 
     def show_open_dialog(self):
-        self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', '/')
+        self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', './airnefpictures')
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)

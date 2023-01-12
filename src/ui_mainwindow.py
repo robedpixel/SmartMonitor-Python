@@ -35,7 +35,7 @@ class Ui_MainWindow(object):
         self.UndoTab = QTabWidget(self.centralwidget)
         self.UndoTab.setObjectName(u"UndoTab")
         self.UndoTab.setMinimumSize(QSize(150, 0))
-        self.UndoTab.setMaximumSize(QSize(150, 100))
+        self.UndoTab.setMaximumSize(QSize(170, 100))
         self.UndoTab.setStyleSheet(u"QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }")
         self.UndoTab_2 = QWidget()
         self.UndoTab_2.setObjectName(u"UndoTab_2")
@@ -70,7 +70,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.AreaTab.sizePolicy().hasHeightForWidth())
         self.AreaTab.setSizePolicy(sizePolicy)
         self.AreaTab.setMinimumSize(QSize(150, 0))
-        self.AreaTab.setMaximumSize(QSize(150, 180))
+        self.AreaTab.setMaximumSize(QSize(170, 180))
         self.AreaTab.setStyleSheet(u"QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }")
         self.Areatab = QWidget()
         self.Areatab.setObjectName(u"Areatab")
@@ -163,7 +163,7 @@ class Ui_MainWindow(object):
         sizePolicy1.setHeightForWidth(self.LabelTab.sizePolicy().hasHeightForWidth())
         self.LabelTab.setSizePolicy(sizePolicy1)
         self.LabelTab.setMinimumSize(QSize(150, 0))
-        self.LabelTab.setMaximumSize(QSize(150, 16777215))
+        self.LabelTab.setMaximumSize(QSize(170, 16777215))
         self.LabelTab.setStyleSheet(u"QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }")
         self.icontab = QWidget()
         self.icontab.setObjectName(u"icontab")
@@ -220,26 +220,10 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addWidget(self.brushSizeButton, 0, 30, 1, 1)
 
-        self.helpLayout = QVBoxLayout()
-        self.helpLayout.setObjectName(u"helpLayout")
-        self.helpEdit = QPlainTextEdit(self.centralwidget)
-        self.helpEdit.setObjectName(u"helpEdit")
-        self.helpEdit.setMaximumSize(QSize(140, 250))
-        self.helpEdit.setFont(font)
-
-        self.helpLayout.addWidget(self.helpEdit)
-
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
-
-        self.helpLayout.addItem(self.verticalSpacer)
-
-
-        self.gridLayout_3.addLayout(self.helpLayout, 1, 35, 4, 2)
-
         self.folderButton = QPushButton(self.centralwidget)
         self.folderButton.setObjectName(u"folderButton")
         self.folderButton.setMinimumSize(QSize(0, 48))
-        self.folderButton.setMaximumSize(QSize(91, 51))
+        self.folderButton.setMaximumSize(QSize(130, 51))
         self.folderButton.setFont(font)
 
         self.gridLayout_3.addWidget(self.folderButton, 0, 28, 1, 1)
@@ -271,7 +255,7 @@ class Ui_MainWindow(object):
         self.fileopenButton = QPushButton(self.centralwidget)
         self.fileopenButton.setObjectName(u"fileopenButton")
         self.fileopenButton.setMinimumSize(QSize(0, 48))
-        self.fileopenButton.setMaximumSize(QSize(71, 51))
+        self.fileopenButton.setMaximumSize(QSize(81, 51))
         self.fileopenButton.setFont(font)
         self.fileopenButton.setTabletTracking(False)
 
@@ -281,7 +265,7 @@ class Ui_MainWindow(object):
         self.filesaveButton.setObjectName(u"filesaveButton")
         self.filesaveButton.setEnabled(False)
         self.filesaveButton.setMinimumSize(QSize(0, 48))
-        self.filesaveButton.setMaximumSize(QSize(71, 51))
+        self.filesaveButton.setMaximumSize(QSize(81, 51))
         self.filesaveButton.setFont(font)
 
         self.horizontalLayout_2.addWidget(self.filesaveButton)
@@ -291,7 +275,7 @@ class Ui_MainWindow(object):
 
         self.tabWidget = QTabWidget(self.centralwidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.tabWidget.setMaximumSize(QSize(150, 16777215))
+        self.tabWidget.setMaximumSize(QSize(160, 16777215))
         self.tabWidget.setStyleSheet(u"QTabBar::tab { height: 50px;  font-size: 11px; width: 100px; }")
         self.tabWidget.setElideMode(Qt.ElideNone)
         self.tabWidget.setDocumentMode(False)
@@ -400,7 +384,7 @@ class Ui_MainWindow(object):
         self.resetZoomButton.setObjectName(u"resetZoomButton")
         self.resetZoomButton.setEnabled(True)
         self.resetZoomButton.setMinimumSize(QSize(0, 48))
-        self.resetZoomButton.setMaximumSize(QSize(71, 51))
+        self.resetZoomButton.setMaximumSize(QSize(100, 51))
         self.resetZoomButton.setFont(font)
 
         self.horizontalLayout_4.addWidget(self.resetZoomButton)
@@ -408,10 +392,26 @@ class Ui_MainWindow(object):
 
         self.gridLayout_3.addLayout(self.horizontalLayout_4, 0, 15, 1, 1)
 
+        self.helpLayout = QVBoxLayout()
+        self.helpLayout.setObjectName(u"helpLayout")
+        self.helpEdit = QPlainTextEdit(self.centralwidget)
+        self.helpEdit.setObjectName(u"helpEdit")
+        self.helpEdit.setMaximumSize(QSize(140, 250))
+        self.helpEdit.setFont(font)
+
+        self.helpLayout.addWidget(self.helpEdit)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.helpLayout.addItem(self.verticalSpacer)
+
+
+        self.gridLayout_3.addLayout(self.helpLayout, 1, 35, 4, 1)
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1920, 17))
+        self.menubar.setGeometry(QRect(0, 0, 1920, 22))
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
