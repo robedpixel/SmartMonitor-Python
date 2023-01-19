@@ -19,8 +19,8 @@
      <widget class="QPushButton" name="noteButton">
       <property name="minimumSize">
        <size>
-        <width>0</width>
-        <height>48</height>
+        <width>90</width>
+        <height>51</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -374,7 +374,7 @@ Comments</string>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>48</height>
+        <height>51</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -399,7 +399,7 @@ Info</string>
       <property name="minimumSize">
        <size>
         <width>50</width>
-        <height>48</height>
+        <height>51</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -418,7 +418,7 @@ Info</string>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>48</height>
+        <height>51</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -462,7 +462,7 @@ Info</string>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>48</height>
+        <height>51</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -481,7 +481,7 @@ Info</string>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>48</height>
+        <height>51</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -511,7 +511,7 @@ Info</string>
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>48</height>
+          <height>51</height>
          </size>
         </property>
         <property name="font">
@@ -532,7 +532,7 @@ Info</string>
         <property name="minimumSize">
          <size>
           <width>300</width>
-          <height>48</height>
+          <height>51</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -555,7 +555,7 @@ Info</string>
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>48</height>
+          <height>51</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -585,7 +585,7 @@ Info</string>
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>48</height>
+          <height>51</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -800,7 +800,7 @@ Info</string>
       <property name="minimumSize">
        <size>
         <width>0</width>
-        <height>48</height>
+        <height>51</height>
        </size>
       </property>
       <property name="maximumSize">
@@ -832,7 +832,7 @@ Info</string>
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>48</height>
+          <height>51</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -872,7 +872,7 @@ Info</string>
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>48</height>
+          <height>51</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -912,12 +912,12 @@ Info</string>
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>48</height>
+          <height>51</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>55</width>
           <height>51</height>
          </size>
         </property>
@@ -927,7 +927,8 @@ Info</string>
          </font>
         </property>
         <property name="text">
-         <string>Reset zoom</string>
+         <string>Reset
+zoom</string>
         </property>
        </widget>
       </item>
@@ -940,7 +941,7 @@ Info</string>
         <property name="maximumSize">
          <size>
           <width>140</width>
-          <height>250</height>
+          <height>400</height>
          </size>
         </property>
         <property name="font">
@@ -973,7 +974,7 @@ Info</string>
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>22</height>
+     <height>17</height>
     </rect>
    </property>
   </widget>
