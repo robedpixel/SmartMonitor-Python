@@ -940,7 +940,7 @@ zoom</string>
        <widget class="QPlainTextEdit" name="helpEdit">
         <property name="maximumSize">
          <size>
-          <width>140</width>
+          <width>160</width>
           <height>400</height>
          </size>
         </property>

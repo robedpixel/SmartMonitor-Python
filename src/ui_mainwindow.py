@@ -396,7 +396,7 @@ class Ui_MainWindow(object):
         self.helpLayout.setObjectName(u"helpLayout")
         self.helpEdit = QPlainTextEdit(self.centralwidget)
         self.helpEdit.setObjectName(u"helpEdit")
-        self.helpEdit.setMaximumSize(QSize(140, 400))
+        self.helpEdit.setMaximumSize(QSize(160, 400))
         self.helpEdit.setFont(font)
 
         self.helpLayout.addWidget(self.helpEdit)

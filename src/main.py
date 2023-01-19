@@ -579,6 +579,8 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher = CameraFolderWatcher()
         self.file_watcher.monitor_directory(Ui.AIRNEF_PICTURE_DIRECTORY)
         self.file_watcher.register_callback(self.on_folder_changed_event)
+
+        self.help_text.setPlainText("Open an image file or take a picture with a connected camera to begin.")
         self.showMaximized()  # Show the GUI
 
     def closeEvent(self, *args, **kwargs):
