@@ -1,7 +1,7 @@
 from PySide2 import QtCore, QtGui, QtWidgets
 from collections import deque
 from Effect import *
-from Action import Action, PaintAction, EffectType
+from Action import Action, PaintAction, EffectType, ToolType
 from BurnDodgeWindow import *
 import math
 
@@ -38,6 +38,9 @@ class Tool:
         raise NotImplementedError()
 
     def get_effect_type(self):
+        raise NotImplementedError()
+
+    def get_tool_type(self):
         raise NotImplementedError()
 
     def set_help_text(self, help_text):
@@ -130,6 +133,9 @@ class PaintTool(Tool):
 
     def get_effect_type(self):
         return EffectType.RGB
+
+    def get_tool_type(self):
+        return ToolType.PAINT
 
 
 class PanTool(Tool):
@@ -391,6 +397,9 @@ class EraserTool(Tool):
     def get_effect_type(self):
         return EffectType.RGB
 
+    def get_tool_type(self):
+        return ToolType.ERASER
+
 
 class SelectTool(Tool):
     SELECT_STATE = 0
@@ -640,6 +649,9 @@ class LineTool(Tool):
     def get_effect_type(self):
         return EffectType.RGB
 
+    def get_tool_type(self):
+        return ToolType.LINE
+
 
 class ArrowTool(LineTool):
 
@@ -723,6 +735,8 @@ class ArrowTool(LineTool):
 
         except (ZeroDivisionError, Exception) as e:
             return None
+    def get_tool_type(self):
+        return ToolType.ARROW
 
 
 class RectTool(Tool):
@@ -829,6 +843,9 @@ class RectTool(Tool):
     def get_effect_type(self):
         return EffectType.RGB
 
+    def get_tool_type(self):
+        return ToolType.RECT
+
 
 class CircleTool(Tool):
 
@@ -927,6 +944,9 @@ class CircleTool(Tool):
 
     def get_effect_type(self):
         return EffectType.RGB
+
+    def get_tool_type(self):
+        return ToolType.CIRCLE
 
 
 # UNUSED
@@ -1130,3 +1150,83 @@ class ImageTool(Tool):
 
     def get_effect_type(self):
         return EffectType.IMAGE
+
+    def get_tool_type(self):
+        return ToolType.IMAGE
+
+
+class LabelTool(Tool):
+
+    def __init__(self):
+        Tool.__init__(self)
+        self.push_button = None
+        self.image = None
+        self.drawing = False
+        self.startPoint = QtCore.QPoint()
+        self.lastPoint = QtCore.QPoint()
+        self.scale = [float(1)]
+        self.current_effect = None
+        self.image_to_insert = None
+        self.image_copy = None
+        self.image_copy_two = None
+        # self.help_str = "Ellipse Tool:\nTap and drag to put an image on the canvas"
+
+    def set_image(self, image: [QtGui.QImage]):
+        self.image = image
+
+    def set_insert_image(self, image: [QtGui.QImage]):
+        self.image_to_insert = image
+
+    def set_scale(self, scale: list[float]):
+        self.scale = scale
+
+    def set_action_list(self, action_list, action_list_state):
+        self.action_list = action_list
+        self.action_list_state = action_list_state
+
+    def set_button(self, QPushButton):
+        self.push_button = QPushButton
+
+    def on_deselect_tool(self):
+        self.help_text.clear()
+        self.push_button.setChecked(False)
+
+    def apply_effect(self, action, image: [QtGui.QImage]):
+        first = True
+        color = None
+        text = None
+        x = 0
+        for effect in action.effects:
+            if x == 0:
+                start_point = effect.pos
+                x += 1
+            elif x == 1:
+                color = effect
+                x += 1
+            else:
+                text = effect
+                image_to_draw = self.get_qimage_from_text(color, text)
+                painter = QtGui.QPainter(image[0])
+                painter.drawImage(start_point, image_to_draw)
+
+    def get_effect_type(self):
+        return EffectType.IMAGE
+    def get_qimage_from_text(self, color, text: str):
+        font = QtGui.QFont()
+        font.setPixelSize(24)
+        font.setWeight(QtGui.QFont.ExtraBold)
+        fm = QtGui.QFontMetrics(font)
+        pixelsWide = fm.horizontalAdvance(text)
+        pixelsHigh = fm.height()
+        image = QtGui.QImage(QtCore.QSize(pixelsWide, 35), QtGui.QImage.Format_ARGB32)
+        image.fill(QtGui.qRgba(0, 0, 0, 0))
+        painter = QtGui.QPainter(image)
+        painter.setBrush(QtGui.QBrush(color))
+        painter.setPen(QtGui.QPen(color))
+        painter.setFont(font)
+        painter.drawText(QtCore.QRect(0, 0, pixelsWide, 35), QtCore.Qt.TextFlag.TextSingleLine, text)
+        painter.end()
+        return image
+
+    def get_tool_type(self):
+        return ToolType.LABEL

@@ -34,18 +34,15 @@ class ExifNoteModule(NoteModule):
                     raw_value = value
                     try:
                         raw_json = json.loads(raw_value)
-                        if isinstance(raw_json, list):
-                            self.notes = raw_json
-                            found = True
-                            #break
-                        else:
-                            print("no notes found for jpg")
-                            #break
-                    except ValueError:
+                        self.notes = raw_json['notes']
+                        found = True
+                        #break
+                    except KeyError:
                         print("no notes found for jpg")
                         #break
         if not found:
             self.notes.clear()
+        img.close()
 
     def save_notes_to_file(self, url: str) -> bool:
         if self.notes:

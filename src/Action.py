@@ -9,7 +9,17 @@ class EffectType(Enum):
     RGB = 1
     CROP = 2
     IMAGE = 3
+    LABEL = 4
 
+class ToolType(Enum):
+    PAINT = 0
+    ERASER = 1
+    ARROW = 2
+    LINE = 3
+    RECT = 4
+    CIRCLE = 5
+    IMAGE = 6
+    LABEL = 7
 
 class Action:
     def __init__(self, tool, effect, effect_type: EffectType):

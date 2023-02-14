@@ -15,7 +15,7 @@ from PySide2.QtCore import Qt
 from PySide2.QtGui import QImageReader
 from PySide2.QtWidgets import QWidget
 from collections import deque
-from Action import Action
+from Action import Action, ToolType
 from CameraFolderWatcher import CameraFolderWatcher
 from ImageDisplay import ImageDisplay
 from NoteModule import ExifNoteModule, AppendedDataNoteModule
@@ -30,6 +30,13 @@ from pathlib import Path
 from PIL.ExifTags import TAGS
 from DragDropLabel import *
 import exifread
+import PIL.Image
+import json
+import pickle
+from PIL.ExifTags import TAGS
+import base64
+
+USR_CMT_TAG_ID = 37510
 
 
 # TODO: init airnef connection window first
@@ -233,6 +240,7 @@ class Ui(QtWidgets.QMainWindow):
         self.note_module = ExifNoteModule()
         self.selected_tool = None
         self.selected_button = None
+        self.original_filename = None
         self.brush_sizes = {1: '5', 2: '7', 3: '10', 4: '14'}
         self.current_brush_size = [1]
         self.file_dialog = None
@@ -243,6 +251,7 @@ class Ui(QtWidgets.QMainWindow):
         self.lastPoint = QtCore.QPoint()
         self.lastScale = self.scale_factor[0]
         self.image_tool = ImageTool()
+        self.label_tool = LabelTool()
 
         self.actions = deque()
         self.current_action = [0]
@@ -639,10 +648,13 @@ class Ui(QtWidgets.QMainWindow):
             msg_box.setText("Cannot load " + QtCore.QDir.fromNativeSeparators(filename) + ": " + reader.errorString())
             msg_box.exec()
             return False
+        self.original_filename = filename
         self.original_image = new_image
         if self.original_image.colorSpace().isValid():
             self.original_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.set_image(new_image)
+        self.load_actions_from_file(self.original_filename)
+        self.redraw_image()
         QtWidgets.QWidget.setWindowFilePath(self, filename)
         return True
 
@@ -705,6 +717,8 @@ class Ui(QtWidgets.QMainWindow):
     def on_image_drop(self, event):
         img = QtGui.QImage()
         mimedata = event.mimeData().data("PNG")
+        color = pickle.loads(event.mimeData().data("color"))
+        text = pickle.loads(event.mimeData().data("text"))
         if mimedata:
             current_effect = []
             img.loadFromData(mimedata)
@@ -715,10 +729,12 @@ class Ui(QtWidgets.QMainWindow):
             painter.drawImage(new_pos, img)
 
             current_effect.append(Effect(new_pos))
-            current_effect.append(img)
 
+            # current_effect.append(img)
+            current_effect.append(color)
+            current_effect.append(text)
             stop_index = len(self.actions) - self.current_action[0]
-            self.actions.insert(stop_index, Action(self.image_tool, current_effect, EffectType.IMAGE))
+            self.actions.insert(stop_index, Action(self.label_tool, current_effect, EffectType.LABEL))
             while len(self.actions) > stop_index + 1:
                 self.actions.pop()
             self.current_action[0] = 0
@@ -751,7 +767,8 @@ class Ui(QtWidgets.QMainWindow):
             self.note_module.save_notes_to_file(filename)
 
     def on_file_save_button_clicked(self):
-        self.show_save_dialog()
+        self.save_actions_and_notes()
+        # self.show_save_dialog()
         # self.save_image()
 
     # Method to do setup on buttons that are linked to selecting tools, tool_button is the button associated with the
@@ -1224,9 +1241,10 @@ class Ui(QtWidgets.QMainWindow):
 
     # Limits how far the user is able to undo to save memory
     def limit_action_list_size(self):
-        if len(self.actions) > 5:
-            action = self.actions.popleft()
-            action.tool.apply_effect(action, [self.original_image])
+        return
+        # if len(self.actions) > 5:
+        #    action = self.actions.popleft()
+        #    action.tool.apply_effect(action, [self.original_image])
 
     def show_image_exif_info(self, info: str):
         self.note_window = InfoWindow(info)
@@ -1316,11 +1334,101 @@ class Ui(QtWidgets.QMainWindow):
             new_label.setAlignment(QtCore.Qt.AlignCenter)
             new_label.setStyleSheet("border: 1px solid black;")
             # new_label.update_image(self.get_qimage_from_text(label[1], label[0]))
-            new_label.update_image(self.get_qimage_from_text(self.current_brush_color[0], label[0]))
+            new_label.update_image(self.current_brush_color[0], label[0])
             self.icon_layout.addWidget(new_label)
 
     def restore_label_layout(self):
         self.display_labels_in_label_list(self.current_labels)
+
+    def save_actions_and_notes(self):
+        img = PIL.Image.open(self.original_filename)
+        exif_data = img.getexif()
+        json_obj = {}
+        if self.note_module.notes:
+            print("saving notes to exif")
+            json_obj['notes'] = self.note_module.notes
+        if self.actions:
+            json_obj['actions'] = base64.b64encode(pickle.dumps(self.serialize_actions(self.actions))).decode('ascii')
+        exif_data[USR_CMT_TAG_ID] = json.dumps(json_obj, indent=0)
+        img.save(self.original_filename, exif=exif_data)
+
+    def serialize_actions(self, actions):
+        actionlist = []
+        tooltype = 0
+        for action in actions:
+            tooltype = action.tool.get_tool_type()
+            if tooltype == ToolType.PAINT:
+                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
+                continue
+            elif tooltype == ToolType.ERASER:
+                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
+                continue
+            elif tooltype == ToolType.ARROW:
+                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
+                continue
+            elif tooltype == ToolType.LINE:
+                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
+                continue
+            elif tooltype == ToolType.CIRCLE:
+                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
+                continue
+            elif tooltype == ToolType.RECT:
+                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
+                continue
+            actionlist.append((tooltype, action.effects, action.effect_type))
+        return actionlist
+
+    def deserialize_actions(self, actionlist):
+        actions = []
+        for action in actionlist:
+            if action[0] == ToolType.PAINT:
+                tool = PaintTool()
+                actions.append(PaintAction(tool, action[3], action[4], action[1], action[2]))
+            elif action[0] == ToolType.ERASER:
+                tool = EraserTool()
+                actions.append(PaintAction(tool, action[3], action[4], action[1], action[2]))
+            elif action[0] == ToolType.ARROW:
+                tool = ArrowTool()
+                actions.append(PaintAction(tool, action[3], action[4], action[1], action[2]))
+            elif action[0] == ToolType.LINE:
+                tool = LineTool()
+                actions.append(PaintAction(tool, action[3], action[4], action[1], action[2]))
+            elif action[0] == ToolType.RECT:
+                tool = RectTool()
+                actions.append(PaintAction(tool, action[3], action[4], action[1], action[2]))
+            elif action[0] == ToolType.CIRCLE:
+                tool = CircleTool()
+                actions.append(PaintAction(tool, action[3], action[4], action[1], action[2]))
+            elif action[0] == ToolType.IMAGE:
+                tool = self.image_tool
+                actions.append(Action(tool, action[1], action[2]))
+            elif action[0] == ToolType.LABEL:
+                tool = self.label_tool
+                actions.append(Action(tool, action[1], action[2]))
+        return actions
+
+    def load_actions_from_file(self, url):
+        img = PIL.Image.open(url)
+        exif_data = img.getexif()
+        found = False
+        if exif_data:
+            for tag, value in exif_data.items():
+                decoded = TAGS.get(tag, tag)
+                if decoded == "UserComment":
+                    # Load notes in
+                    raw_value = value
+                    try:
+                        raw_json = json.loads(raw_value)
+                        jsonlist = pickle.loads(base64.b64decode(raw_json['actions'].encode('ascii')))
+                        self.actions = deque(self.deserialize_actions(pickle.loads(base64.b64decode(raw_json['actions'].encode('ascii')))))
+                        found = True
+                        # break
+                    except KeyError:
+                        print("no actions found for jpg")
+                        # break
+        if not found:
+            self.actions.clear()
+        img.close()
 
 
 if __name__ == "__main__":
