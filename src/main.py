@@ -604,7 +604,8 @@ class Ui(QtWidgets.QMainWindow):
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
-        self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.nef)")
+        self.file_dialog.setNameFilter("Image Files (*.png *.jpg)")
+        #self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.nef)")
         self.file_dialog.fileSelected.connect(self.load_image)
         self.file_dialog.show()
 
