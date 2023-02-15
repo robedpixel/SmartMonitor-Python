@@ -654,6 +654,7 @@ class Ui(QtWidgets.QMainWindow):
             self.original_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.set_image(new_image)
         self.load_actions_from_file(self.original_filename)
+        self.current_action[0] = 0
         self.redraw_image()
         QtWidgets.QWidget.setWindowFilePath(self, filename)
         return True
@@ -1341,6 +1342,12 @@ class Ui(QtWidgets.QMainWindow):
         self.display_labels_in_label_list(self.current_labels)
 
     def save_actions_and_notes(self):
+        stop_index = len(self.actions) - self.current_action[0]
+        while len(self.actions) > stop_index:
+            self.actions.pop()
+        self.current_action[0] = 0
+        self.limit_action_list_size()
+
         img = PIL.Image.open(self.original_filename)
         exif_data = img.getexif()
         json_obj = {}
@@ -1357,30 +1364,16 @@ class Ui(QtWidgets.QMainWindow):
         tooltype = 0
         for action in actions:
             tooltype = action.tool.get_tool_type()
-            if tooltype == ToolType.PAINT:
-                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
-                continue
-            elif tooltype == ToolType.ERASER:
-                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
-                continue
-            elif tooltype == ToolType.ARROW:
-                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
-                continue
-            elif tooltype == ToolType.LINE:
-                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
-                continue
-            elif tooltype == ToolType.CIRCLE:
-                actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
-                continue
-            elif tooltype == ToolType.RECT:
+            if tooltype in (
+                    ToolType.PAINT, ToolType.ERASER, ToolType.ARROW, ToolType.LINE, ToolType.CIRCLE, ToolType.RECT):
                 actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
                 continue
             actionlist.append((tooltype, action.effects, action.effect_type))
         return actionlist
 
-    def deserialize_actions(self, actionlist):
+    def deserialize_actions(self, action_list):
         actions = []
-        for action in actionlist:
+        for action in action_list:
             if action[0] == ToolType.PAINT:
                 tool = PaintTool()
                 actions.append(PaintAction(tool, action[3], action[4], action[1], action[2]))
@@ -1420,7 +1413,8 @@ class Ui(QtWidgets.QMainWindow):
                     try:
                         raw_json = json.loads(raw_value)
                         jsonlist = pickle.loads(base64.b64decode(raw_json['actions'].encode('ascii')))
-                        self.actions = deque(self.deserialize_actions(pickle.loads(base64.b64decode(raw_json['actions'].encode('ascii')))))
+                        self.actions = deque(self.deserialize_actions(
+                            pickle.loads(base64.b64decode(raw_json['actions'].encode('ascii')))))
                         found = True
                         # break
                     except KeyError:
