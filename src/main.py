@@ -1417,10 +1417,15 @@ class Ui(QtWidgets.QMainWindow):
                         self.actions = deque(self.deserialize_actions(
                             pickle.loads(base64.b64decode(raw_json['actions'].encode('ascii')))))
                         found = True
-                        # break
+                        break
                     except KeyError:
                         print("no actions found for jpg")
-                        # break
+                        break
+                    except ValueError:
+                        print("no json stored in UserComment tag")
+                        break
+                    
+
         if not found:
             self.actions.clear()
         img.close()
