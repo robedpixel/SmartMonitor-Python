@@ -35,7 +35,7 @@ import json
 import pickle
 from PIL.ExifTags import TAGS
 import base64
-from wakepy import set_keepawake, unset_keepawake
+#from wakepy import set_keepawake, unset_keepawake
 import shutil
 from sys import platform
 
