@@ -633,6 +633,7 @@ class Ui(QtWidgets.QMainWindow):
                 bytesPerLine = ch * w
                 buf = src.data.tobytes()  # or bytes(src.data)
                 new_image = QtGui.QImage(buf, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
+            self.note_module = AppendedDataNoteModule()
         else:
             if fileinfo.size() > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
                 #    print("image too large! shrinking image for viewing and editing...")
@@ -649,7 +650,8 @@ class Ui(QtWidgets.QMainWindow):
             reader.setFileName(image_to_read)
             reader.setAutoTransform(True)
             new_image = reader.read()
-            self.note_module.read_notes_from_file(image_to_read)
+            self.note_module = ExifNoteModule()
+
         if new_image.isNull():
             msg_box = QtWidgets.QMessageBox()
             msg_box.setWindowTitle(QtGui.QGuiApplication.applicationDisplayName())
@@ -661,7 +663,25 @@ class Ui(QtWidgets.QMainWindow):
         if self.original_image.colorSpace().isValid():
             self.original_image.convertToColorSpace(QtGui.QColorSpace(QtGui.QColorSpace.SRgb))
         self.set_image(new_image)
-        self.load_actions_from_file(self.original_filename)
+        json_struct = self.note_module.read_json_from_file(self.original_filename)
+        try:
+            if json_struct:
+                self.file_notes = json_struct['notes']
+        except KeyError:
+            print("no json stored in UserComment tag")
+        except ValueError:
+            print("no json stored in UserComment tag")
+
+        try:
+            if json_struct:
+                encoded_actions = json_struct['actions']
+                self.actions = deque(self.deserialize_actions(
+                    pickle.loads(base64.b64decode(encoded_actions.encode('ascii')))))
+        except KeyError:
+            print("no json stored in UserComment tag")
+        except ValueError:
+            print("no json stored in UserComment tag")
+
         self.current_action[0] = 0
         self.redraw_image()
         QtWidgets.QWidget.setWindowFilePath(self, filename)
@@ -773,7 +793,7 @@ class Ui(QtWidgets.QMainWindow):
             if not filename.endswith(".jpg"):
                 filename += ".jpg"
             success = self.current_image[0].save(filename)
-            self.note_module.save_notes_to_file(filename)
+            self.note_module.save_notes_to_file(filename, self.file_notes)
 
     def on_file_save_button_clicked(self):
         self.save_actions_and_notes()
@@ -832,7 +852,7 @@ class Ui(QtWidgets.QMainWindow):
         self.update_image()
 
     def on_note_button_clicked(self):
-        self.note_window = NoteWindow(self.note_module.notes)
+        self.note_window = NoteWindow(self.file_notes)
         self.note_window.show()
 
     def on_brush_size_button_clicked(self):
@@ -1230,9 +1250,19 @@ class Ui(QtWidgets.QMainWindow):
             time.sleep(1)
 
             # Copy the JPG and NEF to the picture folder with normalised file names
-
-            shutil.copyfile(latest_file, os.path.abspath(self.PICTURE_DIRECTORY))
-            self.load_image_from_file(latest_file)
+            p = Path(latest_file)
+            destination_jpg_file = self.PICTURE_DIRECTORY + '/' + p.stem + '.jpg'
+            destination_nef_file = self.PICTURE_DIRECTORY + '/' + p.stem + '.nef'
+            nef_file = str(p.with_suffix('')) + '.NEF'
+            try:
+                shutil.copyfile(latest_file, os.path.abspath(destination_jpg_file))
+            except:
+                print("copy jpg error")
+            try:
+                shutil.copyfile(nef_file, os.path.abspath(destination_nef_file))
+            except:
+                print("copy nef error")
+            self.load_image_from_file(os.path.abspath(destination_jpg_file))
         else:
             self.image_file_list = changed_files
 
@@ -1366,17 +1396,8 @@ class Ui(QtWidgets.QMainWindow):
             self.actions.pop()
         self.current_action[0] = 0
         self.limit_action_list_size()
-
-        img = PIL.Image.open(self.original_filename)
-        exif_data = img.getexif()
-        json_obj = {}
-        if self.note_module.notes:
-            print("saving notes to exif")
-            json_obj['notes'] = self.note_module.notes
-        if self.actions:
-            json_obj['actions'] = base64.b64encode(pickle.dumps(self.serialize_actions(self.actions))).decode('ascii')
-        exif_data[USR_CMT_TAG_ID] = json.dumps(json_obj, indent=0)
-        img.save(self.original_filename, exif=exif_data)
+        encoded_actions = base64.b64encode(pickle.dumps(self.serialize_actions(self.actions))).decode('ascii')
+        self.note_module.save_actions_and_notes(self.original_filename, encoded_actions, self.file_notes)
 
     def serialize_actions(self, actions):
         actionlist = []
@@ -1419,34 +1440,7 @@ class Ui(QtWidgets.QMainWindow):
                 actions.append(Action(tool, action[1], action[2]))
         return actions
 
-    def load_actions_from_file(self, url):
-        img = PIL.Image.open(url)
-        exif_data = img.getexif()
-        found = False
-        if exif_data:
-            for tag, value in exif_data.items():
-                decoded = TAGS.get(tag, tag)
-                if decoded == "UserComment":
-                    # Load notes in
-                    raw_value = value
-                    try:
-                        raw_json = json.loads(raw_value)
-                        jsonlist = pickle.loads(base64.b64decode(raw_json['actions'].encode('ascii')))
-                        self.actions = deque(self.deserialize_actions(
-                            pickle.loads(base64.b64decode(raw_json['actions'].encode('ascii')))))
-                        found = True
-                        break
-                    except KeyError:
-                        print("no actions found for jpg")
-                        break
-                    except ValueError:
-                        print("no json stored in UserComment tag")
-                        break
-                    
 
-        if not found:
-            self.actions.clear()
-        img.close()
 
 
 if __name__ == "__main__":
