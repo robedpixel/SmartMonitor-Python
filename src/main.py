@@ -25,9 +25,9 @@ from Tool import *
 from ui_mainwindow import Ui_MainWindow
 from os import listdir
 from os.path import isfile, join
+from pathlib import Path
 from PIL import Image, ImageQt
 from pathlib import Path
-from PIL.ExifTags import TAGS
 from DragDropLabel import *
 import exifread
 import PIL.Image
@@ -35,6 +35,8 @@ import json
 import pickle
 from PIL.ExifTags import TAGS
 import base64
+from wakepy import set_keepawake, unset_keepawake
+import shutil
 
 USR_CMT_TAG_ID = 37510
 
@@ -216,10 +218,12 @@ class InfoWindow(QtWidgets.QWidget):
 
 
 class Ui(QtWidgets.QMainWindow):
+    PICTURE_DIRECTORY = "pictures"
     AIRNEF_PICTURE_DIRECTORY = "airnefpictures"
     TEMP_DIRECTORY = "temp"
     GPHOTO_DIRECTORY = "gphotofs"
     MAX_UNDO_SIZE = 5
+    MAX_PICTURE_STORAGE = 40
     MAX_IMAGE_VIEW_SIZE_BYTES = 1000000
 
     def __init__(self):
@@ -567,6 +571,7 @@ class Ui(QtWidgets.QMainWindow):
             button.animateClick()
 
         # Make sure airnef picture folder and temp folder exists
+        os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.GPHOTO_DIRECTORY, exist_ok=True)
@@ -590,22 +595,24 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher.register_callback(self.on_folder_changed_event)
 
         self.help_text.setPlainText("Open an image file or take a picture with a connected camera to begin.")
+        set_keepawake(keep_screen_awake=True)
         self.showMaximized()  # Show the GUI
 
     def closeEvent(self, *args, **kwargs):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
+        unset_keepawake()
         if self.camera_mounted:
             self.gphoto_thread.stop()
             self.gphoto_thread.join()
         self.file_watcher.shutdown()
 
     def show_open_dialog(self):
-        self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', './airnefpictures')
+        self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', self.PICTURE_DIRECTORY)
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
-        self.file_dialog.setNameFilter("Image Files (*.png *.jpg)")
-        #self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.nef)")
+        # self.file_dialog.setNameFilter("Image Files (*.png *.jpg)")
+        self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.nef)")
         self.file_dialog.fileSelected.connect(self.load_image)
         self.file_dialog.show()
 
@@ -1205,6 +1212,13 @@ class Ui(QtWidgets.QMainWindow):
         return new_tool
 
     def on_folder_changed_event(self, folder_changed_url: str):
+        # Check and delete oldest image in picture folder if over limit
+        files = [f for f in os.listdir(self.PICTURE_DIRECTORY) if os.path.isfile(f)]
+
+        while len(files) > self.MAX_PICTURE_STORAGE:
+            oldest_file = min(files, key=os.path.getctime)
+            os.remove(os.path.abspath(oldest_file))
+
         changed_files = [join(folder_changed_url, f) for f in listdir(folder_changed_url) if
                          isfile(join(folder_changed_url, f)) and join(folder_changed_url, f).endswith('.JPG')]
         if len(changed_files) > len(self.image_file_list):
@@ -1214,6 +1228,10 @@ class Ui(QtWidgets.QMainWindow):
             # Sleep command to wait for image to finish loading in the raspberry pi before displaying it in
             # SmartMonitor, adjust time or find more reliable workaround
             time.sleep(1)
+
+            # Copy the JPG and NEF to the picture folder with normalised file names
+
+            shutil.copyfile(latest_file, os.path.abspath(self.PICTURE_DIRECTORY))
             self.load_image_from_file(latest_file)
         else:
             self.image_file_list = changed_files
