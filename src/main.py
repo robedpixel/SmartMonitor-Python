@@ -37,6 +37,10 @@ from PIL.ExifTags import TAGS
 import base64
 from wakepy import set_keepawake, unset_keepawake
 import shutil
+from sys import platform
+
+if platform == "linux":
+    import rawpy
 
 USR_CMT_TAG_ID = 37510
 
@@ -595,12 +599,12 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher.register_callback(self.on_folder_changed_event)
 
         self.help_text.setPlainText("Open an image file or take a picture with a connected camera to begin.")
-        set_keepawake(keep_screen_awake=True)
+        #set_keepawake(keep_screen_awake=True)
         self.showMaximized()  # Show the GUI
 
     def closeEvent(self, *args, **kwargs):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
-        unset_keepawake()
+        #unset_keepawake()
         if self.camera_mounted:
             self.gphoto_thread.stop()
             self.gphoto_thread.join()
@@ -627,12 +631,42 @@ class Ui(QtWidgets.QMainWindow):
         image_to_read = None
         if fileinfo.suffix() == "nef":
             # Sse rawpy to read nef file then load as QImage
-            with rawpy.imread(path) as raw:
-                src = raw.postprocess()
-                h, w, ch = src.shape
-                bytesPerLine = ch * w
-                buf = src.data.tobytes()  # or bytes(src.data)
-                new_image = QtGui.QImage(buf, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
+            if fileinfo.size() > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
+                # Clear temp file
+                clear_temp_folder()
+                with rawpy.imread(filename) as raw:
+                    src = raw.postprocess()
+                    img = Image.fromarray(src)  # Pillow image
+                    # Make shrunken image
+                    temp_filename = Ui.TEMP_DIRECTORY + "/tempimage.jpg"
+
+                    if os.path.getsize(filename) > 5000000:
+                        width, height = img.size
+                        resized_img = img.resize((width // 8, height // 8))
+                        resized_img.save(temp_filename)
+                    else:
+                        width, height = img.size
+                        resized_img = img.resize((width // 2, height // 2))
+                        resized_img.save(temp_filename)
+
+                    while os.path.getsize(temp_filename) > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
+                        img = Image.open(temp_filename)
+                        width, height = img.size
+                        resized_img = img.resize((width // 2, height // 2))
+                        resized_img.save(temp_filename)
+
+                    reader = QImageReader()
+                    image_to_read = temp_filename
+                    reader.setFileName(image_to_read)
+                    reader.setAutoTransform(True)
+                    new_image = reader.read()
+            else:
+                with rawpy.imread(filename) as raw:
+                    src = raw.postprocess()
+                    h, w, ch = src.shape
+                    bytesPerLine = ch * w
+                    buf = src.data.tobytes()  # or bytes(src.data)
+                    new_image = QtGui.QImage(buf, w, h, bytesPerLine, QtGui.QImage.Format_RGB888)
             self.note_module = AppendedDataNoteModule()
         else:
             if fileinfo.size() > Ui.MAX_IMAGE_VIEW_SIZE_BYTES:
