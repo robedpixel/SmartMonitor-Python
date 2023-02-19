@@ -37,7 +37,7 @@ import json
 import pickle
 from PIL.ExifTags import TAGS
 import base64
-#from wakepy import set_keepawake, unset_keepawake
+from wakepy import set_keepawake, unset_keepawake
 import shutil
 from sys import platform
 
@@ -601,12 +601,12 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher.register_callback(self.on_folder_changed_event)
 
         self.help_text.setPlainText("Open an image file or take a picture with a connected camera to begin.")
-        #set_keepawake(keep_screen_awake=True)
+        set_keepawake(keep_screen_awake=True)
         self.showMaximized()  # Show the GUI
 
     def closeEvent(self, *args, **kwargs):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
-        #unset_keepawake()
+        unset_keepawake()
         if self.camera_mounted:
             self.gphoto_thread.stop()
             self.gphoto_thread.join()

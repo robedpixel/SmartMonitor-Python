@@ -1,2 +1,3 @@
 #!/bin/bash
-python ./main.py
+cd "$(dirname "$(realpath "$0")")";
+sudo -E python3 ./main.py

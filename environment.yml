@@ -9,4 +9,6 @@ dependencies:
   - pip
   - pyside2
   - exifread
+  - pip:
+   -wakepy
   #python3-gphoto on linux

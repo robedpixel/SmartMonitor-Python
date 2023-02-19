@@ -1,6 +1,6 @@
 from PySide2 import QtWidgets, QtGui, QtCore
-from PySide2.QtCore import Qt
-from PySide2.QtGui import QPixmap
+from PySide2.QtCore import Qt, QSize
+from PySide2.QtGui import QPixmap, QIcon
 from PySide2.QtWidgets import QWidget, QFileDialog, QVBoxLayout, QLabel
 
 from QThumbnailDelegate import QThumbnailDelegate
@@ -37,12 +37,13 @@ class QFileDialogPreview(QFileDialog):
         self.thumbnail_delegate.resetCache()
 
     def onChange(self, path):
-        pixmap = QPixmap(path)
+        #pixmap = QPixmap(path)
+        thumbnail = QIcon(path)
 
-        if pixmap.isNull():
+        if thumbnail.isNull():
             self.mpPreview.setText("Preview")
         else:
-            self.mpPreview.setPixmap(pixmap.scaled(self.mpPreview.width(), self.mpPreview.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            self.mpPreview.setPixmap(thumbnail.pixmap(thumbnail.actualSize(QSize(256, 256))).scaled(self.mpPreview.width(), self.mpPreview.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
 
     def onFileSelected(self, file):
         self._fileSelected = file
