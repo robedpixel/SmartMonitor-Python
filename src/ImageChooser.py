@@ -50,7 +50,7 @@ class ImageChooser(QtWidgets.QDialog):
         self.selected_file = None
         self.index = None
         self.gridSize = QtCore.QSize(150, 150)
-        self.setWindowTitle("Open Image")
+        self.setWindowTitle("Open File")
         self.path = dir_path
         self.files = clsFilePreviewModel()
         self.files.setRootPath(self.path)
