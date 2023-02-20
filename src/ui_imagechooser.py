@@ -17,15 +17,15 @@ class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(400, 300)
+        Dialog.resize(711, 460)
         self.buttonBox = QDialogButtonBox(Dialog)
         self.buttonBox.setObjectName(u"buttonBox")
-        self.buttonBox.setGeometry(QRect(30, 240, 341, 32))
+        self.buttonBox.setGeometry(QRect(360, 420, 341, 32))
         self.buttonBox.setOrientation(Qt.Horizontal)
         self.buttonBox.setStandardButtons(QDialogButtonBox.Cancel|QDialogButtonBox.Open)
         self.listView = QListView(Dialog)
         self.listView.setObjectName(u"listView")
-        self.listView.setGeometry(QRect(20, 0, 361, 241))
+        self.listView.setGeometry(QRect(20, 20, 681, 401))
 
         self.retranslateUi(Dialog)
         self.buttonBox.accepted.connect(Dialog.accept)
