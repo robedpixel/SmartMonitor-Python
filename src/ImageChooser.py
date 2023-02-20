@@ -57,5 +57,5 @@ class ImageChooser(QtWidgets.QWidget):
 
     layout = QtWidgets.QHBoxLayout()
     layout.addWidget(self.view)
-    
+
     self.setLayout(layout)
