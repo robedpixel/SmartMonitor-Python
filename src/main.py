@@ -40,6 +40,7 @@ import base64
 from wakepy import set_keepawake, unset_keepawake
 import shutil
 from sys import platform
+from ImageChooser import ImageChooser
 
 if platform == "linux":
     import rawpy
@@ -614,14 +615,15 @@ class Ui(QtWidgets.QMainWindow):
 
     def show_open_dialog(self):
         #self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', self.PICTURE_DIRECTORY)
-        self.file_dialog = QFileDialogPreview(self,'Open Image', self.PICTURE_DIRECTORY)
+        # self.file_dialog = QFileDialogPreview(self,'Open Image', self.PICTURE_DIRECTORY)
         #self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         #self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         #self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
         #self.file_dialog.setNameFilter("Image Files (*.png *.jpg)")
         #self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.nef)")
         #self.file_dialog.setIconProvider(icon_provider)
-        self.file_dialog.fileSelected.connect(self.load_image)
+        self.file_dialog = ImageChooser("pictures")
+        #self.file_dialog.fileSelected.connect(self.load_image)
         self.file_dialog.show()
 
     def load_image(self, filename: str):
