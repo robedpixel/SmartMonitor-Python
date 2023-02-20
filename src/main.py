@@ -624,10 +624,11 @@ class Ui(QtWidgets.QMainWindow):
         #self.file_dialog.setIconProvider(icon_provider)
         self.file_dialog = ImageChooser("pictures")
         #self.file_dialog.fileSelected.connect(self.load_image)
-        self.file_dialog.show()
+        #self.file_dialog.show()
+        if self.file_dialog.exec():
+            self.load_image(self.file_dialog.selected_file)
 
     def load_image(self, filename: str):
-
         if filename:
             self.load_image_from_file(filename)
 
@@ -685,6 +686,7 @@ class Ui(QtWidgets.QMainWindow):
                 image_to_read = extract_preview_image(filename)
             else:
                 image_to_read = filename
+
             # Load in image
             reader = QImageReader()
             reader.setFileName(image_to_read)
