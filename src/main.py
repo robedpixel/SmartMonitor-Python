@@ -1297,11 +1297,11 @@ class Ui(QtWidgets.QMainWindow):
             destination_nef_file = self.PICTURE_DIRECTORY + '/' + p.stem + '.nef'
             nef_file = str(p.with_suffix('')) + '.NEF'
             try:
-                shutil.copyfile(latest_file, os.path.abspath(destination_jpg_file))
+                shutil.move(latest_file, os.path.abspath(destination_jpg_file), copy_function = shutil.copytree)
             except:
                 print("copy jpg error")
             try:
-                shutil.copyfile(nef_file, os.path.abspath(destination_nef_file))
+                shutil.move(nef_file, os.path.abspath(destination_nef_file), copy_function = shutil.copytree)
             except:
                 print("copy nef error")
             self.load_image_from_file(os.path.abspath(destination_jpg_file))
