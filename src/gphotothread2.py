@@ -76,12 +76,13 @@ class GPhotoThread2(threading.Thread):
                                 result.append(row)
                         latest_file = max(result, key=lambda item: self.get_file_time(item))
                         # get file from latest_file
-                        if os.path.exists(self.copy_point + "/temp.JPG"):
-                            os.remove(self.copy_point + "/temp.JPG")
                         folder, name = os.path.split(latest_file)
                         camera_file = gp.check_result(
                             gp.gp_camera_file_get(self.connected_camera, folder, name, gp.GP_FILE_TYPE_NORMAL))
-                        gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/temp.JPG"))
+                        gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/"+name))
+                        camera_file = gp.check_result(
+                            gp.gp_camera_file_get(self.connected_camera, folder, name.rsplit('.',1)[0] + ".NEF", gp.GP_FILE_TYPE_NORMAL))
+                        gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/" + name.rsplit('.',1)[0] + ".NEF"))
                     self.cFH = self.cF
         if self.camera_is_connected:
             print("unmounting camera...")
