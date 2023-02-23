@@ -3,8 +3,6 @@ import os
 import shutil
 import platform
 import subprocess
-from aio_usb_hotplug import HotplugDetector
-from trio import run  # ...or asyncio
 from datetime import datetime
 from glob import glob
 from pathlib import Path
