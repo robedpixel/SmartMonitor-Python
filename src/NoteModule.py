@@ -70,7 +70,7 @@ class ExifNoteModule(NoteModule):
         if encoded_actions:
             json_obj['actions'] = encoded_actions
         exif_data[USR_CMT_TAG_ID] = json.dumps(json_obj, indent=0)
-        img.save(self.original_filename, exif=exif_data)
+        img.save(url, exif=exif_data)
 
 
 # Stores picture notes by appending it after the jpg or png image data

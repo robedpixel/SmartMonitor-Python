@@ -631,6 +631,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def show_open_dialog(self):
         #self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', self.PICTURE_DIRECTORY)
+        self.gphoto_thread.running = False
         self.file_dialog = QFileDialogPreview(self,'Open File', self.open_file_directory)
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         #self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
@@ -639,10 +640,10 @@ class Ui(QtWidgets.QMainWindow):
         #self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.nef)")
         #self.file_dialog.setIconProvider(icon_provider)
         #self.file_dialog = ImageChooser("pictures")
-        self.file_dialog.fileSelected.connect(self.load_image)
-        self.file_dialog.show()
-        #if self.file_dialog.exec():
-        #    self.load_image(self.file_dialog.selected_file)
+        #self.file_dialog.fileSelected.connect(self.load_image)
+        #self.file_dialog.show()
+        if self.file_dialog.exec():
+            self.load_image(self.file_dialog.getFileSelected())
 
     def load_image(self, filename: str):
         if filename:
