@@ -26,18 +26,18 @@ class GPhotoThread2(threading.Thread):
 
     def mount_camera(self):
         cameras = gp.gp_camera_autodetect()
-            if cameras[0] > 0:
-                self.connected_camera = gp.Camera()
-                self.connected_camera.init()
-                # p = subprocess.run(["gphotofs", os.path.abspath(mount_point)])
-                # if p.returncode == 0:
-                print("camera filesystem mounted!")
-                self.cFH = self.count_files_optimised(self.connected_camera)
-                self.camera_is_connected = True
-                return True
-            else:
-                self.camera_is_connected = False
-                return False
+        if cameras[0] > 0:
+            self.connected_camera = gp.Camera()
+            self.connected_camera.init()
+            # p = subprocess.run(["gphotofs", os.path.abspath(mount_point)])
+            # if p.returncode == 0:
+            print("camera filesystem mounted!")
+            self.cFH = self.count_files_optimised(self.connected_camera)
+            self.camera_is_connected = True
+            return True
+        else:
+            self.camera_is_connected = False
+            return False
     
     def initialize(self, mount_point, copy_point):
         self.copy_point = copy_point
