@@ -586,7 +586,6 @@ class Ui(QtWidgets.QMainWindow):
             Ui.PICTURE_DIRECTORY = "/home/pi/photos" + "/"+str(folder_date)
             os.makedirs("/home/pi/photos", exist_ok=True)
         self.picture_folder_missing = not os.path.exists(Ui.PICTURE_DIRECTORY)
-        self.open_file_directory
         if platform == "linux":
             if self.picture_folder_missing:
                 self.open_file_directory = "/home/pi/photos"
