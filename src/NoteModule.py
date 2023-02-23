@@ -1,5 +1,6 @@
 import PIL.Image
 import json
+import os
 from PIL.ExifTags import TAGS
 
 USR_CMT_TAG_ID = 37510
@@ -22,7 +23,19 @@ class ExifNoteModule(NoteModule):
         NoteModule.__init__(self)
 
     # read ImageDescription exif tag
-    def read_json_from_file(self, url: str):
+    def read_json_from_file(self, url:str):
+        txt_file = url.rsplit('.', 1)[0] + ".txt"
+        if os.path.exists(txt_file):
+            try:
+                with open(txt_file, 'r') as file:
+                    data = file.read()
+                    raw_json = json.loads(data)
+                    return raw_json
+            except:
+                return None
+        else:
+            return None
+    def read_json_from_file2(self, url: str):
         img = PIL.Image.open(url)
         exif_data = img.getexif()
         found = False
@@ -61,16 +74,19 @@ class ExifNoteModule(NoteModule):
         return True
 
     def save_actions_and_notes(self, url: str, encoded_actions, notes):
-        img = PIL.Image.open(url)
-        exif_data = img.getexif()
+        #img = PIL.Image.open(url)
+        #exif_data = img.getexif()
         json_obj = {}
         if notes:
             print("saving notes to exif")
             json_obj['notes'] = notes
         if encoded_actions:
             json_obj['actions'] = encoded_actions
-        exif_data[USR_CMT_TAG_ID] = json.dumps(json_obj, indent=0)
-        img.save(url, exif=exif_data)
+        txt_file = url.rsplit('.',1)[0] + ".txt"
+        with open(txt_file, 'w') as f:
+            f.write(json.dumps(json_obj,indent=0))
+        #exif_data[USR_CMT_TAG_ID] = json.dumps(json_obj, indent=0)
+        #img.save(url, exif=exif_data)
 
 
 # Stores picture notes by appending it after the jpg or png image data
