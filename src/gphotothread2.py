@@ -53,7 +53,7 @@ class GPhotoThread2(threading.Thread):
     def get_updated_camera(self):
         if self.camera_is_connected:
             #add try catch block for camera
-            if gp.check_result(self.connected_camera.exit())
+            if gp.check_result(self.connected_camera.exit()):
                 self.connected_camera = gp.Camera()
                 self.connected_camera.init()
             else:
