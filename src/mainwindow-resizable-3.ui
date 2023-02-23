@@ -54,8 +54,13 @@ Comments</string>
         <height>100</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }</string>
+       <string notr="true">QTabBar::tab { height: 50px; font-size: 16px; width: 138px; }</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -119,8 +124,13 @@ Comments</string>
         <height>180</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }</string>
+       <string notr="true">QTabBar::tab { height: 50px; font-size: 16px; width: 138px; }</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -348,8 +358,13 @@ Comments</string>
         <height>16777215</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">QTabBar::tab { height: 50px; font-size: 11px; width: 138px; }</string>
+       <string notr="true">QTabBar::tab { height: 50px; font-size: 16px; width: 138px; }</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -614,8 +629,13 @@ Info</string>
         <height>16777215</height>
        </size>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="styleSheet">
-       <string notr="true">QTabBar::tab { height: 50px;  font-size: 11px; width: 100px; }</string>
+       <string notr="true">QTabBar::tab { height: 50px;  font-size: 16px; width: 100px; }</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
