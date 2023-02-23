@@ -36,6 +36,7 @@ from QFileDialogPreview import QFileDialogPreview
 import PIL.Image
 import json
 import pickle
+import time
 from PIL.ExifTags import TAGS
 import base64
 from wakepy import set_keepawake, unset_keepawake
@@ -579,11 +580,11 @@ class Ui(QtWidgets.QMainWindow):
             button.animateClick()
 
         # Make sure airnef picture folder and temp folder exists
-        #os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
+        # os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
         if platform == "linux":
-            #set picture directory to folder under photos
+            # set picture directory to folder under photos
             folder_date = date.today()
-            Ui.PICTURE_DIRECTORY = "/home/pi/photos" + "/"+str(folder_date)
+            Ui.PICTURE_DIRECTORY = "/home/pi/photos" + "/" + str(folder_date)
             os.makedirs("/home/pi/photos", exist_ok=True)
         self.picture_folder_missing = not os.path.exists(Ui.PICTURE_DIRECTORY)
         if platform == "linux":
@@ -594,7 +595,7 @@ class Ui(QtWidgets.QMainWindow):
         else:
             self.open_file_directory = Ui.PICTURE_DIRECTORY
 
-        #os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
+        # os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.GPHOTO_DIRECTORY, exist_ok=True)
@@ -619,29 +620,40 @@ class Ui(QtWidgets.QMainWindow):
 
         self.help_text.setPlainText("Open an image file or take a picture with a connected camera to begin.")
         set_keepawake(keep_screen_awake=True)
+        #self.start = time.time()
+        #self.end = time.time()
         self.showMaximized()  # Show the GUI
+
+    #def paintEvent(self, event):
+    #    super(QtWidgets.QMainWindow, self).paintEvent(event)
+    #    if self.camera_watcher_active:
+    #        self.end = time.time()
+    #        if (self.end - self.start) > 300:
+    #            self.gphoto_thread.iterate()
+    #            self.start = time.time()
 
     def closeEvent(self, *args, **kwargs):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
         unset_keepawake()
         if self.camera_watcher_active:
+        #    self.gphoto_thread.shutdown()
             self.gphoto_thread.stop()
             self.gphoto_thread.join()
         self.file_watcher.shutdown()
 
     def show_open_dialog(self):
-        #self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', self.PICTURE_DIRECTORY)
+        # self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', self.PICTURE_DIRECTORY)
         self.gphoto_thread.running = False
-        self.file_dialog = QFileDialogPreview(self,'Open File', self.open_file_directory)
+        self.file_dialog = QFileDialogPreview(self, 'Open File', self.open_file_directory)
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
-        #self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
+        # self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
         self.file_dialog.setNameFilter("Image Files (*.png *.jpg)")
-        #self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.nef)")
-        #self.file_dialog.setIconProvider(icon_provider)
-        #self.file_dialog = ImageChooser("pictures")
-        #self.file_dialog.fileSelected.connect(self.load_image)
-        #self.file_dialog.show()
+        # self.file_dialog.setNameFilter("Image Files (*.png *.jpg *.nef)")
+        # self.file_dialog.setIconProvider(icon_provider)
+        # self.file_dialog = ImageChooser("pictures")
+        # self.file_dialog.fileSelected.connect(self.load_image)
+        # self.file_dialog.show()
         if self.file_dialog.exec():
             self.load_image(self.file_dialog.getFileSelected())
 
@@ -1294,7 +1306,7 @@ class Ui(QtWidgets.QMainWindow):
         # Check and delete oldest image in picture folder if over limit
         files = [f for f in os.listdir(self.PICTURE_DIRECTORY) if os.path.isfile(f)]
 
-        #while len(files) > self.MAX_PICTURE_STORAGE:
+        # while len(files) > self.MAX_PICTURE_STORAGE:
         #    oldest_file = min(files, key=os.path.getctime)
         #    os.remove(os.path.abspath(oldest_file))
 
@@ -1318,14 +1330,14 @@ class Ui(QtWidgets.QMainWindow):
             destination_nef_file = self.PICTURE_DIRECTORY + '/' + p.stem + '.nef'
             nef_file = str(p.with_suffix('')) + '.NEF'
             try:
-                shutil.move(latest_file, os.path.abspath(destination_jpg_file), copy_function = shutil.copytree)
+                shutil.move(latest_file, os.path.abspath(destination_jpg_file), copy_function=shutil.copytree)
             except:
                 print("copy jpg error")
             try:
-                shutil.move(nef_file, os.path.abspath(destination_nef_file), copy_function = shutil.copytree)
+                shutil.move(nef_file, os.path.abspath(destination_nef_file), copy_function=shutil.copytree)
             except:
                 print("copy nef error")
-            self.load_image_from_file(os.path.abspath(destination_jpg_file))
+            # self.load_image_from_file(os.path.abspath(destination_jpg_file))
         else:
             self.image_file_list = changed_files
 
@@ -1502,8 +1514,6 @@ class Ui(QtWidgets.QMainWindow):
                 tool = self.label_tool
                 actions.append(Action(tool, action[1], action[2]))
         return actions
-
-
 
 
 if __name__ == "__main__":

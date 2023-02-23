@@ -4,6 +4,7 @@ import shutil
 import platform
 import subprocess
 from datetime import datetime
+import time
 from glob import glob
 from pathlib import Path
 
@@ -41,7 +42,7 @@ class GPhotoThread2(threading.Thread):
         else:
             self.camera_is_connected = False
             return False
-    
+
     def initialize(self, mount_point, copy_point):
         self.copy_point = copy_point
         if platform.system() == "Linux":
@@ -52,10 +53,10 @@ class GPhotoThread2(threading.Thread):
 
     def connect_to_camera(self, mount_point, copy_point):
         self.initialize(mount_point, copy_point)
-    
+
     def get_updated_camera(self):
         if self.camera_is_connected:
-            #add try catch block for camera
+            # add try catch block for camera
             try:
                 self.connected_camera.exit()
                 self.connected_camera = gp.Camera()
@@ -67,9 +68,43 @@ class GPhotoThread2(threading.Thread):
         else:
             self.mount_camera()
 
+    def iterate(self):
+        print("getting new pictures...")
+        self.get_updated_camera()
+        if self.camera_is_connected:
+            self.cF = self.count_files_optimised(self.connected_camera)
+            if self.cF != self.cFH:
+                print("New files have been taken")
+                if self.cF > self.cFH:
+                    raw_result = self.list_files(self.connected_camera)
+                    result = list()
+                    for row in raw_result:
+                        if row.endswith(".JPG"):
+                            result.append(row)
+                    latest_file = max(result, key=lambda item: self.get_file_time(item))
+                    # get file from latest_file
+                    folder, name = os.path.split(latest_file)
+                    camera_file = gp.check_result(
+                        gp.gp_camera_file_get(self.connected_camera, folder, name.rsplit('.', 1)[0] + ".NEF",
+                                              gp.GP_FILE_TYPE_NORMAL))
+                    gp.check_result(
+                        gp.gp_file_save(camera_file, self.copy_point + "/" + name.rsplit('.', 1)[0] + ".NEF"))
+                    camera_file = gp.check_result(
+                        gp.gp_camera_file_get(self.connected_camera, folder, name, gp.GP_FILE_TYPE_NORMAL))
+                    gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/" + name))
+                self.cFH = self.cF
+
+    def shutdown(self):
+        if self.camera_is_connected:
+            print("unmounting camera...")
+            self.connected_camera.exit()
+            print("camera filesystem unmounted!")
+
     def run(self):
         while not self.stopped:
             if self.running:
+                time.sleep(300)
+                print("getting new pictures...")
                 self.get_updated_camera()
                 if self.camera_is_connected:
                     self.cF = self.count_files_optimised(self.connected_camera)
@@ -85,8 +120,10 @@ class GPhotoThread2(threading.Thread):
                             # get file from latest_file
                             folder, name = os.path.split(latest_file)
                             camera_file = gp.check_result(
-                                gp.gp_camera_file_get(self.connected_camera, folder, name.rsplit('.',1)[0] + ".NEF", gp.GP_FILE_TYPE_NORMAL))
-                            gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/" + name.rsplit('.',1)[0] + ".NEF"))
+                                gp.gp_camera_file_get(self.connected_camera, folder, name.rsplit('.', 1)[0] + ".NEF",
+                                                      gp.GP_FILE_TYPE_NORMAL))
+                            gp.check_result(
+                                gp.gp_file_save(camera_file, self.copy_point + "/" + name.rsplit('.', 1)[0] + ".NEF"))
                             camera_file = gp.check_result(
                                 gp.gp_camera_file_get(self.connected_camera, folder, name, gp.GP_FILE_TYPE_NORMAL))
                             gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/" + name))
