@@ -585,8 +585,17 @@ class Ui(QtWidgets.QMainWindow):
             folder_date = date.today()
             Ui.PICTURE_DIRECTORY = "/home/pi/photos" + "/"+str(folder_date)
             os.makedirs("/home/pi/photos", exist_ok=True)
+        self.picture_folder_missing = not os.path.exists(Ui.PICTURE_DIRECTORY)
+        self.open_file_directory
+        if platform == "linux":
+            if self.picture_folder_missing:
+                self.open_file_directory = "/home/pi/photos"
+            else:
+                self.open_file_directory = Ui.PICTURE_DIRECTORY
+        else:
+            self.open_file_directory = Ui.PICTURE_DIRECTORY
 
-        os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
+        #os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.GPHOTO_DIRECTORY, exist_ok=True)
@@ -623,7 +632,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def show_open_dialog(self):
         #self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', self.PICTURE_DIRECTORY)
-        self.file_dialog = QFileDialogPreview(self,'Open File', self.PICTURE_DIRECTORY)
+        self.file_dialog = QFileDialogPreview(self,'Open File', self.open_file_directory)
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         #self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
@@ -1300,6 +1309,10 @@ class Ui(QtWidgets.QMainWindow):
             time.sleep(1)
 
             # Copy the JPG and NEF to the picture folder with normalised file names
+            if self.picture_folder_missing:
+                os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
+                self.open_file_directory = Ui.PICTURE_DIRECTORY
+                self.picture_folder_missing = False
             p = Path(latest_file)
             destination_jpg_file = self.PICTURE_DIRECTORY + '/' + p.stem + '.jpg'
             destination_nef_file = self.PICTURE_DIRECTORY + '/' + p.stem + '.nef'

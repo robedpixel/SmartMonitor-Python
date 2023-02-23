@@ -10,7 +10,7 @@ class QFileDialogPreview(QFileDialog):
     def __init__(self, *args, **kwargs):
         QFileDialog.__init__(self, *args, **kwargs)
         self.setOption(QFileDialog.DontUseNativeDialog, True)
-        self.thumbnail_delegate = QThumbnailDelegate()
+        #self.thumbnail_delegate = QThumbnailDelegate()
         box = QVBoxLayout()
 
         self.setFixedSize(self.width() + 250, self.height())
@@ -27,13 +27,13 @@ class QFileDialogPreview(QFileDialog):
         self.currentChanged.connect(self.onChange)
         self.fileSelected.connect(self.onFileSelected)
         self.filesSelected.connect(self.onFilesSelected)
-        self.currentUrlChanged.connect(self.resetDelegateCache)
+        #self.currentUrlChanged.connect(self.resetDelegateCache)
 
         self._fileSelected = None
         self._filesSelected = None
 
-    def resetDelegateCache(self):
-        self.thumbnail_delegate.resetCache()
+    #def resetDelegateCache(self):
+        #self.thumbnail_delegate.resetCache()
 
     def onChange(self, path):
         #pixmap = QPixmap(path)
