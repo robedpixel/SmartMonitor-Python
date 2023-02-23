@@ -24,7 +24,6 @@ class QFileDialogPreview(QFileDialog):
         box.addStretch()
 
         self.layout().addLayout(box, 1, 3, 1, 1)
-        self.setItemDelegate(self.thumbnail_delegate)
         self.currentChanged.connect(self.onChange)
         self.fileSelected.connect(self.onFileSelected)
         self.filesSelected.connect(self.onFilesSelected)

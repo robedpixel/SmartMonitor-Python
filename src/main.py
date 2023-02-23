@@ -3,6 +3,7 @@
 # TODO: find way to connect dslr and detect changes in ubuntu
 # TODO: find way to display image from original image
 # Import required packages
+from datetime import date
 import io
 import os
 from glob import glob
@@ -578,6 +579,13 @@ class Ui(QtWidgets.QMainWindow):
             button.animateClick()
 
         # Make sure airnef picture folder and temp folder exists
+        #os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
+        if platform == "linux":
+            #set picture directory to folder under photos
+            folder_date = date.today()
+            Ui.PICTURE_DIRECTORY = "/home/pi/photos" + "/"+str(folder_date)
+            os.makedirs("/home/pi/photos", exist_ok=True)
+
         os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.AIRNEF_PICTURE_DIRECTORY, exist_ok=True)
         os.makedirs(Ui.TEMP_DIRECTORY, exist_ok=True)
@@ -615,7 +623,7 @@ class Ui(QtWidgets.QMainWindow):
 
     def show_open_dialog(self):
         #self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', self.PICTURE_DIRECTORY)
-        self.file_dialog = QFileDialogPreview(self,'Open Image', self.PICTURE_DIRECTORY)
+        self.file_dialog = QFileDialogPreview(self,'Open File', self.PICTURE_DIRECTORY)
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         #self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
         self.file_dialog.setAcceptMode(QtWidgets.QFileDialog.AcceptOpen)
@@ -1277,9 +1285,9 @@ class Ui(QtWidgets.QMainWindow):
         # Check and delete oldest image in picture folder if over limit
         files = [f for f in os.listdir(self.PICTURE_DIRECTORY) if os.path.isfile(f)]
 
-        while len(files) > self.MAX_PICTURE_STORAGE:
-            oldest_file = min(files, key=os.path.getctime)
-            os.remove(os.path.abspath(oldest_file))
+        #while len(files) > self.MAX_PICTURE_STORAGE:
+        #    oldest_file = min(files, key=os.path.getctime)
+        #    os.remove(os.path.abspath(oldest_file))
 
         changed_files = [join(folder_changed_url, f) for f in listdir(folder_changed_url) if
                          isfile(join(folder_changed_url, f)) and join(folder_changed_url, f).endswith('.JPG')]
