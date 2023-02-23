@@ -20,6 +20,7 @@ class clsFilePreviewModel(QtWidgets.QFileSystemModel):
     def getPreview(self, index):
         itemName = super().data(index, QtCore.Qt.DisplayRole)
 
+        #TODO: add check to not show nef pictures
         if itemName not in self.previews:
             qpm = QtGui.QPixmap(self.rootPath() + "/" + itemName)
 

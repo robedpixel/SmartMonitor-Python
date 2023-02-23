@@ -25,14 +25,18 @@ class GPhotoThread2(threading.Thread):
     def mount_camera(self):
         cameras = gp.gp_camera_autodetect()
         if cameras[0] > 0:
-            self.connected_camera = gp.Camera()
-            self.connected_camera.init()
-            # p = subprocess.run(["gphotofs", os.path.abspath(mount_point)])
-            # if p.returncode == 0:
-            print("camera filesystem mounted!")
-            self.cFH = self.count_files_optimised(self.connected_camera)
-            self.camera_is_connected = True
-            return True
+            try:
+                self.connected_camera = gp.Camera()
+                self.connected_camera.init()
+                # p = subprocess.run(["gphotofs", os.path.abspath(mount_point)])
+                # if p.returncode == 0:
+                print("camera filesystem mounted!")
+                self.cFH = self.count_files_optimised(self.connected_camera)
+                self.camera_is_connected = True
+                return True
+            except:
+                self.camera_is_connected = False
+                return False
         else:
             self.camera_is_connected = False
             return False
@@ -51,13 +55,14 @@ class GPhotoThread2(threading.Thread):
     def get_updated_camera(self):
         if self.camera_is_connected:
             #add try catch block for camera
-            if gp.check_result(self.connected_camera.exit()):
+            try:
+                self.connected_camera.exit()
                 self.connected_camera = gp.Camera()
                 self.connected_camera.init()
-            else:
+            except:
                 # Camera Disconnected, reset cFH
-                self.cFH = 0
-                self.mount_camera()
+                print("camera disconnected!")
+                self.camera_is_connected = False
         else:
             self.mount_camera()
 
@@ -78,11 +83,11 @@ class GPhotoThread2(threading.Thread):
                         # get file from latest_file
                         folder, name = os.path.split(latest_file)
                         camera_file = gp.check_result(
-                            gp.gp_camera_file_get(self.connected_camera, folder, name, gp.GP_FILE_TYPE_NORMAL))
-                        gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/"+name))
-                        camera_file = gp.check_result(
                             gp.gp_camera_file_get(self.connected_camera, folder, name.rsplit('.',1)[0] + ".NEF", gp.GP_FILE_TYPE_NORMAL))
                         gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/" + name.rsplit('.',1)[0] + ".NEF"))
+                        camera_file = gp.check_result(
+                            gp.gp_camera_file_get(self.connected_camera, folder, name, gp.GP_FILE_TYPE_NORMAL))
+                        gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/" + name))
                     self.cFH = self.cF
         if self.camera_is_connected:
             print("unmounting camera...")
