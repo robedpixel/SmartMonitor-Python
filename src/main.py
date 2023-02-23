@@ -20,7 +20,7 @@ from CameraFolderWatcher import CameraFolderWatcher
 from ImageDisplay import ImageDisplay
 from NoteModule import ExifNoteModule, AppendedDataNoteModule
 from NoteWindow import NoteWindow
-from gphotothread import GPhotoThread
+from gphotothread2 import GPhotoThread
 from Tool import *
 from QThumbnailDelegate import QThumbnailDelegate
 from ui_mainwindow import Ui_MainWindow
