@@ -57,6 +57,8 @@ class GPhotoThread2(threading.Thread):
                 self.connected_camera = gp.Camera()
                 self.connected_camera.init()
             else:
+                # Camera Disconnected, reset cFH
+                self.cFH = 0
                 self.mount_camera()
         else:
             self.mount_camera()
