@@ -20,7 +20,7 @@ from CameraFolderWatcher import CameraFolderWatcher
 from ImageDisplay import ImageDisplay
 from NoteModule import ExifNoteModule, AppendedDataNoteModule
 from NoteWindow import NoteWindow
-from gphotothread2 import GPhotoThread
+from gphotothread2 import GPhotoThread2
 from Tool import *
 from QThumbnailDelegate import QThumbnailDelegate
 from ui_mainwindow import Ui_MainWindow
@@ -585,11 +585,11 @@ class Ui(QtWidgets.QMainWindow):
         clear_airnef_folder()
 
         # TODO:Start airnef
-        self.camera_mounted = False
-        self.gphoto_thread = GPhotoThread()
-        self.camera_mounted = self.gphoto_thread.connect_to_camera(os.path.abspath(Ui.GPHOTO_DIRECTORY),
+        self.camera_watcher_active = False
+        self.gphoto_thread = GPhotoThread2()
+        self.camera_watcher_active = self.gphoto_thread.initialize(os.path.abspath(Ui.GPHOTO_DIRECTORY),
                                                                    os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY))
-        if self.camera_mounted:
+        if self.camera_watcher_active:
             self.gphoto_thread.start()
         self.image_file_list = [join(Ui.AIRNEF_PICTURE_DIRECTORY, f) for f in listdir(Ui.AIRNEF_PICTURE_DIRECTORY) if
                                 isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
@@ -608,7 +608,7 @@ class Ui(QtWidgets.QMainWindow):
     def closeEvent(self, *args, **kwargs):
         super(QtWidgets.QMainWindow, self).closeEvent(*args, **kwargs)
         unset_keepawake()
-        if self.camera_mounted:
+        if self.camera_watcher_active:
             self.gphoto_thread.stop()
             self.gphoto_thread.join()
         self.file_watcher.shutdown()

@@ -13,7 +13,7 @@ if platform.system() == "Linux":
 
 class GPhotoThread2(threading.Thread):
     def __init__(self):
-        super(GPhotoThread, self).__init__()
+        super(GPhotoThread2, self).__init__()
         self.cF = 0
         self.cFH = 0
         self.copy_point = ""
@@ -46,7 +46,7 @@ class GPhotoThread2(threading.Thread):
         return False
 
     def connect_to_camera(self, mount_point, copy_point):
-        intialize(mount_point, copy_point)
+        self.initialize(mount_point, copy_point)
     
     def get_updated_camera(self):
         if self.camera_is_connected:
