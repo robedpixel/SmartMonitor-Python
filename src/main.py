@@ -608,8 +608,6 @@ class Ui(QtWidgets.QMainWindow):
                                                                    os.path.abspath(Ui.AIRNEF_PICTURE_DIRECTORY))
         if self.camera_watcher_active:
             self.gphoto_thread.start()
-        self.image_file_list = [join(Ui.AIRNEF_PICTURE_DIRECTORY, f) for f in listdir(Ui.AIRNEF_PICTURE_DIRECTORY) if
-                                isfile(join(Ui.AIRNEF_PICTURE_DIRECTORY, f))]
         # subprocess.run(["python", "airnef/airnefcmd.py","--outputdir", Ui.AIRNEF_PICTURE_DIRECTORY , "--realtimedownload",
         # "only"])
 
@@ -618,7 +616,7 @@ class Ui(QtWidgets.QMainWindow):
         self.file_watcher.monitor_directory(Ui.AIRNEF_PICTURE_DIRECTORY)
         self.file_watcher.register_callback(self.on_folder_changed_event)
 
-        self.help_text.setPlainText("Open an image file or take a picture with a connected camera to begin.")
+        self.help_text.setPlainText("Open an image file to begin.")
         set_keepawake(keep_screen_awake=True)
         #self.start = time.time()
         #self.end = time.time()
@@ -1312,25 +1310,20 @@ class Ui(QtWidgets.QMainWindow):
 
         changed_files = [join(folder_changed_url, f) for f in listdir(folder_changed_url) if
                          isfile(join(folder_changed_url, f)) and join(folder_changed_url, f).endswith('.JPG')]
-        if len(changed_files) > len(self.image_file_list):
-            self.image_file_list = changed_files
-            # Iterate through list to find latest file
-            latest_file = max(self.image_file_list, key=os.path.getctime)
-            # Sleep command to wait for image to finish loading in the raspberry pi before displaying it in
-            # SmartMonitor, adjust time or find more reliable workaround
-            time.sleep(1)
+        for image_file in changed_files:
+            #time.sleep(1)
 
             # Copy the JPG and NEF to the picture folder with normalised file names
             if self.picture_folder_missing:
                 os.makedirs(Ui.PICTURE_DIRECTORY, exist_ok=True)
                 self.open_file_directory = Ui.PICTURE_DIRECTORY
                 self.picture_folder_missing = False
-            p = Path(latest_file)
+            p = Path(image_file)
             destination_jpg_file = self.PICTURE_DIRECTORY + '/' + p.stem + '.jpg'
             destination_nef_file = self.PICTURE_DIRECTORY + '/' + p.stem + '.nef'
             nef_file = str(p.with_suffix('')) + '.NEF'
             try:
-                shutil.move(latest_file, os.path.abspath(destination_jpg_file), copy_function=shutil.copytree)
+                shutil.move(image_file, os.path.abspath(destination_jpg_file), copy_function=shutil.copytree)
             except:
                 print("copy jpg error")
             try:
@@ -1338,8 +1331,6 @@ class Ui(QtWidgets.QMainWindow):
             except:
                 print("copy nef error")
             # self.load_image_from_file(os.path.abspath(destination_jpg_file))
-        else:
-            self.image_file_list = changed_files
 
     def undo_action(self):
         if self.current_action[0] < (len(self.actions)):
