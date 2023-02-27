@@ -1,5 +1,4 @@
-from PySide2 import QtWidgets, QtGui, QtCore
-from PySide2.QtCore import Qt
+from PySide2 import QtWidgets, QtCore
 from ui_burndodgewindow import Ui_Dialog
 
 class BurnDodgeWindow(QtWidgets.QDialog):

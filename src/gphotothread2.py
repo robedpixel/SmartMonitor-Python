@@ -1,12 +1,8 @@
 import threading
 import os
-import shutil
 import platform
-import subprocess
 from datetime import datetime
 import time
-from glob import glob
-from pathlib import Path
 
 if platform.system() == "Linux":
     import gphoto2 as gp

@@ -1,6 +1,4 @@
-from PySide2 import QtCore
 from collections import deque
-from Effect import Effect
 from enum import Enum
 
 
