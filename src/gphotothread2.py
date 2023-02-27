@@ -11,6 +11,7 @@ if platform.system() == "Linux":
 class GPhotoThread2(threading.Thread):
     def __init__(self):
         super(GPhotoThread2, self).__init__()
+        self.timer = threading.Condition()
         self.cF = 0
         self.cFH = 0
         self.copy_point = ""
@@ -102,7 +103,6 @@ class GPhotoThread2(threading.Thread):
     def run(self):
         while not self.stopped:
             if self.running:
-                time.sleep(300)
                 print("getting new pictures...")
                 self.get_updated_camera()
                 if self.camera_is_connected:
@@ -131,10 +131,17 @@ class GPhotoThread2(threading.Thread):
                                     gp.gp_camera_file_get(self.connected_camera, folder, name, gp.GP_FILE_TYPE_NORMAL))
                                 gp.check_result(gp.gp_file_save(camera_file, self.copy_point + "/" + name))
                         self.cFH = self.cF
+                self.timer.wait(timeout=300)
         if self.camera_is_connected:
             print("unmounting camera...")
             self.connected_camera.exit()
             print("camera filesystem unmounted!")
+
+    def wake(self):
+        try:
+            self.timer.notify()
+        except:
+            pass
 
     def stop(self):
         self.stopped = True

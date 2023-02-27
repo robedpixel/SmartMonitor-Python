@@ -626,6 +626,7 @@ class Ui(QtWidgets.QMainWindow):
         if self.camera_watcher_active:
         #    self.gphoto_thread.shutdown()
             self.gphoto_thread.stop()
+            self.gphoto_thread.wake()
             self.gphoto_thread.join()
         self.file_watcher.shutdown()
 
