@@ -15,9 +15,10 @@ class Tool:
         self.action_list_state = []
         self.help_text = None
         self.help_str = ""
+        self.image = None
 
     def set_image(self, image: [QtGui.QImage]):
-        pass
+        self.image = image
 
     def on_select_tool(self):
         pass
@@ -53,7 +54,6 @@ class PaintTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.push_button = None
-        self.image = None
         self.paint_radius = list()
         self.paint_sizes = dict()
         self.drawing = False
@@ -62,9 +62,6 @@ class PaintTool(Tool):
         self.scale = [float(1)]
         self.current_effect = None
         self.help_str = "Freehand:\nTap and drag to mark an area on the canvas"
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_color(self, color: list[QtGui.QColor]):
         self.color = color
@@ -143,7 +140,6 @@ class PanTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.push_button = None
-        self.image = None
         self.activated = False
         self.lastPoint = QtCore.QPoint()
         self.scroll_area = None
@@ -155,9 +151,6 @@ class PanTool(Tool):
         self.scroll_area = area
         self.horizontal_scroll_bar = self.scroll_area.horizontalScrollBar()
         self.vertical_scroll_bar = self.scroll_area.verticalScrollBar()
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_button(self, QPushButton):
         self.push_button = QPushButton
@@ -192,7 +185,6 @@ class ScaleTool(Tool):
         self.zoom_bar = None
         self.zoom_bar_display = None
         self.push_button = None
-        self.image = None
         self.activated = False
         self.lastPoint = QtCore.QPoint()
         self.scaling = [float(1)]
@@ -205,7 +197,6 @@ class ScaleTool(Tool):
         self.zoom_bar = zoom_bar
         self.zoom_bar_display = zoom_bar_display
         self.push_button = None
-        self.image = None
         self.activated = False
         self.lastPoint = QtCore.QPoint()
         self.scaling = scale
@@ -219,9 +210,6 @@ class ScaleTool(Tool):
         self.zoom_bar_display.setEnabled(True)
         self.help_str = "Zoom:\n\nCanvas Option:\n-Tap finger and drag left to zoom out, Tap finger and drag right to zoom in.\n" \
                         "Slider Option:\n- Drag slider left to zoom out, drag slider right to zoom in "
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_scale_control(self, scale: list[float]):
         self.scaling = scale
@@ -268,7 +256,6 @@ class ColourPickerTool(Tool):
         Tool.__init__(self)
         self.scale = None
         self.push_button = None
-        self.image = None
         self.activated = False
         self.color = None
         self.lastPoint = QtCore.QPoint()
@@ -283,9 +270,6 @@ class ColourPickerTool(Tool):
 
     def set_scale(self, scale: list[float]):
         self.scale = scale
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_button(self, push_button: QtWidgets.QPushButton):
         self.push_button = push_button
@@ -319,7 +303,6 @@ class EraserTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.push_button = None
-        self.image = None
         self.paint_radius = 5
         # self.paint_sizes = dict()
         self.drawing = False
@@ -328,9 +311,6 @@ class EraserTool(Tool):
         self.scale = [float(1)]
         self.current_effect = None
         self.help_str = "Eraser:\nTap and drag to erase the canvas"
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_scale(self, scale: list[float]):
         self.scale = scale
@@ -411,7 +391,6 @@ class SelectTool(Tool):
         self.selection = [QtCore.QRect()]
         self.startPoint = QtCore.QPoint()
         self.push_button = None
-        self.image = None
         self.drawing = False
         self.lastPoint = QtCore.QPoint()
         self.color = QtGui.QColor(QtCore.Qt.white)
@@ -422,9 +401,6 @@ class SelectTool(Tool):
         for button in self.child_buttons:
             button.setVisible(True)
             button.setEnabled(True)
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_scale(self, scale: list[float]):
         self.scale = scale
@@ -495,12 +471,8 @@ class CropTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.selection = [QtCore.QRect()]
-        self.image = None
         self.scale = [float(1)]
         self.current_effect = None
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_scale(self, scale: list[float]):
         self.scale = scale
@@ -562,7 +534,6 @@ class LineTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.push_button = None
-        self.image = None
         self.paint_radius = list()
         self.paint_sizes = dict()
         self.drawing = False
@@ -576,9 +547,6 @@ class LineTool(Tool):
         self._arrow_height = 10
         self._arrow_width = 10
         self.help_str = "Line Tool:\nTap and drag draw a line on the canvas."
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_color(self, color: list[QtGui.QColor]):
         self.color = color
@@ -744,7 +712,6 @@ class RectTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.push_button = None
-        self.image = None
         self.paint_radius = list()
         self.paint_sizes = dict()
         self.drawing = False
@@ -757,9 +724,6 @@ class RectTool(Tool):
         self.image_copy_two = None
         self.help_str = "Mark Rectangle :\nTap and drag to mark out a rectangle on the canvas\nThe tapped location " \
                         "will be the centre of the rectangle "
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_color(self, color: list[QtGui.QColor]):
         self.color = color
@@ -852,7 +816,6 @@ class CircleTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.push_button = None
-        self.image = None
         self.paint_radius = list()
         self.paint_sizes = dict()
         self.drawing = False
@@ -865,9 +828,6 @@ class CircleTool(Tool):
         self.image_copy_two = None
         self.help_str = "Mark Ellipse:\nTap and drag to mark out an ellipse on the canvas\nThe tapped location will be " \
                         "the centre of the ellipse."
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_color(self, color: list[QtGui.QColor]):
         self.color = color
@@ -955,7 +915,6 @@ class CircleWithLabelTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.push_button = None
-        self.image = None
         self.paint_radius = list()
         self.paint_sizes = dict()
         self.drawing = False
@@ -967,9 +926,6 @@ class CircleWithLabelTool(Tool):
         self.image_copy = None
         self.image_copy_two = None
         self.help_str = "Ellipse Tool:\nTap and drag draw an ellipse on the canvas"
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_color(self, color: list[QtGui.QColor]):
         self.color = color
@@ -1078,7 +1034,6 @@ class ImageTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.push_button = None
-        self.image = None
         self.drawing = False
         self.startPoint = QtCore.QPoint()
         self.lastPoint = QtCore.QPoint()
@@ -1088,9 +1043,6 @@ class ImageTool(Tool):
         self.image_copy = None
         self.image_copy_two = None
         # self.help_str = "Ellipse Tool:\nTap and drag to put an image on the canvas"
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_insert_image(self, image: [QtGui.QImage]):
         self.image_to_insert = image
@@ -1160,7 +1112,6 @@ class LabelTool(Tool):
     def __init__(self):
         Tool.__init__(self)
         self.push_button = None
-        self.image = None
         self.drawing = False
         self.startPoint = QtCore.QPoint()
         self.lastPoint = QtCore.QPoint()
@@ -1170,9 +1121,6 @@ class LabelTool(Tool):
         self.image_copy = None
         self.image_copy_two = None
         # self.help_str = "Ellipse Tool:\nTap and drag to put an image on the canvas"
-
-    def set_image(self, image: [QtGui.QImage]):
-        self.image = image
 
     def set_insert_image(self, image: [QtGui.QImage]):
         self.image_to_insert = image
