@@ -649,6 +649,7 @@ class Ui(QtWidgets.QMainWindow):
     def load_image(self, filename: str):
         if filename:
             self.load_image_from_file(filename)
+            self.reset_buttons()
 
     def load_image_from_file(self, filename: str) -> bool:
         fileinfo = QtCore.QFileInfo(filename)
@@ -745,6 +746,7 @@ class Ui(QtWidgets.QMainWindow):
         self.current_action[0] = 0
         self.redraw_image()
         QtWidgets.QWidget.setWindowFilePath(self, filename)
+        self.help_text.setPlainText("Select an annotation action and the area selection format on the left tab.")
         return True
 
     # This method is for loading in a new image into SmartMonitor
@@ -1356,6 +1358,23 @@ class Ui(QtWidgets.QMainWindow):
     def show_image_exif_info(self, info: str):
         self.note_window = InfoWindow(info)
         self.note_window.show()
+
+    def reset_buttons(self):
+        if self.label_button.isChecked():
+            self.help_text.setPlainText("")
+            self.label_tab.setVisible(False)
+            self.label_button.setChecked(False)
+        self.deselect_current_tool()
+        while self.selection_layout.count():
+            child = self.selection_layout.takeAt(0)
+            if child.widget():
+                child.widget().setParent(self)
+                child.widget().setVisible(False)
+        for button in self.option_list:
+            button.setChecked(False)
+        self.current_labels = list()
+        self.restore_label_layout()
+        self.area_tab.setVisible(False)
 
     """
     # TODO: touch gesture event handler
