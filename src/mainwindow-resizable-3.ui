@@ -364,7 +364,7 @@ Comments</string>
        </font>
       </property>
       <property name="styleSheet">
-       <string notr="true">QTabBar::tab { height: 50px; font-size: 16px; width: 138px; }</string>
+       <string notr="true">QTabBar::tab { height: 50px; font-size: 16px; width: 150px; }</string>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -994,7 +994,7 @@ zoom</string>
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>17</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
