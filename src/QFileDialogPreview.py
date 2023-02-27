@@ -1,9 +1,7 @@
-from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtCore import Qt, QSize
-from PySide2.QtGui import QPixmap, QIcon
-from PySide2.QtWidgets import QWidget, QFileDialog, QVBoxLayout, QLabel
+from PySide2.QtGui import QIcon
+from PySide2.QtWidgets import QFileDialog, QVBoxLayout, QLabel
 
-from QThumbnailDelegate import QThumbnailDelegate
 
 
 class QFileDialogPreview(QFileDialog):

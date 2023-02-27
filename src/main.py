@@ -14,35 +14,25 @@ import platform
 from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QImageReader
-from PySide2.QtWidgets import QWidget, QListView
-from collections import deque
-from Action import Action, ToolType
 from CameraFolderWatcher import CameraFolderWatcher
 from ImageDisplay import ImageDisplay
 from NoteModule import ExifNoteModule, AppendedDataNoteModule
 from NoteWindow import NoteWindow
 from gphotothread2 import GPhotoThread2
 from Tool import *
-from QThumbnailDelegate import QThumbnailDelegate
 from ui_mainwindow import Ui_MainWindow
 from os import listdir
 from os.path import isfile, join
-from pathlib import Path
 from PIL import Image, ImageQt
 from pathlib import Path
 from DragDropLabel import *
 import exifread
 from QFileDialogPreview import QFileDialogPreview
-import PIL.Image
-import json
 import pickle
-import time
-from PIL.ExifTags import TAGS
 import base64
 from wakepy import set_keepawake, unset_keepawake
 import shutil
 from sys import platform
-from ImageChooser import ImageChooser
 
 if platform == "linux":
     import rawpy
