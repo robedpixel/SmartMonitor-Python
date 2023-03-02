@@ -17,6 +17,7 @@ class NoteWindow(QtWidgets.QMainWindow):
         super(NoteWindow, self).__init__()  # Call the inherited classes __init__ method
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.setWindowTitle("Comments")
         self.notes = notes
         self.selected_note = list()
         self.selected_button = list()

@@ -434,8 +434,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"SmartMonitor", None))
-        self.noteButton.setText(QCoreApplication.translate("MainWindow", u"Exif\n"
-"Comments", None))
+        self.noteButton.setText(QCoreApplication.translate("MainWindow", u"Comments", None))
         self.undoButton.setText(QCoreApplication.translate("MainWindow", u"Undo", None))
         self.redoButton.setText(QCoreApplication.translate("MainWindow", u"Redo", None))
         self.UndoTab.setTabText(self.UndoTab.indexOf(self.UndoTab_2), QCoreApplication.translate("MainWindow", u"Undo/Redo", None))
