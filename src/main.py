@@ -14,6 +14,8 @@ import platform
 from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QImageReader
+from PySide2.QtWidgets import QMessageBox
+
 from CameraFolderWatcher import CameraFolderWatcher
 from ImageDisplay import ImageDisplay
 from NoteModule import ExifNoteModule, AppendedDataNoteModule
@@ -1473,6 +1475,10 @@ class Ui(QtWidgets.QMainWindow):
         self.limit_action_list_size()
         encoded_actions = base64.b64encode(pickle.dumps(self.serialize_actions(self.actions))).decode('ascii')
         self.note_module.save_actions_and_notes(self.original_filename, encoded_actions, self.file_notes)
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle("Notification")
+        msg_box.setText("Annotations Saved.")
+        msg_box.exec_()
 
     def serialize_actions(self, actions):
         actionlist = []
