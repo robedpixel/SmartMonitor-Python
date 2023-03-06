@@ -737,7 +737,7 @@ class Ui(QtWidgets.QMainWindow):
         try:
             if json_struct:
                 encoded_actions = json_struct['actions']
-                self.actions = deque(self.deserialize_actions(encoded_actions))
+                self.actions = self.deserialize_actions(encoded_actions)
         except KeyError:
             print("no json stored in UserComment tag")
         except ValueError:
@@ -1520,7 +1520,7 @@ class Ui(QtWidgets.QMainWindow):
             elif action[0] == ToolType.LABEL:
                 tool = self.label_tool
                 actions.append(Action(tool, action[1], action[2]))
-        return actions
+        return deque(actions)
 
 
 if __name__ == "__main__":
