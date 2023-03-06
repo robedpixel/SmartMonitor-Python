@@ -10,7 +10,7 @@ class NoteModule:
     def read_json_from_file(self, url: str) -> [str]:
         raise NotImplementedError()
 
-    def save_actions_and_notes(self, url: str, actions, notes):
+    def save_actions_and_notes(self, url: str, encoded_actions, notes):
         raise NotImplementedError()
 
 

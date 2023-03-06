@@ -737,8 +737,7 @@ class Ui(QtWidgets.QMainWindow):
         try:
             if json_struct:
                 encoded_actions = json_struct['actions']
-                self.actions = deque(self.deserialize_actions(
-                    pickle.loads(base64.b64decode(encoded_actions.encode('ascii')))))
+                self.actions = deque(self.deserialize_actions(encoded_actions))
         except KeyError:
             print("no json stored in UserComment tag")
         except ValueError:
@@ -1473,7 +1472,7 @@ class Ui(QtWidgets.QMainWindow):
             self.actions.pop()
         self.current_action[0] = 0
         self.limit_action_list_size()
-        encoded_actions = base64.b64encode(pickle.dumps(self.serialize_actions(self.actions))).decode('ascii')
+        encoded_actions = self.serialize_actions(self.actions)
         self.note_module.save_actions_and_notes(self.original_filename, encoded_actions, self.file_notes)
         msg_box = QMessageBox()
         msg_box.setWindowTitle("Notification")
@@ -1490,11 +1489,13 @@ class Ui(QtWidgets.QMainWindow):
                 actionlist.append((tooltype, action.radius, action.color, action.effects, action.effect_type))
                 continue
             actionlist.append((tooltype, action.effects, action.effect_type))
-        return actionlist
+        encoded_actions = base64.b64encode(pickle.dumps(actionlist)).decode('ascii')
+        return encoded_actions
 
     def deserialize_actions(self, action_list):
+        decoded_action_list = pickle.loads(base64.b64decode(action_list.encode('ascii')))
         actions = []
-        for action in action_list:
+        for action in decoded_action_list:
             if action[0] == ToolType.PAINT:
                 tool = PaintTool()
                 actions.append(PaintAction(tool, action[3], action[4], action[1], action[2]))
