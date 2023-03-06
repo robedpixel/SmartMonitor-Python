@@ -10,20 +10,16 @@ class NoteModule:
     def read_json_from_file(self, url: str) -> [str]:
         raise NotImplementedError()
 
-    def save_notes_to_file(self, url: str, notes: list) -> bool:
-        raise NotImplementedError()
-
     def save_actions_and_notes(self, url: str, actions, notes):
         raise NotImplementedError()
 
 
-# Stores picture notes in the exif "ImageDescription" tag
-class ExifNoteModule(NoteModule):
+class TextNoteModule(NoteModule):
     def __init__(self):
         NoteModule.__init__(self)
 
     # read ImageDescription exif tag
-    def read_json_from_file(self, url:str):
+    def read_json_from_file(self, url: str):
         txt_file = url.rsplit('.', 1)[0] + ".txt"
         if os.path.exists(txt_file):
             try:
@@ -35,7 +31,26 @@ class ExifNoteModule(NoteModule):
                 return None
         else:
             return None
-    def read_json_from_file2(self, url: str):
+
+    def save_actions_and_notes(self, url: str, encoded_actions, notes):
+        json_obj = {}
+        if notes:
+            print("saving notes to exif")
+            json_obj['notes'] = notes
+        if encoded_actions:
+            json_obj['actions'] = encoded_actions
+        txt_file = url.rsplit('.', 1)[0] + ".txt"
+        with open(txt_file, 'w') as f:
+            f.write(json.dumps(json_obj, indent=0))
+
+
+# Stores picture notes in the exif "ImageDescription" tag
+class ExifNoteModule(NoteModule):
+    def __init__(self):
+        NoteModule.__init__(self)
+
+    # read ImageDescription exif tag
+    def read_json_from_file(self, url: str):
         img = PIL.Image.open(url)
         exif_data = img.getexif()
         found = False
@@ -74,19 +89,16 @@ class ExifNoteModule(NoteModule):
         return True
 
     def save_actions_and_notes(self, url: str, encoded_actions, notes):
-        #img = PIL.Image.open(url)
-        #exif_data = img.getexif()
+        img = PIL.Image.open(url)
+        exif_data = img.getexif()
         json_obj = {}
         if notes:
             print("saving notes to exif")
             json_obj['notes'] = notes
         if encoded_actions:
             json_obj['actions'] = encoded_actions
-        txt_file = url.rsplit('.',1)[0] + ".txt"
-        with open(txt_file, 'w') as f:
-            f.write(json.dumps(json_obj,indent=0))
-        #exif_data[USR_CMT_TAG_ID] = json.dumps(json_obj, indent=0)
-        #img.save(url, exif=exif_data)
+        exif_data[USR_CMT_TAG_ID] = json.dumps(json_obj, indent=0)
+        img.save(url, exif=exif_data)
 
 
 # Stores picture notes by appending it after the jpg or png image data

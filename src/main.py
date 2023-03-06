@@ -18,7 +18,7 @@ from PySide2.QtWidgets import QMessageBox
 
 from CameraFolderWatcher import CameraFolderWatcher
 from ImageDisplay import ImageDisplay
-from NoteModule import ExifNoteModule, AppendedDataNoteModule
+from NoteModule import ExifNoteModule, AppendedDataNoteModule, TextNoteModule
 from NoteWindow import NoteWindow
 from gphotothread2 import GPhotoThread2
 from Tool import *
@@ -712,7 +712,7 @@ class Ui(QtWidgets.QMainWindow):
             reader.setFileName(image_to_read)
             reader.setAutoTransform(True)
             new_image = reader.read()
-            self.note_module = ExifNoteModule()
+            self.note_module = TextNoteModule()
 
         if new_image.isNull():
             msg_box = QtWidgets.QMessageBox()
@@ -1524,9 +1524,6 @@ class Ui(QtWidgets.QMainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
-
-    # Make sure virtual keyboard window isn't opaque when it is triggered
-    # QtGui.QGuiApplication.inputMethod().visibleChanged.connect(handleVisibleChanged)
 
     window = Ui()
     app.exec_()
