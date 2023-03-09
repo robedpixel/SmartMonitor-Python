@@ -6,12 +6,9 @@
 from datetime import date
 import io
 import os
-from glob import glob
 import subprocess
 import sys
-import time
 import platform
-from PySide2 import QtWidgets, QtGui, QtCore
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QImageReader
 from PySide2.QtWidgets import QMessageBox
@@ -25,7 +22,7 @@ from Tool import *
 from ui_mainwindow import Ui_MainWindow
 from os import listdir
 from os.path import isfile, join
-from PIL import Image, ImageQt
+from PIL import Image
 from pathlib import Path
 from DragDropLabel import *
 import exifread
