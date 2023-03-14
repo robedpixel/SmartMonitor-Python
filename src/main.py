@@ -627,7 +627,6 @@ class Ui(QtWidgets.QMainWindow):
 
     def show_open_dialog(self):
         # self.file_dialog = QtWidgets.QFileDialog(self, 'Open Image', self.PICTURE_DIRECTORY)
-        self.gphoto_thread.running = False
         self.file_dialog = QFileDialogPreview(self, 'Open File', self.open_file_directory)
         self.file_dialog.setFileMode(QtWidgets.QFileDialog.AnyFile)
         # self.file_dialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog, False)
@@ -1289,7 +1288,8 @@ class Ui(QtWidgets.QMainWindow):
 
     def on_folder_changed_event(self, folder_changed_url: str):
         # Check and delete oldest image in picture folder if over limit
-        files = [f for f in os.listdir(self.PICTURE_DIRECTORY) if os.path.isfile(f)]
+        if not self.picture_folder_missing:
+            files = [f for f in os.listdir(self.PICTURE_DIRECTORY) if os.path.isfile(f)]
 
         # while len(files) > self.MAX_PICTURE_STORAGE:
         #    oldest_file = min(files, key=os.path.getctime)
