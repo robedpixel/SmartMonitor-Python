@@ -1,7 +1,4 @@
-# TODO: test airnef
-# TODO: add airnef function
-# TODO: find way to connect dslr and detect changes in ubuntu
-# TODO: find way to display image from original image
+
 # Import required packages
 from datetime import date
 import io
