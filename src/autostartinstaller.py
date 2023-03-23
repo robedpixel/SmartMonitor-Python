@@ -4,7 +4,8 @@ import subprocess
 #TODO: NOT COMPLETE
 
 executable="./runprogram.sh"
-
+autostart_template = "./smartmonitor.desktop"
+autostart_destination = "/home/pi/.config/autostart/smartmonitor.desktop"
 def is_root():
     return os.geteuid() == 0
 
@@ -46,3 +47,14 @@ if __name__ == "__main__":
         quit()
     executable_abs = os.path.abspath(executable)
     #TODO: get template of .desktop file and replace with absolute path to runprogram.sh
+    print("getting autostart template")
+    if not os.path.isfile(autostart_template):
+        print("Error! File not found")
+        input("Press Enter to continue...")
+        quit()
+    with open(autostart_template, "r") as autostart_file:
+        with open(autostart_destination, "w") as autostart_dest:
+            #make file from autostart_file with path edited
+
+
+
