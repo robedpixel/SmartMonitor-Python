@@ -1,7 +1,6 @@
 import platform
 import subprocess
-
-#TODO: NOT COMPLETE
+import os
 
 executable="./runprogram.sh"
 autostart_template = "./smartmonitor.desktop"
@@ -10,7 +9,6 @@ def is_root():
     return os.geteuid() == 0
 
 if __name__ == "__main__":
-    quit()
     print("Installing autostart functionality for SmartMonitor on Raspbian")
     print("Checking if operating system is compatible:")
     if platform != "linux":
@@ -54,7 +52,9 @@ if __name__ == "__main__":
         quit()
     with open(autostart_template, "r") as autostart_file:
         with open(autostart_destination, "w") as autostart_dest:
-            #make file from autostart_file with path edited
+            autostart_dest.write(autostart_file.read())
+            autostart_dest.write("Exec = " + executable_abs + os.linesep)
+            autostart_dest.write("Name = smartmonitor" + os.linesep)
 
 
 
