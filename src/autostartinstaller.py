@@ -57,6 +57,7 @@ if __name__ == "__main__":
             autostart_dest.write(autostart_file.read())
             autostart_dest.write("Exec = " + executable_abs + os.linesep)
             autostart_dest.write("Name = smartmonitor" + os.linesep)
+    print("installation successful")
 
 
 
