@@ -50,6 +50,8 @@ if __name__ == "__main__":
         print("Error! File not found")
         input("Press Enter to continue...")
         quit()
+
+    os.makedirs(os.path.dirname(autostart_destination), exist_ok=True)
     with open(autostart_template, "r") as autostart_file:
         with open(autostart_destination, "w") as autostart_dest:
             autostart_dest.write(autostart_file.read())
