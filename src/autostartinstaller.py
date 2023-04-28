@@ -13,12 +13,14 @@ if __name__ == "__main__":
     print("Checking if operating system is compatible:")
     if platform != "linux":
         print("Error! Installation only works on linux")
+        print("installation failed")
         input("Press Enter to continue...")
         quit()
     print("Success")
     print("checking for root access:")
     if not is_root():
         print("Error! Installation requires root access")
+        print("installation failed")
         input("Press Enter to continue...")
         quit()
     print("Success")
@@ -34,6 +36,7 @@ if __name__ == "__main__":
     process.wait()
     if process.returncode != 0:
         print("Error! Could not set ownership of file")
+        print("installation failed")
         input("Press Enter to continue...")
         quit()
     command = "chmod a+s " + executable
@@ -41,6 +44,7 @@ if __name__ == "__main__":
     process.wait()
     if process.returncode != 0:
         print("Error! Could not set access properties of file")
+        print("installation failed")
         input("Press Enter to continue...")
         quit()
     executable_abs = os.path.abspath(executable)
@@ -48,6 +52,7 @@ if __name__ == "__main__":
     print("getting autostart template")
     if not os.path.isfile(autostart_template):
         print("Error! File not found")
+        print("installation failed")
         input("Press Enter to continue...")
         quit()
 
